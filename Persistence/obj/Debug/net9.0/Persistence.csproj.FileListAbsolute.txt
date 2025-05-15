@@ -1,0 +1,16 @@
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Persistence\bin\Debug\net9.0\Persistence.deps.json
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Persistence\bin\Debug\net9.0\Persistence.dll
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Persistence\bin\Debug\net9.0\Persistence.pdb
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Persistence\bin\Debug\net9.0\Domain.dll
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Persistence\bin\Debug\net9.0\Domain.pdb
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Persistence\obj\Debug\net9.0\Persistence.csproj.AssemblyReference.cache
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Persistence\obj\Debug\net9.0\Persistence.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Persistence\obj\Debug\net9.0\Persistence.AssemblyInfoInputs.cache
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Persistence\obj\Debug\net9.0\Persistence.AssemblyInfo.cs
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Persistence\obj\Debug\net9.0\Persistence.csproj.CoreCompileInputs.cache
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Persistence\obj\Debug\net9.0\Persistence.sourcelink.json
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Persistence\obj\Debug\net9.0\Persiste.61C28332.Up2Date
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Persistence\obj\Debug\net9.0\Persistence.dll
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Persistence\obj\Debug\net9.0\refint\Persistence.dll
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Persistence\obj\Debug\net9.0\Persistence.pdb
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Persistence\obj\Debug\net9.0\ref\Persistence.dll
