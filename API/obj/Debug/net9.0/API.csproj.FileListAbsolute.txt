@@ -6,8 +6,6 @@ C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\Stud
 C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\bin\Debug\net9.0\API.runtimeconfig.json
 C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\bin\Debug\net9.0\API.dll
 C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\bin\Debug\net9.0\API.pdb
-C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll
-C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\bin\Debug\net9.0\Microsoft.OpenApi.dll
 C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\bin\Debug\net9.0\Application.dll
 C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\bin\Debug\net9.0\Domain.dll
 C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\bin\Debug\net9.0\Persistence.dll
@@ -19,7 +17,6 @@ C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\Stud
 C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\obj\Debug\net9.0\API.AssemblyInfoInputs.cache
 C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\obj\Debug\net9.0\API.AssemblyInfo.cs
 C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\obj\Debug\net9.0\API.csproj.CoreCompileInputs.cache
-C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\obj\Debug\net9.0\API.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\obj\Debug\net9.0\API.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\obj\Debug\net9.0\API.sourcelink.json
 C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\obj\Debug\net9.0\scopedcss\bundle\API.styles.css
