@@ -1,0 +1,117 @@
+{
+  "version": 3,
+  "targets": {
+    "net9.0": {
+      "Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Domain.dll": {}
+        }
+      },
+      "Persistence/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Persistence.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Persistence.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Domain/1.0.0": {
+      "type": "project",
+      "path": "../Domain/Domain.csproj",
+      "msbuildProject": "../Domain/Domain.csproj"
+    },
+    "Persistence/1.0.0": {
+      "type": "project",
+      "path": "../Persistence/Persistence.csproj",
+      "msbuildProject": "../Persistence/Persistence.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net9.0": [
+      "Domain >= 1.0.0",
+      "Persistence >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Anders\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\Anders\\OneDrive - Griffith University\\Desktop\\self learning\\Dotnet\\StudentConnect\\Application\\Application.csproj",
+      "projectName": "Application",
+      "projectPath": "C:\\Users\\Anders\\OneDrive - Griffith University\\Desktop\\self learning\\Dotnet\\StudentConnect\\Application\\Application.csproj",
+      "packagesPath": "C:\\Users\\Anders\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Anders\\OneDrive - Griffith University\\Desktop\\self learning\\Dotnet\\StudentConnect\\Application\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\Anders\\AppData\\Roaming\\NuGet\\NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net9.0"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "projectReferences": {
+            "C:\\Users\\Anders\\OneDrive - Griffith University\\Desktop\\self learning\\Dotnet\\StudentConnect\\Domain\\Domain.csproj": {
+              "projectPath": "C:\\Users\\Anders\\OneDrive - Griffith University\\Desktop\\self learning\\Dotnet\\StudentConnect\\Domain\\Domain.csproj"
+            },
+            "C:\\Users\\Anders\\OneDrive - Griffith University\\Desktop\\self learning\\Dotnet\\StudentConnect\\Persistence\\Persistence.csproj": {
+              "projectPath": "C:\\Users\\Anders\\OneDrive - Griffith University\\Desktop\\self learning\\Dotnet\\StudentConnect\\Persistence\\Persistence.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.200"
+    },
+    "frameworks": {
+      "net9.0": {
+        "targetAlias": "net9.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
