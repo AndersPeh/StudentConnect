@@ -3,6 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers;
 
 [ApiController]
+
+// This defines how to access this controller via a URL.
+// It gets replaced with the name of the controller class
+// without the word "Controller" at the end.
+// For WeatherForecastController, it will be accessible via
+// https://localhost:5001/WeatherForecast
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
 {
