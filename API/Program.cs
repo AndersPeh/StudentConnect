@@ -2,11 +2,19 @@
 // -> Find Matching Controller from Registered Controllers (builder.Services.)
 // -> Execute Controller Method in Application Layer.
 
+using Microsoft.EntityFrameworkCore;
+using Persistence;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add internal and external services to the container.
 // Register controllers that execute different HTTP requests.
 builder.Services.AddControllers();
+
+builder.Services.AddDbContext<AppDbContext>(opt =>
+{
+    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 
 
 var app = builder.Build();
