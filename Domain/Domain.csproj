@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- enable means we need to specify if objects and strings are nullable -->
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
