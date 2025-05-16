@@ -2,6 +2,7 @@ using System;
 
 namespace Domain;
 
+// blueprint of the Activities table in AppDbContext (Persistence layer).
 public class Activity
 {
     // this property has to be public for Entity Framework to access to it.

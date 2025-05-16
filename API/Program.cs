@@ -11,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Register controllers that execute different HTTP requests.
 builder.Services.AddControllers();
 
+// provides database configuration to AppDbContext (which is options object).
+// It uses AddDbContext, so it is dependent on Persistence layer.
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
