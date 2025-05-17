@@ -10,6 +10,6 @@ namespace Persistence;
 // DbContext constructor, to pass options for AppDbContext to interact with the database.
 public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
-    // It interacts with Activities table in the database and the table columns follow Activity class defined in the Domain.
+    // Activities type is database table manager for Activity entities.
     public required DbSet<Activity> Activities { get; set; }
 }
