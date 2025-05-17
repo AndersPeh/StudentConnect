@@ -7,6 +7,8 @@ public class DbInitializer
 {
     // Task means void for async method.
     // static as it doesn't rely on data from DbInitializer.
+    // SeedData uses method dependency injection. It needs AppDbContext to run.
+    // In API -> Program.cs, it passes context to this method. It is a static method with dependency. 
     public static async Task SeedData(AppDbContext context)
     {
         // Only seed data if there is no activity
