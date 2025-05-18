@@ -25,7 +25,7 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 builder.Services.AddCors();
 
 // Register Handler and Mediator service with DI container. 
-// Mediator will scan the Application layer assembly for GetActivityList.Handler.
+// Mediator will scan the Application layer assembly for all Handlers.
 builder.Services.AddMediatR(x => x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>());
 
 var app = builder.Build();
