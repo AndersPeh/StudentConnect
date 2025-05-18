@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "udZyMeDanrA=",
+  "dgSpecHash": "WelmIF8mtiI=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Anders\\OneDrive - Griffith University\\Desktop\\self learning\\Dotnet\\StudentConnect\\Application\\Application.csproj",
+  "projectFilePath": "c:\\Users\\Anders\\OneDrive - Griffith University\\Desktop\\self learning\\Dotnet\\StudentConnect\\Application\\Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Anders\\.nuget\\packages\\automapper\\14.0.0\\automapper.14.0.0.nupkg.sha512",
     "C:\\Users\\Anders\\.nuget\\packages\\mediatr\\12.5.0\\mediatr.12.5.0.nupkg.sha512",

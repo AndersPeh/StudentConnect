@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "g/iE/zCgsa0=",
+  "dgSpecHash": "I9gwK7Mf0Ic=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Anders\\OneDrive - Griffith University\\Desktop\\self learning\\Dotnet\\StudentConnect\\API\\API.csproj",
+  "projectFilePath": "c:\\Users\\Anders\\OneDrive - Griffith University\\Desktop\\self learning\\Dotnet\\StudentConnect\\API\\API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Anders\\.nuget\\packages\\automapper\\14.0.0\\automapper.14.0.0.nupkg.sha512",
     "C:\\Users\\Anders\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

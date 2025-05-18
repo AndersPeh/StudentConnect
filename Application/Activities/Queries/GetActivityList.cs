@@ -21,6 +21,7 @@ public class GetActivityList
         // Mediator will retun result to the ActivitiesController mediator.Send(new GetActivityList.Query()).
         public async Task<List<Activity>> Handle(Query request, CancellationToken cancellationToken)
         {
+
             // cancel this operation if cancellationToken is provided.
             return await context.Activities.ToListAsync(cancellationToken);
         }
