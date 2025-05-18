@@ -56,4 +56,14 @@ public class ActivitiesController : BaseApiController
         await Mediator.Send(new EditActivity.Command { Activity = activity });
         return NoContent();
     }
+
+    // when data is needed in the path, must specify in the HTTP method.
+    [HttpDelete("{id}")]
+
+    // return Status 200 Ok if delete successfully.
+    public async Task<ActionResult> DeleteActivity(string id)
+    {
+        await Mediator.Send(new DeleteActivity.Command { Id = id });
+        return Ok();
+    }
 }
