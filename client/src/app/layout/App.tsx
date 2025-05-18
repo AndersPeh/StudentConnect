@@ -1,6 +1,8 @@
-import { List, ListItem, ListItemText, Typography } from "@mui/material";
+import { Box, Container, CssBaseline } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import NavBar from "./NavBar";
+import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 
 function App() {
   // type of activities is <Activity[]> defined in index.d.ts
@@ -17,18 +19,14 @@ function App() {
 
   return (
     // can only return 1 thing in Javascript function, must wrap everything in a section.
-    <>
-      <Typography variant="h3">Student Connect</Typography>
-
-      <List>
-        {activities.map((activity) => (
-          // React needs id to identify each activity to track them individually.
-          <ListItem key={activity.id}>
-            <ListItemText>{activity.title}</ListItemText>
-          </ListItem>
-        ))}
-      </List>
-    </>
+    <Box sx={{ backgroundColor: "#eeeeee" }}>
+      <CssBaseline />
+      <NavBar />
+      <Container maxWidth="xl" sx={{ marginTop: 3 }}>
+        {/* pass activities prop to ActivityDashboard. */}
+        <ActivityDashboard activities={activities} />
+      </Container>
+    </Box>
   );
 }
 
