@@ -1,4 +1,5 @@
 using Application.Activities.Queries;
+using Application.Core;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -24,9 +25,14 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 // running at localhost:3000 (frontend) access to resources from localhost:5001 (backend)
 builder.Services.AddCors();
 
-// Register Handler and Mediator service with DI container. 
-// Mediator will scan the Application layer assembly for all Handlers.
+// Registers Handler and Mediator service with DI container. 
+// Mediator will scan the Application layer assembly to access all Handlers.
 builder.Services.AddMediatR(x => x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>());
+
+// Registers AddAutoMapper with DI container.
+// AutoMapper will look for typeof(MappingProfiles) in Assembly of Application Layer, 
+// scans classes that inherit from AutoMapper.Profile to instantiate IMapper.
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
 var app = builder.Build();
 

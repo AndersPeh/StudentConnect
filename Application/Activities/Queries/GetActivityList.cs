@@ -8,10 +8,10 @@ namespace Application.Activities.Queries;
 
 public class GetActivityList
 {
-    // Query receives a request that wants a response in List<Activity>.
+    // Query inherits from IRequest and returns List<Activity>. It is an empty class without method or property.
     public class Query : IRequest<List<Activity>> { }
 
-    // Handler provides response to the Query request.
+    // <Query, List<Activity>> means this Handler handles requests of type GetActivityList.Query and returns  List<Activity>. 
     // Mediator instantiates the Handler to process the query, so DI refers AppDbContext registered in API layer,
     // then DI instantiates AppDbContext from Persistence layer and use constructor injection to inject to the Handler.
 
