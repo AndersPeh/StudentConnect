@@ -23,6 +23,8 @@ public class DeleteActivity
             // It only tracks activity in the memory, need to save later.
             context.Remove(activity);
 
+            // if user triggers an event in the browser to cancel the event, 
+            // cancellation token is sent to API Controller then to Mediator Handler to cancel that request from continuing.
             await context.SaveChangesAsync(cancellationToken);
         }
     }
