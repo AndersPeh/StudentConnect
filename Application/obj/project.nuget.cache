@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "bxNVbiC896o=",
+  "dgSpecHash": "Y73QMimwI0w=",
   "success": true,
   "projectFilePath": "C:\\Users\\Anders\\OneDrive - Griffith University\\Desktop\\self learning\\Dotnet\\StudentConnect\\Application\\Application.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Anders\\.nuget\\packages\\mediatr\\12.5.0\\mediatr.12.5.0.nupkg.sha512",
+    "C:\\Users\\Anders\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
     "C:\\Users\\Anders\\.nuget\\packages\\microsoft.data.sqlite.core\\9.0.0\\microsoft.data.sqlite.core.9.0.0.nupkg.sha512",
     "C:\\Users\\Anders\\.nuget\\packages\\microsoft.entityframeworkcore\\9.0.0\\microsoft.entityframeworkcore.9.0.0.nupkg.sha512",
     "C:\\Users\\Anders\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\9.0.0\\microsoft.entityframeworkcore.abstractions.9.0.0.nupkg.sha512",

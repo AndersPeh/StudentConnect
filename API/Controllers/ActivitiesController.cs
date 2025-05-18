@@ -1,5 +1,7 @@
 using System;
+using Application.Activities.Queries;
 using Domain;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -12,22 +14,21 @@ namespace API.Controllers;
 // which means two new instances are created for every new HTTP request because they have scoped lifetime.
 // Decoupling: ActivitiesController doesn't need to knwo how to create AppDbContext. If there is any changes in AppDbContext, only need to modify Program.cs.
 // Manageability: DI container manages the lifetime of AppDbContext, remove the burden of creating/ disposing it in the Controller.
-public class ActivitiesController(AppDbContext context) : BaseApiController
+public class ActivitiesController(AppDbContext context, IMediator mediator) : BaseApiController
 {
 
     // API endpoint: GET /api/activities
     [HttpGet]
 
     // GetActivities method handles HTTP Get request /api/activities.
-    // returns ActionResult which wraps a List of Activity (match Domain.Activity)
-    // into JSON body of OkObjectResult containing Status Code: 200 OK.
     public async Task<ActionResult<List<Activity>>> GetActivities()
 
     {
-        // it asynchronously uses injected context to query all activities in AppDbContext.
-        // <Activity> -> EF will map result from database in Persistence layer, into instance of Activity from Domain Layer.
-
-        return await context.Activities.ToListAsync();
+        // instantiates request object Query to Mediator. 
+        // Mediator knows which handler to use because it is registered in Program.cs <GetActivityList.Handler>.
+        // After receiving result from Application layer, returns ActionResult which wraps a List of Activity (match Domain.Activity)
+        // into JSON body of OkObjectResult containing Status Code: 200 OK.
+        return await mediator.Send(new GetActivityList.Query());
     }
 
     // *******************************************************************************************************
