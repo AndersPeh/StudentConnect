@@ -17,10 +17,11 @@ public class GetActivityList
 
     public class Handler(AppDbContext context) : IRequestHandler<Query, List<Activity>>
     {
-        // Handle method uses EF in Persistence layer to query the database, map result into Activity objects from Domain layer,
+        // Handle method uses EF in Persistence layer to query all rows from the database (ToListAsync), map result into Activity objects from Domain layer,
         // Mediator will retun result to the ActivitiesController mediator.Send(new GetActivityList.Query()).
         public async Task<List<Activity>> Handle(Query request, CancellationToken cancellationToken)
         {
+            // cancel this operation if cancellationToken is provided.
             return await context.Activities.ToListAsync(cancellationToken);
         }
     }
