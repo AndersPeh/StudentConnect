@@ -1,3 +1,4 @@
+using Application.Activities.Queries;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -19,9 +20,13 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-// Registers CORS which uses HTTP headers to tell Browsers to give the application 
+// Registers CORS service which uses HTTP headers to tell Browsers to give the application 
 // running at localhost:3000 (frontend) access to resources from localhost:5001 (backend)
 builder.Services.AddCors();
+
+// Register Handler and Mediator service with DI container. 
+// Mediator will scan the Application layer assembly for GetActivityList.Handler.
+builder.Services.AddMediatR(x => x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>());
 
 var app = builder.Build();
 
