@@ -32,29 +32,6 @@ function App() {
     setEditMode(false);
   };
 
-  const handleSubmitForm = (activity: Activity) => {
-    // if (activity.id) {
-    //   setActivities(
-    //     // when the updated activity.id === activity stored.id, replace the particular activity with new activity.
-    //     // if dont match, just use the original activity.
-    //     activities.map((x) => (x.id === activity.id ? activity : x))
-    //   );
-    //   setSelectedActivity(activity);
-    // } else {
-    //   const newActivity = { ...activity, id: activities.length.toString() };
-    //   setActivities([...activities, newActivity]);
-    //   setSelectedActivity(newActivity);
-    // }
-    console.log(activity);
-    setEditMode(false);
-  };
-
-  const handleDelete = (id: string) => {
-    console.log(id);
-    setSelectedActivity(undefined);
-    setEditMode(false);
-  };
-
   return (
     // can only return 1 thing in Javascript function, must wrap everything in a section.
     // background of the entire web app homepage.
@@ -75,8 +52,6 @@ function App() {
             editMode={editMode}
             openForm={handleOpenForm}
             closeForm={handleFormClose}
-            submitForm={handleSubmitForm}
-            deleteActivity={handleDelete}
           />
         )}
       </Container>

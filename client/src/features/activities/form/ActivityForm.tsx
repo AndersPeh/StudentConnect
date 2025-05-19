@@ -1,37 +1,47 @@
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import type { FormEvent } from "react";
+import { useActivities } from "../../../lib/hooks/useActivities";
 
 type Props = {
   closeForm: () => void;
   activity?: Activity;
-  submitForm: (activity: Activity) => void;
 };
 
-export default function ActivityForm({
-  closeForm,
-  activity,
-  submitForm,
-}: Props) {
+export default function ActivityForm({ closeForm, activity }: Props) {
+  const { updateActivity, createActivity } = useActivities();
+
   // handleSubmit is an event handler for HTML form.
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     // prevent the browser's default form submission to handle form submission with Javascript.
     event.preventDefault();
+
     // event.currentTarget gets HTML form.
     // FormData(event.currentTarget) collects data from HTML form input fields with name attribute.
     // so formData collects data from the form input fields (with name attributes like name="title").
     const formData = new FormData(event.currentTarget);
+
     //intialises empty object to store form data in key value pairs.
     // keys are strings (name attribute of the textfield) and values (textfield value) are form value like strings or File.
     const data: { [key: string]: FormDataEntryValue } = {};
-    // for each data, the data object will store key:value, like data[title] = Fun Activity;
+
+    // for each formData, the data object will store key:value, like data[title] = Fun Activity;
     formData.forEach((value, key) => {
       data[key] = value;
     });
 
-    if (activity) data.id = activity.id;
-    // Because FormDataEntryValue can be string or File but Activity properties might be strictly string or something else,
-    // two-step assertion as unknown as Activity makes Typescript unable to verify it then assert it that it's Activity type.
-    submitForm(data as unknown as Activity);
+    // if there is activity passed from parent component (update activity), this data already has id from the database, include it to update activity.
+    if (activity) {
+      data.id = activity.id;
+
+      // Because FormDataEntryValue can be string or File but Activity properties might be strictly string or something else,
+      // two-step assertion as unknown as Activity makes Typescript unable to verify it then assert it that it's Activity type.
+      await updateActivity.mutateAsync(data as unknown as Activity);
+
+      closeForm();
+    } else {
+      await createActivity.mutateAsync(data as unknown as Activity);
+      closeForm();
+    }
   };
 
   return (
@@ -68,7 +78,11 @@ export default function ActivityForm({
           name="date"
           label="Date"
           type="date"
-          defaultValue={activity?.date}
+          defaultValue={
+            activity?.date
+              ? new Date(activity.date).toISOString().split("T")[0]
+              : new Date().toISOString().split("T")[0]
+          }
         />
         <TextField name="city" label="City" defaultValue={activity?.city} />
         <TextField name="venue" label="Venue" defaultValue={activity?.venue} />
@@ -76,7 +90,13 @@ export default function ActivityForm({
           <Button onClick={closeForm} color="inherit">
             Cancel
           </Button>
-          <Button type="submit" color="success" variant="contained">
+          <Button
+            type="submit"
+            color="success"
+            variant="contained"
+            // for user to know it is loading.
+            disabled={updateActivity.isPending || createActivity.isPending}
+          >
             Submit
           </Button>
         </Box>
