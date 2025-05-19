@@ -9,9 +9,15 @@ import {
   MenuItem,
 } from "@mui/material";
 
-export default function NavBar() {
+type Props = {
+  openForm: () => void;
+};
+
+export default function NavBar({ openForm }: Props) {
   return (
+    // Box allows NavBar to take full width.
     <Box sx={{ flexGrow: 1 }}>
+      {/* main NavBar */}
       <AppBar
         position="static"
         sx={{
@@ -19,8 +25,11 @@ export default function NavBar() {
             "linear-gradient(135deg, #182a73 0%, #218aae 69%, #20a7ac 89%)",
         }}
       >
+        {/* constrains NavBar's content width on wide screen, center it.  */}
         <Container maxWidth="xl">
+          {/* arrange Items horizontally. */}
           <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+            {/* Section 1 of NavBar, Group is icon. */}
             <Box>
               <MenuItem sx={{ display: "flex", gap: 2 }}>
                 <Group fontSize="large" />
@@ -29,6 +38,7 @@ export default function NavBar() {
                 </Typography>
               </MenuItem>
             </Box>
+            {/* Section 2 of NavBar with options to select. */}
             <Box sx={{ display: "flex" }}>
               <MenuItem
                 sx={{
@@ -58,7 +68,13 @@ export default function NavBar() {
                 Contact
               </MenuItem>
             </Box>
-            <Button size="large" variant="contained" color="warning">
+            {/* Section 3 of NavBar. */}
+            <Button
+              size="large"
+              variant="contained"
+              color="warning"
+              onClick={openForm}
+            >
               Create Activity
             </Button>
           </Toolbar>

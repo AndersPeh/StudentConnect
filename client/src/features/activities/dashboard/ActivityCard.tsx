@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -9,10 +10,17 @@ import {
 
 type Props = {
   activity: Activity;
+  selectActivity: (id: string) => void;
+  deleteActivity: (id: string) => void;
 };
 
-export default function ActivityCard({ activity }: Props) {
+export default function ActivityCard({
+  activity,
+  selectActivity,
+  deleteActivity,
+}: Props) {
   return (
+    // for each activity in activities, display a Card.
     <Card sx={{ borderRadius: 3 }}>
       <CardContent>
         <Typography variant="h5">{activity.title}</Typography>
@@ -24,6 +32,8 @@ export default function ActivityCard({ activity }: Props) {
           {activity.city} / {activity.venue}
         </Typography>
       </CardContent>
+
+      {/* display CardActions children horizontally. */}
       <CardActions
         sx={{
           display: "flex",
@@ -32,9 +42,23 @@ export default function ActivityCard({ activity }: Props) {
         }}
       >
         <Chip label={activity.category} variant="outlined" />
-        <Button size="medium" variant="contained">
-          View
-        </Button>
+        <Box display="flex" gap={3}>
+          <Button
+            onClick={() => selectActivity(activity.id)}
+            size="medium"
+            variant="contained"
+          >
+            View
+          </Button>
+          <Button
+            onClick={() => deleteActivity(activity.id)}
+            color="error"
+            size="medium"
+            variant="contained"
+          >
+            Delete
+          </Button>
+        </Box>
       </CardActions>
     </Card>
   );
