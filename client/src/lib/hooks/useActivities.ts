@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import agent from "../api/agent";
 
 export const useActivities = () => {
   // useQuery is automatically executed when the App component mounts.
@@ -13,8 +13,9 @@ export const useActivities = () => {
     // If there is no data in queryKey, useQuery executes this function to fetch data.
     queryFn: async () => {
       // makes HTTP Get request to the backend API endpoint, return type is array of Activity objects.
-      const response = await axios.get<Activity[]>(
-        "https://localhost:5001/api/activities"
+      // by using agent, URL can be shortened.
+      const response = await agent.get<Activity[]>(
+        "/activities"
       );
 
       // axios automatically parses JSON, allowing us to directly get data from response.
