@@ -10,7 +10,7 @@ function App() {
     Activity | undefined
   >(undefined);
   const [editMode, setEditMode] = useState(false);
-  // custom hook created.
+  // custom hook created for fetching activities in useActivities.ts.
   const { activities, isPending } = useActivities();
 
   const handleSelectActivity = (id: string) => {
