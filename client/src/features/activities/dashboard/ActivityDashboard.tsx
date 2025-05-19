@@ -12,8 +12,6 @@ type Props = {
   openForm: (id: string) => void;
   closeForm: () => void;
   editMode: boolean;
-  submitForm: (activity: Activity) => void;
-  deleteActivity: (id: string) => void;
 };
 
 // destructure properties from Props type object received, put that them into local variable with same names.
@@ -25,8 +23,6 @@ export default function ActivityDashboard({
   openForm,
   closeForm,
   editMode,
-  submitForm,
-  deleteActivity,
 }: Props) {
   return (
     // sets column based layout out of 12 columns.
@@ -34,28 +30,20 @@ export default function ActivityDashboard({
     <Grid2 container spacing={3}>
       {/* 7 columns wide Grid, 5 columns remaining to use. */}
       <Grid2 size={7}>
-        <ActivityList
-          activities={activities}
-          selectActivity={selectActivity}
-          deleteActivity={deleteActivity}
-        />
+        <ActivityList activities={activities} selectActivity={selectActivity} />
       </Grid2>
       <Grid2 size={5}>
         {/* if selectActivity and !editMode are truthy, execute the most right component.*/}
         {selectedActivity && !editMode && (
           <ActivityDetail
-            activity={selectedActivity}
+            selectedActivity={selectedActivity}
             cancelSelectActivity={cancelSelectActivity}
             openForm={openForm}
           />
         )}
         {/* if it is in editMode, displays ActivityForm. */}
         {editMode && (
-          <ActivityForm
-            closeForm={closeForm}
-            activity={selectedActivity}
-            submitForm={submitForm}
-          />
+          <ActivityForm closeForm={closeForm} activity={selectedActivity} />
         )}
       </Grid2>
     </Grid2>
