@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import agent from "../api/agent";
 
 // useQuery for fetching data, useMutation for creating / updating data.
-export const useActivities = () => {
+export const useActivities = (id?: string) => {
 
   const queryClient = useQueryClient();
 
@@ -15,6 +15,7 @@ export const useActivities = () => {
     queryKey: ["activities"],
 
     // If there is no data in queryKey or stale, useQuery executes this function to fetch data.
+    // when data is stale, React Query returns stale data while fetching fresh data. When new data is ready, it re renders to provide new data.
     queryFn: async () => {
       // makes HTTP Get request to the backend API endpoint, return type is array of Activity objects.
       // by using agent, URL can be shortened.
@@ -26,6 +27,18 @@ export const useActivities = () => {
       // useQuery updates its loading state, caches the fetched data against the queryKey, isPending becomes false.
       return response.data;
     },
+  });
+
+  const {data:activity, isLoading: isLoadingActivity} = useQuery({
+    // React Query treats the data for each activity Id as separate cache entry.
+    queryKey:['activities', id],
+    queryFn: async()=>{
+      const response = await agent.get<Activity>(`/activities/${id}`);
+      return response.data;
+    },
+    // without enable, useQuery of specific activity will run everytime when the app runs, resulting in undefined.
+    // only enable it when id is true (passed from ActivityDetail), (!!id) converts id into boolean.
+    enabled: !!id
   });
 
   const updateActivity = useMutation({
@@ -42,7 +55,9 @@ export const useActivities = () => {
 
   const createActivity = useMutation({
     mutationFn: async(activity: Activity)=>{
-      await agent.post('/activities', activity)
+      const response = await agent.post('/activities', activity);
+      // axios parses response automatically and returns id from HTTP Request.
+      return response.data;
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -62,5 +77,12 @@ export const useActivities = () => {
     }
   })
 
-  return { activities, isPending, updateActivity, createActivity, deleteActivity };
+  return { activities, 
+    isPending, 
+    updateActivity, 
+    createActivity, 
+    deleteActivity,
+    activity,
+    isLoadingActivity, 
+  };
 };
