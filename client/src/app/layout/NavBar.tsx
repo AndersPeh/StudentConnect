@@ -4,16 +4,13 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Button,
   Container,
   MenuItem,
 } from "@mui/material";
+import { NavLink } from "react-router";
+import MenuItemLink from "../shared/components/MenuItemLink";
 
-type Props = {
-  openForm: () => void;
-};
-
-export default function NavBar({ openForm }: Props) {
+export default function NavBar() {
   return (
     // Box allows NavBar to take full width.
     <Box sx={{ flexGrow: 1 }}>
@@ -31,7 +28,12 @@ export default function NavBar({ openForm }: Props) {
           <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
             {/* Section 1 of NavBar, Group is icon. */}
             <Box>
-              <MenuItem sx={{ display: "flex", gap: 2 }}>
+              {/* Homepage path is "/" */}
+              <MenuItem
+                component={NavLink}
+                to="/"
+                sx={{ display: "flex", gap: 2 }}
+              >
                 <Group fontSize="large" />
                 <Typography variant="h4" fontWeight="bold">
                   Student Connect
@@ -40,43 +42,11 @@ export default function NavBar({ openForm }: Props) {
             </Box>
             {/* Section 2 of NavBar with options to select. */}
             <Box sx={{ display: "flex" }}>
-              <MenuItem
-                sx={{
-                  fontSize: "1.2rem",
-                  textTransform: "uppercase",
-                  fontWeight: "bold",
-                }}
-              >
-                Activities
-              </MenuItem>
-              <MenuItem
-                sx={{
-                  fontSize: "1.2rem",
-                  textTransform: "uppercase",
-                  fontWeight: "bold",
-                }}
-              >
-                About
-              </MenuItem>
-              <MenuItem
-                sx={{
-                  fontSize: "1.2rem",
-                  textTransform: "uppercase",
-                  fontWeight: "bold",
-                }}
-              >
-                Contact
-              </MenuItem>
+              <MenuItemLink to="/activities">Activities</MenuItemLink>
+              <MenuItemLink to="/createActivity">Create Activity</MenuItemLink>
             </Box>
             {/* Section 3 of NavBar. */}
-            <Button
-              size="large"
-              variant="contained"
-              color="warning"
-              onClick={openForm}
-            >
-              Create Activity
-            </Button>
+            <MenuItem>User Menu</MenuItem>
           </Toolbar>
         </Container>
       </AppBar>

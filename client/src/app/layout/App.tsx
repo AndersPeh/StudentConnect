@@ -1,59 +1,18 @@
-import { Box, Container, CssBaseline, Typography } from "@mui/material";
-import { useState } from "react";
+import { Box, Container, CssBaseline } from "@mui/material";
 import NavBar from "./NavBar";
-import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
-import { useActivities } from "../../lib/hooks/useActivities";
+import { Outlet } from "react-router";
 
 function App() {
-  // type of activities is <Activity[]> defined in index.d.ts
-  const [selectedActivity, setSelectedActivity] = useState<
-    Activity | undefined
-  >(undefined);
-  const [editMode, setEditMode] = useState(false);
-  // custom hook created for fetching activities in useActivities.ts.
-  const { activities, isPending } = useActivities();
-
-  const handleSelectActivity = (id: string) => {
-    // ! overwrites Typescript type safety.
-    setSelectedActivity(activities!.find((x) => x.id === id));
-  };
-
-  const handleCancelSelectActivity = () => {
-    setSelectedActivity(undefined);
-  };
-
-  const handleOpenForm = (id?: string) => {
-    if (id) handleSelectActivity(id);
-    else handleCancelSelectActivity();
-    setEditMode(true);
-  };
-
-  const handleFormClose = () => {
-    setEditMode(false);
-  };
-
   return (
     // can only return 1 thing in Javascript function, must wrap everything in a section.
     // background of the entire web app homepage.
     // 100vh makes Box same height as browser window, making background color covers the entire browser.
     <Box sx={{ backgroundColor: "#eeeeee", minHeight: "100vh" }}>
       <CssBaseline />
-      <NavBar openForm={handleOpenForm} />
+      <NavBar />
       <Container maxWidth="xl" sx={{ marginTop: 3 }}>
-        {/* pass activities prop to ActivityDashboard. */}
-        {!activities || isPending ? (
-          <Typography>Loading...</Typography>
-        ) : (
-          <ActivityDashboard
-            activities={activities}
-            selectActivity={handleSelectActivity}
-            cancelSelectActivity={handleCancelSelectActivity}
-            selectedActivity={selectedActivity}
-            editMode={editMode}
-            openForm={handleOpenForm}
-            closeForm={handleFormClose}
-          />
-        )}
+        {/* when user browses to one of its child routes, the element of the child route will replace the outlet section. */}
+        <Outlet />
       </Container>
     </Box>
   );
