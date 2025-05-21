@@ -1,9 +1,10 @@
 import { createBrowserRouter } from "react-router";
 import App from "../layout/App";
-import HomePage from "../../features/activities/home/HomePage";
+import HomePage from "../../features/home/HomePage";
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import ActivityForm from "../../features/activities/form/ActivityForm";
 import ActivityDetailPage from "../../features/activities/details/ActivityDetailPage";
+import Counter from "../../features/counter/Counter";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +28,8 @@ export const router = createBrowserRouter([
 
       // with a key, when swapping between edit and create form, React will detect it and displays the right form.
       { path: "createActivity", element: <ActivityForm key="create" /> },
+
+      { path: "counter", element: <Counter /> },
     ],
   },
 ]);
