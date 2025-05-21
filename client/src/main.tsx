@@ -9,15 +9,24 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { RouterProvider } from "react-router";
 import { router } from "./app/router/Routes";
+import { store, StoreContext } from "./lib/stores/store";
 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    {/* To make QueryClient available for the entire app. */}
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools />
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    {/* provide the store to the entire application. When any child components calls useStore(), 
+    it will call useContext(StoreContext), React will find the store here, then pass it to useContext,
+    then the component that called useStore will value of store.*/}
+    <StoreContext.Provider value={store}>
+      {/* For child components to access to React Query hooks like useQuery and useMutation. */}
+      <QueryClientProvider client={queryClient}>
+        {/* floating icon in the browser to debug. */}
+        <ReactQueryDevtools />
+
+        {/* needs access from Provider of Mobx for state management and React QueryClientProvider for managing server state, caching. */}
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </StoreContext.Provider>
   </StrictMode>
 );
