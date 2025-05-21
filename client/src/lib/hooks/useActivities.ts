@@ -1,10 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import agent from "../api/agent";
+import { useLocation } from "react-router";
 
 // useQuery for fetching data, useMutation for creating / updating data.
 export const useActivities = (id?: string) => {
 
   const queryClient = useQueryClient();
+  // get path URL location.
+  const location = useLocation();
 
   // useQuery is automatically executed when the App component mounts.
   // destructures useQuery to get {data}, put it into variable named activities.
@@ -27,6 +30,15 @@ export const useActivities = (id?: string) => {
       // useQuery updates its loading state, caches the fetched data against the queryKey, isPending becomes false.
       return response.data;
     },
+
+    // dont execute this useQuery when there is id (should execute useQuery for specific activity).
+    // execute this useQuery when the pathname is /activities only.
+    enabled: !id && location.pathname==='/activities',
+
+    // make a staletime of 5 seconds so React Query won't mark any data as stale for the time period unless it is invalidated. 
+    // When it is refreshed, React Query will fetch data from cache instead of making new request.
+    staleTime: 5000,
+
   });
 
   const {data:activity, isLoading: isLoadingActivity} = useQuery({

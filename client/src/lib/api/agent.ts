@@ -1,4 +1,5 @@
 import axios from "axios";
+import { store } from "../stores/store";
 
 const sleep = (delay:number) =>{
     return new Promise(resolve =>{
@@ -11,6 +12,12 @@ const agent = axios.create({
     baseURL:import.meta.env.VITE_API_URL
 });
 
+// when the request is going out, set isLoading to true.
+agent.interceptors.request.use(config=>{
+    store.uiStore.isBusy();
+    return config;
+})
+
 // response interceptor tells axios, for every successful response from HTTP request,
 // pass response object to the async function.
 agent.interceptors.response.use(async response =>{
@@ -20,6 +27,9 @@ agent.interceptors.response.use(async response =>{
     } catch (error) {
         console.log(error);
         return Promise.reject(error);
+    } finally{
+        // turn off isLoading regardless of the request response.
+        store.uiStore.isIdle();
     }
 });
 
