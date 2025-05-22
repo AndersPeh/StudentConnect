@@ -4,8 +4,8 @@ using FluentValidation;
 
 namespace Application.Activities.Validators;
 
-// validate the Command of CreateActivity which is public required CreateActivityDto ActivityDto { get; set; }.
-// specify <CreateActivity.Command> for DI container to know it has to use this validator to validate Command in CreateActivity.cs.
+// validate the CreateActivity.Command object from user inputs.
+// specify AbstractValidator<CreateActivity.Command> for DI container to know it has to use this validator to validate Command in ValidationBehavior.cs.
 public class CreateActivityValidator : AbstractValidator<CreateActivity.Command>
 {
     // how this validator should validate.

@@ -41,10 +41,14 @@ public class ActivitiesController : BaseApiController
 
     [HttpPost]
 
-    // It returns string Id from the database in ActionResult. It takes CreateActivityDto object as its parameter, omitting unnecessary data from user.
+    // When HTTP Post request arrives at /api/activities endpoint, .Net mode binding deserialises request body containing JSON
+    // into CreateActivityDto object which is passed to ActivityDto later.
+    // It returns string Id from the database in ActionResult. CreateActivity method takes CreateActivityDto object as its parameter, omitting unnecessary data from user.
     public async Task<ActionResult<string>> CreateActivity(CreateActivityDto activityDto)
     {
-        // pass activityDto to ActivityDto in CreateActivity.Command.
+        // instantiates ActivityDto with activityDto from the HTTP request body, then instantiates CreateActivity.Command class. 
+        // send fully constructed CreateActivity.Command to Mediator.
+        // When Mediator takes this Command object, it starts the pipeline (behavior first, then handler).
         return await Mediator.Send(new CreateActivity.Command { ActivityDto = activityDto });
     }
 

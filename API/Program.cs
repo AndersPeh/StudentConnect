@@ -1,3 +1,4 @@
+using API.Middleware;
 using Application.Activities.Queries;
 using Application.Activities.Validators;
 using Application.Core;
@@ -33,7 +34,7 @@ builder.Services.AddMediatR(x =>
 {
     // Registers a generic type behavior <,> (TRequest, TResponse). 
     // For every command or query processed by the Mediator, Mediator will check if it can instantiate Validation behavior, 
-    // if it can, Mediator requests will be validated before processed by handlers.
+    // if the request has a corresponding validator, it will be validated before Mediator sends it to handlers. So Validation logic will be kept in Application layer.
     x.AddOpenBehavior(typeof(ValidationBehavior<,>));
 
     // Registered Handler with DI container, Mediator will scan the Application layer assembly to access all Handlers.
@@ -46,14 +47,21 @@ builder.Services.AddMediatR(x =>
 // scans classes that inherit from AutoMapper.Profile to instantiate IMapper.
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
-// Registers Validators and it will scan all validators in Assembly of Application Layer,
+// Registers Validators with DI container and it will scan all validators in Assembly of Application Layer,
 // to provide information for validating commands.
 builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
+
+// AddTransient means DI container instantiates this service per HTTP request and disposes after using.
+builder.Services.AddTransient<ExceptionMiddleware>();
 
 var app = builder.Build();
 
 // *******************************************************************************************************
 // Middleware: Configure the HTTP request pipeline.
+
+// Exception must be placed before any middleware to use it to catch and ahndle exceptions that occur in subsequent middleware or in controllers/ services.
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod()
     .WithOrigins("http://localhost:3000", "https://localhost:3000"));
 
