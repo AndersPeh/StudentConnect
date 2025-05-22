@@ -1,5 +1,7 @@
 using Application.Activities.Queries;
+using Application.Activities.Validators;
 using Application.Core;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -25,14 +27,28 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 // running at localhost:3000 (frontend) access to resources from localhost:5001 (backend)
 builder.Services.AddCors();
 
-// Registers Handler and Mediator service with DI container. 
-// Mediator will scan the Application layer assembly to access all Handlers.
-builder.Services.AddMediatR(x => x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>());
+// Registers Mediator service with DI container. Mediator constructs a pipeline, 
+// behaviors will be placed first in the pipeline followed by Handler.
+builder.Services.AddMediatR(x =>
+{
+    // Registers a generic type behavior <,> (TRequest, TResponse). 
+    // For every command or query processed by the Mediator, Mediator will check if it can instantiate Validation behavior, 
+    // if it can, Mediator requests will be validated before processed by handlers.
+    x.AddOpenBehavior(typeof(ValidationBehavior<,>));
+
+    // Registered Handler with DI container, Mediator will scan the Application layer assembly to access all Handlers.
+    x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>();
+
+});
 
 // Registers AddAutoMapper with DI container.
 // AutoMapper will look for typeof(MappingProfiles) in Assembly of Application Layer, 
 // scans classes that inherit from AutoMapper.Profile to instantiate IMapper.
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+
+// Registers Validators and it will scan all validators in Assembly of Application Layer,
+// to provide information for validating commands.
+builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
 
 var app = builder.Build();
 

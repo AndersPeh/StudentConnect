@@ -1,4 +1,5 @@
 using System;
+using Application.Activities.DTOs;
 using AutoMapper;
 using Domain;
 
@@ -11,7 +12,10 @@ public class MappingProfiles : Profile
     // IMapper is the service that will execute mappings below.
     public MappingProfiles()
     {
-        // tell IMapper to map Activity from sourceObject to another Activity destinationObject.
+        // tell IMapper when the sourceObject is Activity, map it to Activity destinationObject.
         CreateMap<Activity, Activity>();
+        // tell IMapper when the source object is CreateActivityDto, map it to Activity destinationObject.
+        CreateMap<CreateActivityDto, Activity>();
+
     }
 }
