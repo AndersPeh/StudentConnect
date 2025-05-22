@@ -8,6 +8,7 @@ using Persistence;
 
 namespace Application.Activities.Commands;
 
+// After behaviors like validation, Mediator will come to here according to the pipeline.
 public class CreateActivity
 {
     // returns string id
@@ -19,7 +20,7 @@ public class CreateActivity
     }
 
     // This Handler handles requests of type CreateActivity.Command.
-    // DI container will injects AppDbContext, IMapper by checking Program.cs.
+    // DI container will inject AppDbContext, IMapper by checking Program.cs.
     // Interface IMapper's contract (what) is it has to map source object to destination object.
     // The contract (What) of IRequestHandler<Command, string> is it processes a request (Command) and product a string response.
     public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command, string>
