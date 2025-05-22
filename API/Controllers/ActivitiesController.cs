@@ -1,5 +1,6 @@
 using System;
 using Application.Activities.Commands;
+using Application.Activities.DTOs;
 using Application.Activities.Queries;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
@@ -40,11 +41,11 @@ public class ActivitiesController : BaseApiController
 
     [HttpPost]
 
-    // It returns string Id from the database in ActionResult. It takes activity object as its parameter.
-    public async Task<ActionResult<string>> CreateActivity(Activity activity)
+    // It returns string Id from the database in ActionResult. It takes CreateActivityDto object as its parameter, omitting unnecessary data from user.
+    public async Task<ActionResult<string>> CreateActivity(CreateActivityDto activityDto)
     {
-        // pass activity to Activity in CreateActivity.Command.
-        return await Mediator.Send(new CreateActivity.Command { Activity = activity });
+        // pass activityDto to ActivityDto in CreateActivity.Command.
+        return await Mediator.Send(new CreateActivity.Command { ActivityDto = activityDto });
     }
 
     [HttpPut]

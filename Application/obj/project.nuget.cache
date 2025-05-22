@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "udZyMeDanrA=",
+  "dgSpecHash": "wtWT344HY/w=",
   "success": true,
   "projectFilePath": "C:\\Users\\Anders\\OneDrive - Griffith University\\Desktop\\self learning\\Dotnet\\StudentConnect\\Application\\Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Anders\\.nuget\\packages\\automapper\\14.0.0\\automapper.14.0.0.nupkg.sha512",
+    "C:\\Users\\Anders\\.nuget\\packages\\fluentvalidation\\12.0.0\\fluentvalidation.12.0.0.nupkg.sha512",
+    "C:\\Users\\Anders\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\12.0.0\\fluentvalidation.dependencyinjectionextensions.12.0.0.nupkg.sha512",
     "C:\\Users\\Anders\\.nuget\\packages\\mediatr\\12.5.0\\mediatr.12.5.0.nupkg.sha512",
     "C:\\Users\\Anders\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
     "C:\\Users\\Anders\\.nuget\\packages\\microsoft.data.sqlite.core\\9.0.0\\microsoft.data.sqlite.core.9.0.0.nupkg.sha512",

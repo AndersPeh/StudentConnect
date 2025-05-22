@@ -10,6 +10,7 @@
         "dependencies": {
           "AutoMapper": "14.0.0",
           "Domain": "1.0.0",
+          "FluentValidation.DependencyInjectionExtensions": "12.0.0",
           "MediatR": "12.5.0",
           "Persistence": "1.0.0"
         },
@@ -25,6 +26,26 @@
           "lib/net8.0/AutoMapper.dll": {
             "assemblyVersion": "14.0.0.0",
             "fileVersion": "14.0.0.0"
+          }
+        }
+      },
+      "FluentValidation/12.0.0": {
+        "runtime": {
+          "lib/net8.0/FluentValidation.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.0.0"
+          }
+        }
+      },
+      "FluentValidation.DependencyInjectionExtensions/12.0.0": {
+        "dependencies": {
+          "FluentValidation": "12.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/FluentValidation.DependencyInjectionExtensions.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.0.0"
           }
         }
       },
@@ -413,6 +434,20 @@
       "sha512": "sha512-OC+1neAPM4oCCqQj3g2GJ2shziNNhOkxmNB9cVS8jtx4JbgmRzLcUOxB9Tsz6cVPHugdkHgCaCrTjjSI0Z5sCQ==",
       "path": "automapper/14.0.0",
       "hashPath": "automapper.14.0.0.nupkg.sha512"
+    },
+    "FluentValidation/12.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8NVLxtMUXynRHJIX3Hn1ACovaqZIJASufXIIFkD0EUbcd5PmMsL1xUD5h548gCezJ5BzlITaR9CAMrGe29aWpA==",
+      "path": "fluentvalidation/12.0.0",
+      "hashPath": "fluentvalidation.12.0.0.nupkg.sha512"
+    },
+    "FluentValidation.DependencyInjectionExtensions/12.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-B28fBRL1UjhGsBC8fwV6YBZosh+SiU1FxdD7l7p5dGPgRlVI7UnM+Lgzmg+unZtV1Zxzpaw96UY2MYfMaAd8cg==",
+      "path": "fluentvalidation.dependencyinjectionextensions/12.0.0",
+      "hashPath": "fluentvalidation.dependencyinjectionextensions.12.0.0.nupkg.sha512"
     },
     "MediatR/12.5.0": {
       "type": "package",
