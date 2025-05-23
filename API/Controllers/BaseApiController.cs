@@ -1,3 +1,4 @@
+using Application.Core;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,5 +24,17 @@ namespace API.Controllers
         protected IMediator Mediator =>
             _mediator ??= HttpContext.RequestServices.GetService<IMediator>()
                 ?? throw new InvalidOperationException("IMediator service is unavailable.");
+
+        protected ActionResult HandleResult<T>(Result<T> result)
+        {
+            // Based on Result.cs, Failure will return an object with false IsSuccess and error code (like 404 not found for Get request case).
+            if (!result.IsSuccess && result.Code == 404) return NotFound();
+
+            // Success will return a Ok response with an object with true IsSuccess and activity result as value.
+            if (result.IsSuccess && result.Value != null) return Ok(result.Value);
+
+            return BadRequest(result.Error);
+        }
+
     }
 }

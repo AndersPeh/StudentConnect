@@ -30,12 +30,16 @@ public class ActivitiesController : BaseApiController
     [HttpGet("{id}")]
 
     // GetActivityDetail uses a route template parameter {id}, so it expects a value in the URL path.
-    // It returns an Activity object in ActionResult.
+    // It returns an Result type of Activity object indicating success or failure to HandleResult.
+    // HandleResult inherited from BaseApiController will return responses accordingly.
     public async Task<ActionResult<Activity>> GetActivityDetail(string id)
 
     {
+        // 
+        throw new Exception("Server test error");
+
         // use object initialiser to pass { Id = id }.
-        return await Mediator.Send(new GetActivityDetails.Query { Id = id });
+        return HandleResult(await Mediator.Send(new GetActivityDetails.Query { Id = id }));
 
     }
 
@@ -49,7 +53,7 @@ public class ActivitiesController : BaseApiController
         // instantiates ActivityDto with activityDto from the HTTP request body, then instantiates CreateActivity.Command class. 
         // send fully constructed CreateActivity.Command to Mediator.
         // When Mediator takes this Command object, it starts the pipeline (behavior first, then handler).
-        return await Mediator.Send(new CreateActivity.Command { ActivityDto = activityDto });
+        return HandleResult(await Mediator.Send(new CreateActivity.Command { ActivityDto = activityDto }));
     }
 
     [HttpPut]
@@ -58,8 +62,7 @@ public class ActivitiesController : BaseApiController
 
     public async Task<ActionResult> EditActivity(Activity activity)
     {
-        await Mediator.Send(new EditActivity.Command { Activity = activity });
-        return NoContent();
+        return HandleResult(await Mediator.Send(new EditActivity.Command { Activity = activity }));
     }
 
     // when data is needed in the path, must specify in the HTTP method.
@@ -68,7 +71,6 @@ public class ActivitiesController : BaseApiController
     // return Status 200 Ok if delete successfully.
     public async Task<ActionResult> DeleteActivity(string id)
     {
-        await Mediator.Send(new DeleteActivity.Command { Id = id });
-        return Ok();
+        return HandleResult(await Mediator.Send(new DeleteActivity.Command { Id = id }));
     }
 }
