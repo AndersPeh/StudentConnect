@@ -14,7 +14,8 @@ public class Result<T>
     // status code.
     public int Code { get; set; }
 
-    // If handler is successful, must pass activity to here.
+    // If handler is successful, must pass activity to here for value. Success return object Result of generic type. value refers to the <T> of Result.
+    // For example, when GetActivityDetails Handler returns Result<Activity>.Success(activity), value will becomes activity.
     public static Result<T> Success(T value) => new()
     {
         IsSuccess = true,

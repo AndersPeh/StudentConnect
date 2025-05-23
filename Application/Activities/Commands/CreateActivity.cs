@@ -16,7 +16,7 @@ public class CreateActivity
     // IRequest has a contract (what), it expects a response of type string.
     public class Command : IRequest<Result<string>>
     {
-        // receives ActivityDto from ActivitiesController.
+        // receives ActivityDto from Mediator.
         public required CreateActivityDto ActivityDto { get; set; }
     }
 

@@ -16,6 +16,7 @@ public class MappingProfiles : Profile
         CreateMap<Activity, Activity>();
         // tell IMapper when the source object is CreateActivityDto, map it to Activity destinationObject.
         CreateMap<CreateActivityDto, Activity>();
+        CreateMap<EditActivityDto, Activity>();
 
     }
 }
