@@ -1,10 +1,13 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import App from "../layout/App";
 import HomePage from "../../features/home/HomePage";
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import ActivityForm from "../../features/activities/form/ActivityForm";
 import ActivityDetailPage from "../../features/activities/details/ActivityDetailPage";
 import Counter from "../../features/counter/Counter";
+import TestErrors from "../../features/errors/TestErrors";
+import NotFound from "../../features/errors/NotFound";
+import ServerError from "../../features/errors/ServerError";
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +33,15 @@ export const router = createBrowserRouter([
       { path: "createActivity", element: <ActivityForm key="create" /> },
 
       { path: "counter", element: <Counter /> },
+
+      { path: "errors", element: <TestErrors /> },
+
+      { path: "not-found", element: <NotFound /> },
+
+      { path: "server-error", element: <ServerError /> },
+
+      // when user visits a page that doesnt exist, the user will be redirected to not found.
+      { path: "*", element: <Navigate replace to="/not-found" /> },
     ],
   },
 ]);
