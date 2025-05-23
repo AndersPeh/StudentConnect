@@ -1,43 +1,21 @@
 using System;
 using Application.Activities.Commands;
+using Application.Activities.DTOs;
 using FluentValidation;
 
 namespace Application.Activities.Validators;
 
-// validate the CreateActivity.Command object from user inputs.
-// specify AbstractValidator<CreateActivity.Command> for DI container to know it has to use this validator to validate Command in ValidationBehavior.cs.
-public class CreateActivityValidator : AbstractValidator<CreateActivity.Command>
+// The validator will process an instance of CreateActivity.Command provided via the Mediator pipeline.
+// CreateActivityValidator inherits from BaseActivityValidator, specifying CreateActivity.Command as <T>, CreateActivityDto as <TDto>.
+// By specifying BaseActivityValidator with CreateActivity.Command, CreateActivityValidator implements IValidator<CreateActivity.Command>.
+// DI container knows it has to use CreateActivityValidator when ValidationBehavior requests a validator for CreateActivity.Command.
+public class CreateActivityValidator : BaseActivityValidator<CreateActivity.Command, CreateActivityDto>
 {
-    // how this validator should validate.
-    public CreateActivityValidator()
+    // Because CreateActivity.Command has a property: public required CreateActivityDto ActivityDto { get; set; },
+    // C# compiler knows for x.ActivityDto, the x must be CreateActivity.Command, so no need to specify x is CreateActivity.Command.
+    // ActivityDto needs to be specified to be validated by base class rules.
+    public CreateActivityValidator() : base(x => x.ActivityDto)
     {
-        // use lambda to specify rules (x => x.ActivityDto.propertyName)
-        RuleFor(x => x.ActivityDto.Title)
-            .NotEmpty().WithMessage("Title is required")
-            .MaximumLength(100).WithMessage("Title must not exceed 100 characters");
-
-        RuleFor(x => x.ActivityDto.Description)
-            .NotEmpty().WithMessage("Description is required");
-
-        RuleFor(x => x.ActivityDto.Date)
-            .GreaterThan(DateTime.UtcNow).WithMessage("Date must be in the future");
-
-        RuleFor(x => x.ActivityDto.Category)
-            .NotEmpty().WithMessage("Category is required");
-
-        RuleFor(x => x.ActivityDto.City)
-            .NotEmpty().WithMessage("City is required");
-
-        RuleFor(x => x.ActivityDto.Venue)
-            .NotEmpty().WithMessage("Venue is required");
-
-        RuleFor(x => x.ActivityDto.Latitude)
-            .NotEmpty().WithMessage("Latitude is required")
-            .InclusiveBetween(-90, 90).WithMessage("Latitude must be between -90 and 90");
-
-        RuleFor(x => x.ActivityDto.Longitude)
-            .NotEmpty().WithMessage("Longitude is required")
-            .InclusiveBetween(-180, 180).WithMessage("Longitude must be between -180 and 180");
 
     }
 }

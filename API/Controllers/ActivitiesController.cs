@@ -35,8 +35,8 @@ public class ActivitiesController : BaseApiController
     public async Task<ActionResult<Activity>> GetActivityDetail(string id)
 
     {
-        // 
-        throw new Exception("Server test error");
+        // this will trigger HandleException in ExceptionMiddleware.
+        // throw new Exception("Server test error");
 
         // use object initialiser to pass { Id = id }.
         return HandleResult(await Mediator.Send(new GetActivityDetails.Query { Id = id }));
@@ -58,11 +58,9 @@ public class ActivitiesController : BaseApiController
 
     [HttpPut]
 
-    // Editing activity doesn't require any return, returns NoContent if successful.
-
-    public async Task<ActionResult> EditActivity(Activity activity)
+    public async Task<ActionResult> EditActivity(EditActivityDto activityDto)
     {
-        return HandleResult(await Mediator.Send(new EditActivity.Command { Activity = activity }));
+        return HandleResult(await Mediator.Send(new EditActivity.Command { ActivityDto = activityDto }));
     }
 
     // when data is needed in the path, must specify in the HTTP method.
