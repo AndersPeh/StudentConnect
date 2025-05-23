@@ -35,8 +35,6 @@ public class ActivitiesController : BaseApiController
     public async Task<ActionResult<Activity>> GetActivityDetail(string id)
 
     {
-        // this will trigger HandleException in ExceptionMiddleware.
-        // throw new Exception("Server test error");
 
         // use object initialiser to pass { Id = id }.
         return HandleResult(await Mediator.Send(new GetActivityDetails.Query { Id = id }));
