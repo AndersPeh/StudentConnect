@@ -17,110 +17,110 @@ public class DbInitializer
         var activities = new List<Activity>
         {
             new() {
-                Title = "Past Activity 1",
+                Title = "SecTalks Gold Coast",
                 Date = DateTime.Now.AddMonths(-2),
-                Description = "Activity 2 months ago",
-                Category = "drinks",
-                City = "London",
-                Venue = "The Lamb and Flag, 33, Rose Street, Seven Dials, Covent Garden, London, Greater London, England, WC2E 9EB, United Kingdom",
-                Latitude = 51.51171665,
-                Longitude = -0.1256611057818921,
+                Description = "Building a Resilient Data Security Program: Practical Lessons and the Path to Maturity",
+                Category = "SecTalks",
+                City = "Gold Coast",
+                Venue = "Cohort Innovation Space, 16 Nexus Way, Southport QLD 4215",
+                Latitude = -27.962450,
+                Longitude = 153.386110,
             },
             new() {
-                Title = "Past Activity 2",
+                Title = "She Connects",
                 Date = DateTime.Now.AddMonths(-1),
-                Description = "Activity 1 month ago",
+                Description = "Everyone passionate about supporting women in tech is welcome to join!",
+                Category = "ALL_THINGS_BLOCKCHAIN",
+                City = "Brisbane",
+                Venue = "The Precinct, Level 2/315 Brunswick St, Fortitude Valley QLD 4006",
+                Latitude = -27.645809,
+                Longitude = 153.170837
+            },
+            new() {
+                Title = "AI & Society | Run Club",
+                Date = DateTime.Now.AddMonths(1),
+                Description = "Run, jog, or walk — at your pace",
+                Category = "AI_Society",
+                City = "Brisbane",
+                Venue = "Felons Brewing Co, 5 Boundary St, Brisbane City QLD 4000",
+                Latitude = -27.462231,
+                Longitude = 153.035141
+            },
+            new() {
+                Title = "PayPal Developer Meetup: Brisbane",
+                Date = DateTime.Now.AddMonths(2),
+                Description = "Scaling Omnichannel Experiences in the AI Era",
+                Category = "paypal",
+                City = "Brisbane",
+                Venue = "The Precinct, Level 2/315 Brunswick St, Fortitude Valley QLD 4006",
+                Latitude = -27.645809,
+                Longitude = 153.170837
+            },
+            new()
+            {
+                Title = "Bitcoin Brisbane Meetup",
+                Date = DateTime.Now.AddMonths(3),
+                Description = "This event is Bitcoin-only",
+                Category = "drinks",
+                City = "Brisbane",
+                Venue = "Brisbane One Apartments, 1 Cordelia St, South Brisbane QLD 4101",
+                Latitude = -27.473640,
+                Longitude = 153.013794
+            },
+            new()
+            {
+                Title = "Responsible AI",
+                Date = DateTime.Now.AddMonths(4),
+                Description = "From bias and transparency to accountability and regulation, this session unpacks the ethical tensions that come with deploying AI in real-world settings.",
+                Category = "Responsible_AI",
+                City = "Brisbane",
+                Venue = "The Precinct, Level 2/315 Brunswick St, Fortitude Valley QLD 4006",
+                Latitude = -27.645809,
+                Longitude = 153.170837
+            },
+            new()
+            {
+                Title = "GDG Brisbane",
+                Date = DateTime.Now.AddMonths(5),
+                Description = "All brought to you by the local tech community, right here in Brisbane.",
+                Category = "google",
+                City = "Brisbane",
+                Venue = "QUT S Block, Brisbane City QLD 4000",
+                Latitude = -27.488043,
+                Longitude = 153.018769
+            },
+            new()
+            {
+                Title = "Europe trip",
+                Date = DateTime.Now.AddMonths(6),
+                Description = "Enjoy a trip with university students",
                 Category = "culture",
                 City = "Paris",
-                Venue = "Louvre Museum, Rue Saint-Honoré, Quartier du Palais Royal, 1st Arrondissement, Paris, Ile-de-France, Metropolitan France, 75001, France",
-                Latitude = 48.8611473,
-                Longitude = 2.33802768704666
-            },
-            new() {
-                Title = "Future Activity 1",
-                Date = DateTime.Now.AddMonths(1),
-                Description = "Activity 1 month in future",
-                Category = "culture",
-                City = "London",
-                Venue = "Natural History Museum",
-                Latitude = 51.496510900000004,
-                Longitude = -0.17600190725447445
-            },
-            new() {
-                Title = "Future Activity 2",
-                Date = DateTime.Now.AddMonths(2),
-                Description = "Activity 2 months in future",
-                Category = "music",
-                City = "London",
-                Venue = "The O2",
-                Latitude = 51.502936649999995,
-                Longitude = 0.0032029278126681844
+                Venue = "Eiffel Tower, Av. Gustave Eiffel, 75007 Paris, France",
+                Latitude = 48.8582599,
+                Longitude = 2.2945006
             },
             new()
             {
-                Title = "Future Activity 3",
-                Date = DateTime.Now.AddMonths(3),
-                Description = "Activity 3 months in future",
-                Category = "drinks",
-                City = "London",
-                Venue = "The Mayflower",
-                Latitude = 51.501778,
-                Longitude = -0.053577
-            },
-            new()
-            {
-                Title = "Future Activity 4",
-                Date = DateTime.Now.AddMonths(4),
-                Description = "Activity 4 months in future",
-                Category = "drinks",
-                City = "London",
-                Venue = "The Blackfriar",
-                Latitude = 51.512146650000005,
-                Longitude = -0.10364680647106028
-            },
-            new()
-            {
-                Title = "Future Activity 5",
-                Date = DateTime.Now.AddMonths(5),
-                Description = "Activity 5 months in future",
-                Category = "culture",
-                City = "London",
-                Venue = "Sherlock Holmes Museum, 221b, Baker Street, Marylebone, London, Greater London, England, NW1 6XE, United Kingdom",
-                Latitude = 51.5237629,
-                Longitude = -0.1584743
-            },
-            new()
-            {
-                Title = "Future Activity 6",
-                Date = DateTime.Now.AddMonths(6),
-                Description = "Activity 6 months in future",
-                Category = "music",
-                City = "London",
-                Venue = "Roundhouse, Chalk Farm Road, Maitland Park, Chalk Farm, London Borough of Camden, London, Greater London, England, NW1 8EH, United Kingdom",
-                Latitude = 51.5432505,
-                Longitude = -0.15197608174931165
-            },
-            new()
-            {
-                Title = "Future Activity 7",
+                Title = "Crafted Beer & Cider Festival",
                 Date = DateTime.Now.AddMonths(7),
-                Description = "Activity 2 months ago",
-                Category = "travel",
-                City = "London",
-                Venue = "River Thames, England, United Kingdom",
-                Latitude = 51.5575525,
-                Longitude = -0.781404
+                Description = "Party with university students",
+                Category = "music",
+                City = "Gold Coast",
+                Venue = "32 Hooker Blvd, Broadbeach Waters QLD 4218",
+                Latitude = -28.0359059,
+                Longitude = 153.4124276
             },
             new()
             {
-                Title = "Future Activity 8",
+                Title = "Lunch at Q1",
                 Date = DateTime.Now.AddMonths(8),
-                Description = "Activity 8 months in future",
-                Category = "film",
-                City = "London",
-                Venue = "River Thames, England, United Kingdom",
-                Latitude = 51.5575525,
-                Longitude = -0.781404
+                Description = "Anyone interested in joining me?",
+                Category = "food",
+                City = "Gold Coast",
+                Venue = "Q1, 9 Hamilton Ave, Surfers Paradise QLD 4217",
+                Latitude = -28.0063488,
+                Longitude = 153.4296317
             }
         };
 
