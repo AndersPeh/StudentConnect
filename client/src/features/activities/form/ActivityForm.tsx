@@ -1,53 +1,48 @@
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
-import type { FormEvent } from "react";
+import { Box, Button, Paper, Typography } from "@mui/material";
 import { useActivities } from "../../../lib/hooks/useActivities";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+import {
+  activitySchema,
+  type ActivitySchema,
+} from "../../../lib/schemas/activitySchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import TextInput from "../../../app/shared/components/TextInput";
+import SelectInput from "../../../app/shared/components/SelectInput";
+import { categoryOptions } from "./categoryOptions";
+import DateTimeInput from "../../../app/shared/components/DateTimeInput";
 
 export default function ActivityForm() {
+  const {
+    reset,
+    handleSubmit,
+    // control will be passed to useController in TextInput to manage every TextInput. control is typed with <ActivitySchema>.
+    // In useController, control tells TextInput which form it belongs to and how to manage states like onSubmit, onBlur etc...
+    control,
+    // useForm type is ActivitySchema, so data structure of textfields in ActivityForm must match ActivitySchema.
+  } = useForm<ActivitySchema>({
+    // makes resolver validate whenever a textfield is touched (when blurred).
+    mode: "onTouched",
+    // resolver validates textfields value against activitySchema.
+    resolver: zodResolver(activitySchema),
+  });
+
   // extract id from URL path then pass it to useActivities to execute the query that is only enabled when there is id.
   const { id } = useParams();
 
   const { updateActivity, createActivity, activity, isLoadingActivity } =
     useActivities(id);
 
-  const navigate = useNavigate();
+  // It will be triggered when activity or reset changes.
+  useEffect(() => {
+    // if id exists (means editing activity, activity will be truthy), reset will fill in the form with the data from activity object.
+    if (activity) reset(activity);
+  }, [activity, reset]);
 
-  // handleSubmit is an event handler for HTML form.
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    // prevent the browser's default form submission to handle form submission with Javascript.
-    event.preventDefault();
-
-    // event.currentTarget gets HTML form.
-    // FormData(event.currentTarget) collects data from HTML form input fields with name attribute.
-    // so formData collects data from the form input fields (with name attributes like name="title").
-    const formData = new FormData(event.currentTarget);
-
-    //intialises empty object to store form data in key value pairs.
-    // keys are strings (name attribute of the textfield) and values (textfield value) are form value like strings or File.
-    const data: { [key: string]: FormDataEntryValue } = {};
-
-    // for each formData, the data object will store key:value, like data[title] = Fun Activity;
-    formData.forEach((value, key) => {
-      data[key] = value;
-    });
-
-    // if there is activity passed from useActivities, include it to update activity.
-    if (activity) {
-      data.id = activity.id;
-
-      // Because FormDataEntryValue can be string or File but Activity properties might be strictly string or something else,
-      // two-step assertion as unknown as Activity makes Typescript unable to verify it then assert it that it's Activity type.
-      await updateActivity.mutateAsync(data as unknown as Activity);
-      navigate(`/activities/${activity.id}`);
-    } else {
-      // argument 1: data is mutation variable. argument 2: optional, it provides callbacks onSuccss, onError...
-      createActivity.mutate(data as unknown as Activity, {
-        // get id from response data when the request is successful.
-        onSuccess: (id) => {
-          navigate(`/activities/${id}`);
-        },
-      });
-    }
+  //
+  const onSubmit = (data: ActivitySchema) => {
+    console.log(data);
   };
 
   if (isLoadingActivity) return <Typography>Loading activity...</Typography>;
@@ -58,46 +53,38 @@ export default function ActivityForm() {
         {activity ? "Edit Activity" : "Create Activity"}
       </Typography>
 
-      {/* onSubmit is triggered when submit type button is clicked.
-      event.currentTarget needs to refer to the form element (Box), so use onSubmit={handleSubmit}
-      */}
-
       <Box
         component="form"
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         display="flex"
         flexDirection="column"
         gap={3}
       >
-        <TextField name="title" label="Title" defaultValue={activity?.title} />
-        <TextField
-          name="description"
+        {/*
+        pass control to TextInput to use in useController, control will tell useController about details of ActivityForm,
+        React-hook-form connects to TextInput through control. When anything happens like onBlur, it will tell React-hook-form and it will trigger resolver.
+        name will be used in useController to identify which field in the form it should manage.
+        label is for Textfield to display label text.*/}
+        <TextInput label="Title" control={control} name="title" />
+        <TextInput
           label="Description"
-          defaultValue={activity?.description}
+          control={control}
+          name="description"
           multiline
           rows={3}
         />
-        <TextField
-          name="category"
+        <SelectInput
           label="Category"
-          defaultValue={activity?.category}
+          control={control}
+          name="category"
+          items={categoryOptions}
         />
-        <TextField
-          name="date"
-          label="Date"
-          type="date"
-          defaultValue={
-            activity?.date
-              ? new Date(activity.date).toISOString().split("T")[0]
-              : new Date().toISOString().split("T")[0]
-          }
-        />
-        <TextField name="city" label="City" defaultValue={activity?.city} />
-        <TextField name="venue" label="Venue" defaultValue={activity?.venue} />
+        <DateTimeInput label="Date" control={control} name="date" />
+        <TextInput label="City" control={control} name="city" />
+        <TextInput label="Venue" control={control} name="venue" />
+
         <Box display="flex" justifyContent="end" gap={3}>
-          <Button onClick={() => navigate(`/activities`)} color="inherit">
-            Cancel
-          </Button>
+          <Button color="inherit">Cancel</Button>
           <Button
             type="submit"
             color="success"
