@@ -1,6 +1,6 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
 import { useActivities } from "../../../lib/hooks/useActivities";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import {
@@ -12,6 +12,7 @@ import TextInput from "../../../app/shared/components/TextInput";
 import SelectInput from "../../../app/shared/components/SelectInput";
 import { categoryOptions } from "./categoryOptions";
 import DateTimeInput from "../../../app/shared/components/DateTimeInput";
+import LocationInput from "../../../app/shared/components/LocationInput";
 
 export default function ActivityForm() {
   const {
@@ -28,21 +29,60 @@ export default function ActivityForm() {
     resolver: zodResolver(activitySchema),
   });
 
+  const navigate = useNavigate();
+
   // extract id from URL path then pass it to useActivities to execute the query that is only enabled when there is id.
   const { id } = useParams();
 
   const { updateActivity, createActivity, activity, isLoadingActivity } =
     useActivities(id);
 
-  // It will be triggered when activity or reset changes.
+  // It will be triggered when activity or reset changes (activity will be same as Activity.cs in the domain layer).
   useEffect(() => {
     // if id exists (means editing activity, activity will be truthy), reset will fill in the form with the data from activity object.
-    if (activity) reset(activity);
+    if (activity)
+      // Because server returns cit, venue, latitude and longitude but client uses location object, use spread operator to get everything.
+      // Then set location object in activity manually.
+      reset({
+        ...activity,
+        location: {
+          city: activity.city,
+          venue: activity.venue,
+          latitude: activity.latitude,
+          longitude: activity.longitude,
+        },
+      });
   }, [activity, reset]);
 
-  //
-  const onSubmit = (data: ActivitySchema) => {
-    console.log(data);
+  // when sending Activity to the sender, need to format activity same as CreateActivityDto.cs.
+  const onSubmit = async (data: ActivitySchema) => {
+    // destructure location from data to get venue, city, latitude and longitude to match CreateActivityDto.cs.
+    // destructure the rest of activity details using ...rest.
+    const { location, ...rest } = data;
+
+    // location object is now flattened.
+    const flattenedData = { ...rest, ...location };
+
+    try {
+      // if editing activity.
+      if (activity) {
+        // spread operator creates a new object, copies properties from activity object,
+        // then overwrites properties with the same name with properties from flattenedData.
+        updateActivity.mutate(
+          { ...activity, ...flattenedData },
+          {
+            onSuccess: () => navigate(`/activities/${activity.id}`),
+          }
+        );
+        // if creating activity.
+      } else {
+        createActivity.mutate(flattenedData, {
+          onSuccess: (id) => navigate(`/activities/${id}`),
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   if (isLoadingActivity) return <Typography>Loading activity...</Typography>;
@@ -73,15 +113,21 @@ export default function ActivityForm() {
           multiline
           rows={3}
         />
-        <SelectInput
-          label="Category"
+        <Box display="flex" gap={3}>
+          <SelectInput
+            label="Category"
+            control={control}
+            name="category"
+            items={categoryOptions}
+          />
+          <DateTimeInput label="Date" control={control} name="date" />
+        </Box>
+
+        <LocationInput
           control={control}
-          name="category"
-          items={categoryOptions}
+          label="Enter the location"
+          name="location"
         />
-        <DateTimeInput label="Date" control={control} name="date" />
-        <TextInput label="City" control={control} name="city" />
-        <TextInput label="Venue" control={control} name="venue" />
 
         <Box display="flex" justifyContent="end" gap={3}>
           <Button color="inherit">Cancel</Button>

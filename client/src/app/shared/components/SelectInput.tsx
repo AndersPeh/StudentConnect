@@ -28,10 +28,11 @@ export default function SelectInput<T extends FieldValues>(props: Props<T>) {
         // field.value represents selected value by the user. In the beginning, it's empty.
         value={field.value || ""}
         label={props.label}
+        // item.value go to here to reflect changes when user selects an option.
         onChange={field.onChange}
       >
         {props.items.map((item) => (
-          // value is what is displayed after user selects an option. {item.text} is option available to choose from.
+          // value is internal value that the Select component will use after user selects an option. {item.text} is option available to choose from.
           <MenuItem key={item.value} value={item.value}>
             {item.text}
           </MenuItem>
