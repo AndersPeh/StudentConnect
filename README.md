@@ -1,4 +1,46 @@
 # StudentConnect
-Self Learning React and .Net to build this personal project. I want to create a social media app for students from different universities or countries to interact with each other.
 
-As a student, I want to connect with students from my university and other universities to hang out, work together towards our career development or simply trade our items. When I wanted to look for people to attend events together, there are so many Facebook groups out there and it is difficult to identify a good group with active members without spams. When my friends wanted to sell their stuff to other students at a cheap price, they didn't know where to post other than Facebook groups which are not really active. University students need a place to connect outside their universities!
+## Connecting Students Across Campuses
+
+**StudentConnect** is a personal project born from a passion for learning React and .NET, and a desire to solve a real-world problem for students. This social media application aims to be a dedicated platform for students from diverse universities to connect, collaborate, and interact.
+
+### The Challenge for Students Today
+
+As a student, I've experienced firsthand the difficulties in connecting with peers beyond my immediate circles for various activities:
+
+*   **Finding Event Buddies:** Navigating numerous, often cluttered and spam-filled Facebook groups to find people for events is a hassle. It's hard to find active groups with genuine members.
+*   **Collaborating on Career Development:** Students are often looking for peers to work on projects, study together, or share career advice, but a centralized platform for this is missing.
+*   **Trading and Selling Items:** When friends want to sell textbooks, furniture, or other items to fellow students at reasonable prices, they struggle to find an effective, targeted marketplace beyond inactive social media groups.
+
+The core issue is clear: **University students need a dedicated, trustworthy, and engaging space to connect with others, both within their own university and with students from other institutions.**
+
+### My Solution: StudentConnect
+
+StudentConnect aims to be that space! It's being built to provide a focused environment where students can:
+
+*   **Current Focus: Hang Out & Network:** Organise or join meetups, study groups, or social gatherings.
+*   **Career Growth:** Collaborate on projects, share internship opportunities, and support each other's professional development.
+*   **Student Marketplace:** A safe and easy way to buy, sell, or trade items with other students.
+
+### Tech Stack
+
+*   **Frontend:** React (TypeScript)
+*   **Backend:** .NET (C#)
+
+### Project Status
+
+Currently under active development as a self-learning project.
+
+### Upcoming Features
+- Identity
+- Client login and register
+- Configuration of Entity Framework Relationships
+- Client side attendance feature
+- API Image upload
+- Client Image upload
+- SignalR
+- Follow feature
+- Paging, Sorting, Filtering
+- Connect to Sql Server
+- Deploy to Azure
+- Identity Cookbook
