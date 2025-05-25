@@ -31,6 +31,15 @@ StudentConnect aims to be that space! It's being built to provide a focused envi
 
 Currently under active development as a self-learning project.
 
+<table>
+  <tr>
+    <td><img src="AppPics/Welcome.png" width="100%"></td>
+    <td><img src="AppPics/Home.png" width="100%"></td>
+    <td><img src="AppPics/ActivityDetails.png" width="100%"></td>
+    <td><img src="AppPics/ActivityForm.png" width="100%"></td>
+  </tr>
+</table>
+
 ### Upcoming Features
 - Identity
 - Client login and register
