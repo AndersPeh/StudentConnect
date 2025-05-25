@@ -22,11 +22,6 @@ StudentConnect aims to be that space! It's being built to provide a focused envi
 *   **Career Growth:** Collaborate on projects, share internship opportunities, and support each other's professional development.
 *   **Student Marketplace:** A safe and easy way to buy, sell, or trade items with other students.
 
-### Tech Stack
-
-*   **Frontend:** React (TypeScript)
-*   **Backend:** .NET (C#)
-
 ### Project Status
 
 Currently under active development as a self-learning project.
@@ -44,6 +39,13 @@ Currently under active development as a self-learning project.
     <td><img src="AppPics/ActivityForm.png" width="100%"></td>
   </tr>
 </table>
+
+### Tech Stack
+
+*   **Frontend:** React (TypeScript)
+*   **Backend:** .NET (C#)
+*   **Architecture:** Clean Architecture
+*   **Tools:** Postman API · Axios · React Query · MobX · React Router · Material-UI · Vite
 
 ### Upcoming Features
 - Identity
