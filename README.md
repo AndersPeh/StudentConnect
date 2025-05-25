@@ -35,6 +35,11 @@ Currently under active development as a self-learning project.
   <tr>
     <td><img src="AppPics/Welcome.png" width="100%"></td>
     <td><img src="AppPics/Home.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
     <td><img src="AppPics/ActivityDetails.png" width="100%"></td>
     <td><img src="AppPics/ActivityForm.png" width="100%"></td>
   </tr>
