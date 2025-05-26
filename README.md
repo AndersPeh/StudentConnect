@@ -55,8 +55,9 @@ Currently under active development as a self-learning project.
 - API Image upload
 - Client Image upload
 - SignalR
-- Follow feature
+- Comment and Follow feature
 - Paging, Sorting, Filtering
 - Connect to Sql Server
 - Deploy to Azure
 - Identity Cookbook
+- Only users with email that ends with .edu.au can register.
