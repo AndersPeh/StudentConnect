@@ -15,9 +15,24 @@ import {
 } from "@mui/material";
 import axios from "axios";
 
+// Props connects to generic key (string) value pair and passes it to UseControllerProps,
+// any property in UseControllerProps<T> that has <T> type knows its structure is <T>.
+// Props must have:
+// a property name label with string value.
+// props required by useController.
 type Props<T extends FieldValues> = { label: string } & UseControllerProps<T>;
+// In ActivityForm, props looks like this:
+// <LocationInput<ActivitySchema> // T for LocationInput is ActivitySchema
+//   label="Enter the location"    // Prop 1
+//   name="location"               // Prop 2 (for useController)
+//   control={control}            // Prop 3 (for useController)
+// />
 
+// props is LocationInput with ActivitySchema as T, then the T is passed to control,
+// so control knows it is managing a form with the structure ActivitySchema.
 export default function LocationInput<T extends FieldValues>(props: Props<T>) {
+  // useController takes props after spreading and returns field and fieldState
+  // for LocationInput to interact with location field in react form.
   const { field, fieldState } = useController({ ...props });
   const [loading, setLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<LocationIQSuggestion[]>([]);
