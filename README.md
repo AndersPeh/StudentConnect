@@ -18,9 +18,9 @@ The core issue is clear: **University students need a dedicated, trustworthy, an
 
 StudentConnect aims to be that space! It's being built to provide a focused environment where students can:
 
-*   **Current Focus: Hang Out & Network:** Organise or join meetups, study groups, or social gatherings.
-*   **Career Growth:** Collaborate on projects, share internship opportunities, and support each other's professional development.
-*   **Student Marketplace:** A safe and easy way to buy, sell, or trade items with other students.
+*   **Current Focus:** Hang Out & Network- Organise or join meetups, study groups, or social gatherings.
+*   Upcoming: Career Growth- Collaborate on projects, share internship opportunities, and support each other's professional development.
+*   Upcoming: Student Marketplace- A safe and easy way to buy, sell, or trade items with other students.
 
 ### Project Status
 
