@@ -49,13 +49,20 @@ Currently under active development as a self-learning project.
 *   **Axios:** It makes API requests from the browser to the backend. It automatically parses JSON data, intercepts request and response to set loading state and handles error through toast or navigating to error page.
 *   **MobX:** It is used to manage Loading bar by making isLoading an observable with methods to set it true or false. It provides a clean way to re-render LinearProgress according to observable by wrapping it under the observer Higher Order Component.
 *   **Context API:** Instead of doing prop drilling, create context of MobX store, then wrap the entire application under Context.Provider allows the MobX store accessible to all components in it. Calling useContext allows any component to access MobX store which is a dependency injection.
+*   **Zod**: It validates user inputs to ensure data entered match rules set like required data and converts data to another type to fulfill server requirements.
 
 
 **Backend:** .NET (C#)
-*   **Clean Architecture:** It is domain centric and sets inner layers to be independent of external layers. Domain Layer (most inner) is independent of other layers and it contains business entities. Application layer handles application logic (use cases), it depends on Domain layer only. API layer handles HTTP requests and contains controllers, it depends on Application and Domain layers. Persistence layer handles data access using logic provided by Application layer. Entity Framework Core translates commands/ queries into SQL prompt for this layer to interact with the database. It depends on Application and Domain layers. In doing so, changing external layers like UI framework or Database won't affect business entities. It allows the app become scalable and maintanable. 
+*   **Clean Architecture:** It is domain centric and sets inner layers to be independent of external layers. Domain Layer (most inner) is independent of other layers and it contains business entities. Application layer handles application logic (use cases), it depends on Domain layer only. API layer handles HTTP requests and contains controllers, it depends on Application and Domain layers. Persistence layer handles data access using logic provided by Application layer. It depends on Application and Domain layers. In doing so, changing external layers like UI framework or Database won't affect business entities. It allows the app become scalable and maintanable. 
 *   **CQRS:** It separates operations into Queries (read data) and Commands (write data) to simplify business logic.
-*   **Mediator Pattern:** 
-*   **Entity Framework Core:** 
+*   **Controllers:** It receives incoming HTTP requests from middleware, set them to Mediator and returns HTTP responses.
+*   **Mediator Pattern:** Mediator decouples API controllers from the application logic handles. Whenever a HTTP request comes in, controllers will send command or query objects to Mediator. Mediator will then go through its pipeline to validate data received before dispatching the handler.
+*   **Fluent Validation:** It defines validation rules and validates data against rules set before passing to the command handlers.
+*   **AutoMapper:** It automatically maps source object to destination to ensures business entities are followed while significantly reducing boilerplates. In doing so, object to mapped according to business entities before saving to prevent database error.
+*   **Entity Framework Core:** It is an Object Relational Mapper that translates LINQ into SQL to interact with the database. It maps business entities to database tables and speeds up development.
+*   **Middleware:** It chains middleware components together to form middleware pipeline to handle HTTP requests. When a result is returned by the Controller, it will propagate upwards in middleware pipeline until the top. Then .NET will send it to the client.
+*   **CORS:** It allows frontend to send requests with any header and method to the server.
+*   **Postman:** It is for testing API.
 
 
 **Styling:** Material-UI
