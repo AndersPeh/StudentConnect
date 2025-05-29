@@ -49,7 +49,7 @@ Currently under active development as a self-learning project.
 *   **Axios:** It makes API requests from the browser to the backend. It automatically parses JSON data, intercepts request and response to set loading state and handles error through toast or navigating to error page.
 *   **MobX:** It is used to manage Loading bar by making isLoading an observable with methods to set it true or false. It provides a clean way to re-render LinearProgress according to observable by wrapping it under the observer Higher Order Component.
 *   **Context API:** Instead of doing prop drilling, create context of MobX store, then wrap the entire application under Context.Provider allows the MobX store accessible to all components in it. Calling useContext allows any component to access MobX store which is a dependency injection.
-*   **Yup**: It defines a schema for validating user inputs. Zod then checks users inputs against Yup schema defined to ensure data matches rules before the form can be submitted.
+*   **Zod**: It defines a schema for validating user inputs. React-Hook-Form then checks users inputs against zod schema defined to ensure data matches rules before the form can be submitted.
 
 
 **Backend:** .NET (C#)
