@@ -27,16 +27,23 @@ StudentConnect aims to be that space! It's being built to provide a focused envi
 Currently under active development as a self-learning project.
 
 <table>
-  <tr>
-    <td><img src="AppPics/Welcome.png" width="100%"></td>
-    <td><img src="AppPics/Home.png" width="100%"></td>
+  <tr align="center">
+    <td><p>Welcome Screen</p><img src="AppPics/Welcome.png" width="100%"></td>
+    <td><p>Home Screen</p><img src="AppPics/Home.png" width="100%"></td>
   </tr>
 </table>
 
 <table>
-  <tr>
-    <td><img src="AppPics/ActivityDetails.png" width="100%"></td>
-    <td><img src="AppPics/ActivityForm.png" width="100%"></td>
+  <tr align="center">
+    <td><p>Details Screen</p><img src="AppPics/ActivityDetails.png" width="100%"></td>
+    <td><p>Form Screen</p><img src="AppPics/ActivityForm.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr align="center">
+    <td><p>Not Found Error</p><img src="AppPics/NotFound.png" width="100%"></td>
+    <td><p>Input Validation</p><img src="AppPics/InputValidation.png" width="100%"></td>
   </tr>
 </table>
 
