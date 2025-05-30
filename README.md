@@ -72,9 +72,9 @@ Currently under active development as a self-learning project.
 *   **Postman:** It is for testing API.
 
 
-**Styling:** Material-UI
+### Styling: Material-UI
   
-### Upcoming Features
+## Upcoming Features
 - Identity
 - Client login and register
 - Configuration of Entity Framework Relationships
