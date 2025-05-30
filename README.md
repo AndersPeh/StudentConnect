@@ -47,9 +47,9 @@ Currently under active development as a self-learning project.
   </tr>
 </table>
 
-### Tech Stack
+## Tech Stack
 
-**Frontend:** React (TypeScript)
+### Frontend: React (TypeScript)
 *   **Vite:** Configured to run the development server on port 3000. Included mkcert to enable HTTPS for local development to mimick a production environment more closely.
 *   **React Router:** In this Single Page Application, React Router handles navigation between different views without full page reloads. It improves user experience by updating necessary data and re-renders necessary views only. NavLink is used to detect active state of links for styling navigation bar to indicate the current page.
 *   **React Query:** It handles fetching, automatic caching, synchronising and updating server data in client side with significant reduction in boilerplate. useQuery handles fetching all and single activities, caches them and only sends request to server again when data is stale or invalidated. useMutation handles creating, updating and deleting an activity. It invalidates data so useQuery will be triggered to refetch all activities.
@@ -59,7 +59,7 @@ Currently under active development as a self-learning project.
 *   **React-Hook-Form**: It simplifies form creation and allows for state management and submission handling. It uses Zod to define a schema for validating user inputs. React-Hook-Form then checks users inputs against zod schema defined to ensure data matches rules before the form can be submitted.
 
 
-**Backend:** .NET (C#)
+### Backend: .NET (C#)
 *   **Clean Architecture:** It is domain centric and sets inner layers to be independent of external layers. Domain Layer (most inner) is independent of other layers and it contains business entities. Persistence layer handles saving and fetching objects from database. It depends on Domain layer. Application layer handles application logic (use cases), it depends on Domain and Persistence layers. It interacts with the database by injecting dependency from Persistence layer.  API layer handles HTTP requests and contains controllers, it depends on Application and Domain layer. In doing so, changing external layers like UI framework or Database won't affect business entities. It allows the app become scalable and maintanable. 
 *   **CQRS:** It separates operations into Queries (read data) and Commands (write data) to simplify business logic.
 *   **Controllers:** Middleware processes the request to controller then controller sends them to Mediator and returns HTTP responses.
