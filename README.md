@@ -1,6 +1,6 @@
 # StudentConnect
 
-## Connecting Students Across Campuses
+## Connecting Students Across Universities
 
 **StudentConnect** is born after I identified a lack of a centralised platform for 1.6 million university students in Australia to connect across universities. I am currently developing a full-stack application using React and .NET to address the need. This application aims to be a dedicated platform for students from diverse universities to connect, collaborate, and interact.
 
