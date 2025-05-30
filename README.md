@@ -2,7 +2,7 @@
 
 ## Connecting Students Across Campuses
 
-**StudentConnect** is a personal project born from a passion for learning React and .NET, and a desire to solve a real-world problem for students. This social media application aims to be a dedicated platform for students from diverse universities to connect, collaborate, and interact.
+**StudentConnect** is born after I identified a lack of a centralised platform for 1.6 million university students in Australia to connect across universities. I am currently developing a full-stack application using React and .NET to address the need. This application aims to be a dedicated platform for students from diverse universities to connect, collaborate, and interact.
 
 ### The Challenge for Students Today
 
