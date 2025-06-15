@@ -7,13 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 using ValidationException = FluentValidation.ValidationException;
 
 namespace API.Middleware;
+// IMiddleware tells .Net that ExceptionMiddleware is a middleware component that should be activated via Dependency Injection.
 
 // This middleware is placed first in Program.cs, so any exception in the pipeline can progagate upwards to reach it in the end.
 // When an exception occurs within Mediator handler and handler doesnt catch it, it will propagate upwards to Mediator pipeline (behavior top, handler bottom). 
-// If no service can capture the exception, it will propagate out ot the Mediator pipeline to controller action (Controller sends Command using Mediator.send),
+// If no service can capture the exception, it will propagate out of the Mediator pipeline to controller action (Controller sends Command using Mediator.send),
 // If the exception is still not captured, it will propagate to middleware pipeline, so ExceptionMiddleware.
 
-// DI container injects ILogger<ExceptionMiddleware> and IHostEnvironment (to tell if the app is being run in development or production).
+// DI container injects ILogger<ExceptionMiddleware> to handle generic error.
+// and IHostEnvironment (to tell if the app is being run in development or production).
+// ILogger<ExceptionMiddleware> logger specifies that this logger is configured for logging messages from ExceptionMiddleware.
 public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvironment env) : IMiddleware
 {
     // HttpContext = HTTP request and response, next = next in the middleware pipeline to process HTTP context.
@@ -26,10 +29,10 @@ public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvir
         }
         catch (ValidationException ex)
         {
-            // if ValidationException is caught, call HandleValidationException to process it.
+            // if FluentValidation.ValidationException is caught, call HandleValidationException to process it.
             await HandleValidationException(context, ex);
         }
-
+        // for catching generic error other than validation error.
         catch (Exception ex)
         {
 
@@ -41,7 +44,7 @@ public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvir
     {
         logger.LogError(ex, ex.Message);
 
-        // Send back error response in json so it's easier to work with in client cide code.
+        // Send back error response in json so it's easier to work with in client side code.
         context.Response.ContentType = "application/json";
 
         context.Response.StatusCode = StatusCodes.Status500InternalServerError;

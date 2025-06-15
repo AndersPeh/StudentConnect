@@ -12,7 +12,7 @@ namespace Application.Activities.Commands;
 // After behaviors like validation, Mediator will come to here according to the pipeline.
 public class CreateActivity
 {
-    // returns string id
+    // returns string id. which is an instance of Result class where T is string.
     // IRequest has a contract (what), it expects a response of type string.
     public class Command : IRequest<Result<string>>
     {

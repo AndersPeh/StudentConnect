@@ -25,6 +25,10 @@ namespace API.Controllers
             _mediator ??= HttpContext.RequestServices.GetService<IMediator>()
                 ?? throw new InvalidOperationException("IMediator service is unavailable.");
 
+        // The T in HandleResult<T> specifies that HandleResult is a generic method that can operate on different types for T each time it is called.
+        // Because Result<T> result needs a T to refer to, so HandleResult needs to specify a generic T.
+        // The T can be Activity, string or Unit depending on what is returned from Command/ Query from Mediator in ActivitiesController.
+
         protected ActionResult HandleResult<T>(Result<T> result)
         {
             // Based on Result.cs, Failure will return an object with false IsSuccess and error code (like 404 not found for Get request case).

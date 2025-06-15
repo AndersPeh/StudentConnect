@@ -16,6 +16,7 @@ public class ActivitiesController : BaseApiController
 
     // GetActivities method handles HTTP Get request /api/activities.
     // It returns a List of Activity objects in ActionResult.
+    // Task <TResult> means the asynchronous operation returns a value of type TResult upon completion.
     public async Task<ActionResult<List<Activity>>> GetActivities()
 
     {
@@ -41,6 +42,8 @@ public class ActivitiesController : BaseApiController
 
     }
 
+    // *******************************************************************************************************
+
     [HttpPost]
 
     // When HTTP Post request arrives at /api/activities endpoint, .Net mode binding deserialises request body containing JSON
@@ -54,12 +57,16 @@ public class ActivitiesController : BaseApiController
         return HandleResult(await Mediator.Send(new CreateActivity.Command { ActivityDto = activityDto }));
     }
 
+    // *******************************************************************************************************
+
     [HttpPut]
 
     public async Task<ActionResult> EditActivity(EditActivityDto activityDto)
     {
         return HandleResult(await Mediator.Send(new EditActivity.Command { ActivityDto = activityDto }));
     }
+
+    // *******************************************************************************************************
 
     // when data is needed in the path, must specify in the HTTP method.
     [HttpDelete("{id}")]

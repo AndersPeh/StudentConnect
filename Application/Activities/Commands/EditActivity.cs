@@ -16,9 +16,9 @@ public class EditActivity
     }
 
     // This Handler handles requests of type EditActivity.Command.
-    // Mediator asks DI container to creaye an instance of EditActivity.Handler, 
+    // Mediator asks DI container to create an instance of EditActivity.Handler, 
     // DI container knows how to provide AppDbContext and IMapper because they're registered in Program.cs.
-    // DI gets configuration from Program.cs to instantiates IMapper with mapping rules from MappingProfiles.cs.
+    // DI gets configuration from Program.cs to instantiate IMapper with mapping rules from MappingProfiles.cs.
     // DI inject IMapper to do automatic mapping instead of typing activity property one by one (like activity.Title = request.Activity.Title;).
     public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command, Result<Unit>>
     {

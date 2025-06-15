@@ -8,7 +8,7 @@ using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the Dependency Injection container.
 // Register controllers as services automatically with DI container and for service provider to request an instance later.
 builder.Services.AddControllers();
 
@@ -59,7 +59,8 @@ var app = builder.Build();
 // *******************************************************************************************************
 // Middleware: Configure the HTTP request pipeline.
 
-// Exception must be placed before any middleware to use it to catch and ahndle exceptions that occur in subsequent middleware or in controllers/ services.
+// Exception must be placed before any middleware to use it to catch and handle exceptions that occur in subsequent middleware or in controllers/ services.
+// Make it global error handler. Instructs .Net to pull it from the DI container and insert it into the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod()
@@ -92,6 +93,7 @@ try
 catch (Exception ex)
 
 {
+    // <ILogger<Program>> requests an instance of ILogger that is specifically configured for the Program class.
     var logger = services.GetRequiredService<ILogger<Program>>();
 
     logger.LogError(ex, "An error occured during migration.");
