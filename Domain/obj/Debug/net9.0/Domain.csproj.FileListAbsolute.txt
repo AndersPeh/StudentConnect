@@ -10,3 +10,4 @@ C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\Stud
 C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Domain\obj\Debug\net9.0\refint\Domain.dll
 C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Domain\obj\Debug\net9.0\Domain.pdb
 C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Domain\obj\Debug\net9.0\ref\Domain.dll
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\Domain\obj\Debug\net9.0\Domain.csproj.AssemblyReference.cache
