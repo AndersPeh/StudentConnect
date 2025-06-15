@@ -1,24 +1,24 @@
 # StudentConnect
 
-## Connecting Students Across Campuses
+## Connecting Students Across Universities
 
-**StudentConnect** is a personal project born from a passion for learning React and .NET, and a desire to solve a real-world problem for students. This social media application aims to be a dedicated platform for students from diverse universities to connect, collaborate, and interact.
+**StudentConnect** started after I identified a lack of a centralised platform for 1.6 million university students in Australia to connect across universities. I am currently developing a full-stack application using React and .NET to address the need. This application aims to be a dedicated platform for students from different universities to connect, collaborate, and interact.
 
 ### The Challenge for Students Today
 
-As a student, I've experienced firsthand the difficulties in connecting with peers beyond my immediate circles for various activities:
+As a student, I've experienced firsthand the difficulties in connecting with students for various activities:
 
-*   **Finding Event Buddies:** Navigating numerous, often cluttered and spam-filled Facebook groups to find people for events is a hassle. It's hard to find active groups with genuine members.
-*   **Collaborating on Career Development:** Students are often looking for peers to work on projects, study together, or share career advice, but a centralized platform for this is missing.
-*   **Trading and Selling Items:** When friends want to sell textbooks, furniture, or other items to fellow students at reasonable prices, they struggle to find an effective, targeted marketplace beyond inactive social media groups.
+*   **Finding Event Buddies:** Navigating numerous, often spam-filled Social Media groups to find people for events is a hassle. It's hard to find active groups with genuine members.
+*   **Collaborating on Career Development:** Students are often looking for other students to work on projects, join competitions, or share career advice, but a centralised platform for this is missing.
+*   **Trading and Selling Items:** When students want to sell textbooks, furniture, or other items to other students at reasonable prices, they struggle to find an effective, targeted marketplace beyond inactive social media groups.
 
-The core issue is clear: **University students need a dedicated, trustworthy, and engaging space to connect with others, both within their own university and with students from other institutions.**
+The core issue is clear: **University students need a dedicated, trustworthy, and engaging space to connect with others, both within their own university and with students from other universities.**
 
 ### My Solution: StudentConnect
 
-StudentConnect aims to be that space! It's being built to provide a focused environment where students can:
+It's being built to provide a focused environment where students can:
 
-*   **Current Focus:** Hang Out & Network- Organise or join meetups, study groups, or social gatherings.
+*   **Current Focus:** Hang Out & Network- Organise or join professional events, competitions, or social gatherings.
 *   Upcoming: Career Growth- Collaborate on projects, share internship opportunities, and support each other's professional development.
 *   Upcoming: Student Marketplace- A safe and easy way to buy, sell, or trade items with other students.
 
@@ -27,22 +27,29 @@ StudentConnect aims to be that space! It's being built to provide a focused envi
 Currently under active development as a self-learning project.
 
 <table>
-  <tr>
-    <td><img src="AppPics/Welcome.png" width="100%"></td>
-    <td><img src="AppPics/Home.png" width="100%"></td>
+  <tr align="center">
+    <td><p>Welcome Screen</p><img src="AppPics/Welcome.png" width="100%"></td>
+    <td><p>Home Screen</p><img src="AppPics/Home.png" width="100%"></td>
   </tr>
 </table>
 
 <table>
-  <tr>
-    <td><img src="AppPics/ActivityDetails.png" width="100%"></td>
-    <td><img src="AppPics/ActivityForm.png" width="100%"></td>
+  <tr align="center">
+    <td><p>Details Screen</p><img src="AppPics/ActivityDetails.png" width="100%"></td>
+    <td><p>Form Screen</p><img src="AppPics/ActivityForm.png" width="100%"></td>
   </tr>
 </table>
 
-### Tech Stack
+<table>
+  <tr align="center">
+    <td><p>Not Found Error</p><img src="AppPics/NotFound.png" width="100%"></td>
+    <td><p>Input Validation</p><img src="AppPics/InputValidation.png" width="100%"></td>
+  </tr>
+</table>
 
-**Frontend:** React (TypeScript)
+## Tech Stack
+
+### Frontend: React (TypeScript)
 *   **Vite:** Configured to run the development server on port 3000. Included mkcert to enable HTTPS for local development to mimick a production environment more closely.
 *   **React Router:** In this Single Page Application, React Router handles navigation between different views without full page reloads. It improves user experience by updating necessary data and re-renders necessary views only. NavLink is used to detect active state of links for styling navigation bar to indicate the current page.
 *   **React Query:** It handles fetching, automatic caching, synchronising and updating server data in client side with significant reduction in boilerplate. useQuery handles fetching all and single activities, caches them and only sends request to server again when data is stale or invalidated. useMutation handles creating, updating and deleting an activity. It invalidates data so useQuery will be triggered to refetch all activities.
@@ -52,7 +59,7 @@ Currently under active development as a self-learning project.
 *   **React-Hook-Form**: It simplifies form creation and allows for state management and submission handling. It uses Zod to define a schema for validating user inputs. React-Hook-Form then checks users inputs against zod schema defined to ensure data matches rules before the form can be submitted.
 
 
-**Backend:** .NET (C#)
+### Backend: .NET (C#)
 *   **Clean Architecture:** It is domain centric and sets inner layers to be independent of external layers. Domain Layer (most inner) is independent of other layers and it contains business entities. Persistence layer handles saving and fetching objects from database. It depends on Domain layer. Application layer handles application logic (use cases), it depends on Domain and Persistence layers. It interacts with the database by injecting dependency from Persistence layer.  API layer handles HTTP requests and contains controllers, it depends on Application and Domain layer. In doing so, changing external layers like UI framework or Database won't affect business entities. It allows the app become scalable and maintanable. 
 *   **CQRS:** It separates operations into Queries (read data) and Commands (write data) to simplify business logic.
 *   **Controllers:** Middleware processes the request to controller then controller sends them to Mediator and returns HTTP responses.
@@ -65,9 +72,9 @@ Currently under active development as a self-learning project.
 *   **Postman:** It is for testing API.
 
 
-**Styling:** Material-UI
+### Styling: Material-UI
   
-### Upcoming Features
+## Upcoming Features
 - Identity
 - Client login and register
 - Configuration of Entity Framework Relationships
