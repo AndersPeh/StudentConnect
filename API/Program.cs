@@ -2,7 +2,9 @@ using API.Middleware;
 using Application.Activities.Queries;
 using Application.Activities.Validators;
 using Application.Core;
+using Domain;
 using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -54,6 +56,18 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
 // AddTransient means DI container instantiates this service per HTTP request and disposes after using.
 builder.Services.AddTransient<ExceptionMiddleware>();
 
+// Automatocally get a set of API endpoints for user authentication, for .Net to manage users based on Domain.User entity.
+builder.Services.AddIdentityApiEndpoints<User>(opt =>
+{
+    // unique email is required because username has to be email address to login in asp.net identity.
+    opt.User.RequireUniqueEmail = true;
+})
+// registers the services necessary for working with roles like creating roles, assining roles...
+.AddRoles<IdentityRole>()
+// tells the Identity system to use EF Core for storing user and role information.
+.AddEntityFrameworkStores<AppDbContext>();
+
+
 var app = builder.Build();
 
 // *******************************************************************************************************
@@ -66,9 +80,16 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod()
     .WithOrigins("http://localhost:3000", "https://localhost:3000"));
 
+// Authenticate, then Authorise before using Controller to handle HTTP requests.
+app.UseAuthentication();
+app.UseAuthorization();
+
 // When the server receives a HTTP Request, MapControllers finds matching controller to handle it 
 // by dropping "Controller" from controllers to match route to controller name.
 app.MapControllers();
+
+// /api will be added to any route of identity endpoints.
+app.MapGroup("api").MapIdentityApi<User>();
 
 // *******************************************************************************************************
 // Create temporary DI scope for startup tasks to resolve and dispose services (AppDbContext instance) after try block finishes and before the application starts running (app.Run).
