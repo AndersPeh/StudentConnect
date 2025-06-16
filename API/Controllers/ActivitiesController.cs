@@ -3,11 +3,14 @@ using Application.Activities.Commands;
 using Application.Activities.DTOs;
 using Application.Activities.Queries;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 // ActivitiesController inherits from BaseApiController for features like Route("api/[controller]") and IMediator.
+// For ActivitiesController, .Net automatically removes Controller keyword, changes Activities to lowercase,
+// so the base route becomes api/activities.
 public class ActivitiesController : BaseApiController
 {
 
@@ -28,6 +31,7 @@ public class ActivitiesController : BaseApiController
     }
 
     // *******************************************************************************************************
+
     [HttpGet("{id}")]
 
     // GetActivityDetail uses a route template parameter {id}, so it expects a value in the URL path.
@@ -46,7 +50,7 @@ public class ActivitiesController : BaseApiController
 
     [HttpPost]
 
-    // When HTTP Post request arrives at /api/activities endpoint, .Net mode binding deserialises request body containing JSON
+    // When HTTP Post request arrives at /api/activities endpoint, .Net model binding deserialises request body containing JSON
     // into CreateActivityDto object which is passed to ActivityDto later.
     // It returns string Id from the database in ActionResult. CreateActivity method takes CreateActivityDto object as its parameter, omitting unnecessary data from user.
     public async Task<ActionResult<string>> CreateActivity(CreateActivityDto activityDto)

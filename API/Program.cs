@@ -4,7 +4,9 @@ using Application.Activities.Validators;
 using Application.Core;
 using Domain;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -12,7 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the Dependency Injection container.
 // Register controllers as services automatically with DI container and for service provider to request an instance later.
-builder.Services.AddControllers();
+builder.Services.AddControllers(opt =>
+{
+    // AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build() creates AuthorizationPolicy that requires user to be authenticated.
+    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+    // opt.Filters.Add adds AuthorizationPolicy to every API endpoint in every controller. So user must be authenticated with cookie to make any request.
+    opt.Filters.Add(new AuthorizeFilter(policy));
+});
 
 // provides DI container the database configuration to AppDbContext (which is options object).
 // <AppDbContext> specifies that the DbContext being configured is AppDbContext class from Persistence Layer.
@@ -56,18 +64,18 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
 // AddTransient means DI container instantiates this service per HTTP request and disposes after using.
 builder.Services.AddTransient<ExceptionMiddleware>();
 
-// Automatocally get a set of API endpoints for user authentication, for .Net to manage users based on Domain.User entity.
+// AddIdentityApiEndpoints<User> get a set of API endpoints for user authentication, for .Net to manage users based on Domain.User entity.
 builder.Services.AddIdentityApiEndpoints<User>(opt =>
 {
     // unique email is required because username has to be email address to login in asp.net identity.
     opt.User.RequireUniqueEmail = true;
 })
-// registers the services necessary for working with roles like creating roles, assining roles...
+// registers the services necessary for working with roles like creating roles, assigning roles...
 .AddRoles<IdentityRole>()
 // tells the Identity system to use EF Core for storing user and role information.
 .AddEntityFrameworkStores<AppDbContext>();
 
-
+// creates the web application object with services to define HTTP request pipeline.
 var app = builder.Build();
 
 // *******************************************************************************************************
@@ -77,7 +85,10 @@ var app = builder.Build();
 // Make it global error handler. Instructs .Net to pull it from the DI container and insert it into the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
 
+// allows client of the address to access to the API.
 app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod()
+    // allows Browser to send credentials such as cookies to the API.
+    .AllowCredentials()
     .WithOrigins("http://localhost:3000", "https://localhost:3000"));
 
 // Authenticate, then Authorise before using Controller to handle HTTP requests.
@@ -101,14 +112,17 @@ var services = scope.ServiceProvider;
 try
 {
     // AppDbContext is the service to interact with database.
-    // get an instance of <AppDbContext> service from the service provider.
+    // get an instance of AppDbContext service from the service provider.
     var context = services.GetRequiredService<AppDbContext>();
+
+    // get an instance of UserManager service that only accepts User Entity from the service provider.
+    var userManager = services.GetRequiredService<UserManager<User>>();
 
     // Once the application starts running, it will create database and ensure database schema is updated.
     await context.Database.MigrateAsync();
 
     // Seed initial data using DbInitializer from Persistence layer.
-    await DbInitializer.SeedData(context);
+    await DbInitializer.SeedData(context, userManager);
 }
 
 catch (Exception ex)

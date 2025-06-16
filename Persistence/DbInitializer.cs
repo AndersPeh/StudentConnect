@@ -1,16 +1,38 @@
 using System;
 using Domain;
+using Microsoft.AspNetCore.Identity;
 
 namespace Persistence;
 
 public class DbInitializer
 {
-    // Task means void for async method.
+    // Task without <> means it doesnt retur anything for async method.
     // static as it doesn't rely on data from DbInitializer.
-    // SeedData uses method dependency injection. It needs AppDbContext to run.
+    // SeedData uses dependency injection to inject AppDbContext and UserManager. UserManager methods will accept and return instances of User class.
     // In API -> Program.cs, it passes context to this method. It is a static method with dependency. 
-    public static async Task SeedData(AppDbContext context)
+    // 
+    public static async Task SeedData(AppDbContext context, UserManager<User> userManager)
     {
+        // if no user, seed user.
+        if (!userManager.Users.Any())
+        {
+            // The list must contain user type data only.
+            var users = new List<User>
+            {
+                new() {DisplayName = "Bob", UserName="bob@test.com", Email="bob@test.com"},
+                new() {DisplayName = "Tom", UserName="tom@test.com", Email="tom@test.com"},
+                new() {DisplayName = "Jane", UserName="jane@test.com", Email="jane@test.com"},
+
+            };
+
+            // set password for seeded users.
+            foreach (var user in users)
+            {
+                await userManager.CreateAsync(user, "Pa$$w0rd");
+            }
+        }
+
+
         // Only seed data if there is no activity
         if (context.Activities.Any()) return;
 
