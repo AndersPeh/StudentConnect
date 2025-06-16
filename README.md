@@ -8,9 +8,9 @@
 
 As a student, I've experienced firsthand the difficulties in connecting with students for various activities:
 
-*   **Finding Event Buddies:** Navigating numerous, often spam-filled Social Media groups to find people for events is a hassle. It's hard to find active groups with genuine members.
-*   **Collaborating on Career Development:** Students are often looking for other students to work on projects, join competitions, or share career advice, but a centralised platform for this is missing.
-*   **Trading and Selling Items:** When students want to sell textbooks, furniture, or other items to other students at reasonable prices, they struggle to find an effective, targeted marketplace beyond inactive social media groups.
+- **Finding Event Buddies:** Navigating numerous, often spam-filled Social Media groups to find people for events is a hassle. It's hard to find active groups with genuine members.
+- **Collaborating on Career Development:** Students are often looking for other students to work on projects, join competitions, or share career advice, but a centralised platform for this is missing.
+- **Trading and Selling Items:** When students want to sell textbooks, furniture, or other items to other students at reasonable prices, they struggle to find an effective, targeted marketplace beyond inactive social media groups.
 
 The core issue is clear: **University students need a dedicated, trustworthy, and engaging space to connect with others, both within their own university and with students from other universities.**
 
@@ -18,9 +18,9 @@ The core issue is clear: **University students need a dedicated, trustworthy, an
 
 It's being built to provide a focused environment where students can:
 
-*   **Current Focus:** Hang Out & Network- Organise or join professional events, competitions, or social gatherings.
-*   Upcoming: Career Growth- Collaborate on projects, share internship opportunities, and support each other's professional development.
-*   Upcoming: Student Marketplace- A safe and easy way to buy, sell, or trade items with other students.
+- **Current Focus:** Hang Out & Network- Organise or join professional events, competitions, or social gatherings.
+- Upcoming: Career Growth- Collaborate on projects, share internship opportunities, and support each other's professional development.
+- Upcoming: Student Marketplace- A safe and easy way to buy, sell, or trade items with other students.
 
 ### Project Status
 
@@ -50,31 +50,33 @@ Currently under active development as a self-learning project.
 ## Tech Stack
 
 ### Frontend: React (TypeScript)
-*   **Vite:** Configured to run the development server on port 3000. Included mkcert to enable HTTPS for local development to mimick a production environment more closely.
-*   **React Router:** In this Single Page Application, React Router handles navigation between different views without full page reloads. It improves user experience by updating necessary data and re-renders necessary views only. NavLink is used to detect active state of links for styling navigation bar to indicate the current page.
-*   **React Query:** It handles fetching, automatic caching, synchronising and updating server data in client side with significant reduction in boilerplate. useQuery handles fetching all and single activities, caches them and only sends request to server again when data is stale or invalidated. useMutation handles creating, updating and deleting an activity. It invalidates data so useQuery will be triggered to refetch all activities.
-*   **Axios:** It makes API requests from the browser to the backend. It automatically parses JSON data, intercepts request and response to set loading state and handles error through toast or navigating to error page.
-*   **MobX:** It is used to manage Loading bar by making isLoading an observable with methods to set it true or false. It provides a clean way to re-render LinearProgress according to observable by wrapping it under the observer Higher Order Component.
-*   **Context API:** Instead of doing prop drilling, create context of MobX store, then wrap the entire application under Context.Provider allows the MobX store accessible to all components in it. Calling useContext allows any component to access MobX store which is a dependency injection.
-*   **React-Hook-Form**: It simplifies form creation and allows for state management and submission handling. It uses Zod to define a schema for validating user inputs. React-Hook-Form then checks users inputs against zod schema defined to ensure data matches rules before the form can be submitted.
 
+- **Vite:** Configured to run the development server on port 3000. Included mkcert to enable HTTPS for local development to mimick a production environment more closely.
+- **React Router:** In this Single Page Application, React Router handles navigation between different views without full page reloads. It improves user experience by updating necessary data and re-renders necessary views only. NavLink is used to detect active state of links for styling navigation bar to indicate the current page.
+- **React Query:** It handles fetching, automatic caching, synchronising and updating server data in client side with significant reduction in boilerplate. useQuery handles fetching all and single activities, caches them and only sends request to server again when data is stale or invalidated. useMutation handles creating, updating and deleting an activity. It invalidates data so useQuery will be triggered to refetch all activities.
+- **Axios:** It makes API requests from the browser to the backend. It automatically parses JSON data, intercepts request and response to set loading state and handles error through toast or navigating to error page.
+- **MobX:** It is used to manage Loading bar by making isLoading an observable with methods to set it true or false. It provides a clean way to re-render LinearProgress according to observable by wrapping it under the observer Higher Order Component.
+- **Context API:** Instead of doing prop drilling, create context of MobX store, then wrap the entire application under Context.Provider allows the MobX store accessible to all components in it. Calling useContext allows any component to access MobX store which is a dependency injection.
+- **React-Hook-Form**: It simplifies form creation and allows for state management and submission handling. It uses Zod to define a schema for validating user inputs. React-Hook-Form then checks users inputs against zod schema defined to ensure data matches rules before the form can be submitted.
 
 ### Backend: .NET (C#)
-*   **Clean Architecture:** It is domain centric and sets inner layers to be independent of external layers. Domain Layer (most inner) is independent of other layers and it contains business entities. Persistence layer handles saving and fetching objects from database. It depends on Domain layer. Application layer handles application logic (use cases), it depends on Domain and Persistence layers. It interacts with the database by injecting dependency from Persistence layer.  API layer handles HTTP requests and contains controllers, it depends on Application and Domain layer. In doing so, changing external layers like UI framework or Database won't affect business entities. It allows the app become scalable and maintanable. 
-*   **CQRS:** It separates operations into Queries (read data) and Commands (write data) to simplify business logic.
-*   **Controllers:** Middleware processes the request to controller then controller sends them to Mediator and returns HTTP responses.
-*   **Mediator Pattern:** Mediator decouples API controllers from the application logic handles. Whenever a HTTP request comes in, controllers will send command or query objects to Mediator. Mediator will then go through its pipeline to validate data received before dispatching the handler.
-*   **Fluent Validation:** It defines validation rules and validates data against rules set before passing to the command handlers.
-*   **AutoMapper:** It automatically maps source object to destination object, so data is in the right format before saving while significantly reducing boilerplates.
-*   **Entity Framework Core:** It is an Object Relational Mapper that translates LINQ queries into SQL commands to interact with the database. It maps business entities to database tables and speeds up development.
-*   **Middleware:** It chains middleware components together to form middleware pipeline to handle HTTP requests. When a result is returned by the Controller, it will propagate upwards in middleware pipeline until the top. Then .NET will send it to the client.
-*   **CORS:** It allows frontend to send requests with any header and method to the server.
-*   **Postman:** It is for testing API.
 
+- **Clean Architecture:** It is domain centric and sets inner layers to be independent of external layers. Domain Layer (most inner) is independent of other layers and it contains business entities. Persistence layer handles saving and fetching objects from database. It depends on Domain layer. Application layer handles application logic (use cases), it depends on Domain and Persistence layers. It interacts with the database by injecting dependency from Persistence layer. API layer handles HTTP requests and contains controllers, it depends on Application and Domain layer. In doing so, changing external layers like UI framework or Database won't affect business entities. It allows the app become scalable and maintanable.
+- **CQRS:** It separates operations into Queries (read data) and Commands (write data) to simplify business logic.
+- **Controllers:** Middleware processes the request to controller then controller sends them to Mediator and returns HTTP responses.
+- **Mediator Pattern:** Mediator decouples API controllers from the application logic handles. Whenever a HTTP request comes in, controllers will send command or query objects to Mediator. Mediator will then go through its pipeline to validate data received before dispatching the handler.
+- **Fluent Validation:** It defines validation rules and validates data against rules set before passing to the command handlers.
+- **AutoMapper:** It automatically maps source object to destination object, so data is in the right format before saving while significantly reducing boilerplates.
+- **Entity Framework Core:** It is an Object Relational Mapper that translates LINQ queries into SQL commands to interact with the database. It maps business entities to database tables and speeds up development.
+- **Middleware:** It chains middleware components together to form middleware pipeline to handle HTTP requests. When a result is returned by the Controller, it will propagate upwards in middleware pipeline until the top. Then .NET will send it to the client.
+- **CORS:** It allows frontend to send requests with any header and method to the server.
+- **ASPNET Core Identity:** It manages Identity of the application.
+- **Postman:** It is for testing API.
 
 ### Styling: Material-UI
-  
+
 ## Upcoming Features
+
 - Identity
 - Client login and register
 - Configuration of Entity Framework Relationships
