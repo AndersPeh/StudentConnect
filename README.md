@@ -70,7 +70,7 @@ Currently under active development as a self-learning project.
 - **Entity Framework Core:** It is an Object Relational Mapper that translates LINQ queries into SQL commands to interact with the database. It maps business entities to database tables and speeds up development.
 - **Middleware:** It chains middleware components together to form middleware pipeline to handle HTTP requests. When a result is returned by the Controller, it will propagate upwards in middleware pipeline until the top. Then .NET will send it to the client.
 - **CORS:** It allows frontend to send requests with any header and method to the server.
-- **ASPNET Core Identity:** It manages Identity of the application.
+- **ASPNET Core Identity:** It manages Identity of the application using Cookie. The cookie is HttpOnly, malicious Javascript will not be able to access the cookie. Https makes sending cookie over the network secure.
 - **Postman:** It is for testing API.
 
 ### Styling: Material-UI
