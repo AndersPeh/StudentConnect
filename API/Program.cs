@@ -99,7 +99,7 @@ app.UseAuthorization();
 // by dropping "Controller" from controllers to match route to controller name.
 app.MapControllers();
 
-// /api will be added to any route of identity endpoints.
+// The route of /api will be added to any route of identity endpoints such as login, register, logout, manage/info etc.
 app.MapGroup("api").MapIdentityApi<User>();
 
 // *******************************************************************************************************

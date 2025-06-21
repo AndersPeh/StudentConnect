@@ -10,7 +10,7 @@ const sleep = (delay:number) =>{
 }
 
 const agent = axios.create({
-    // by using .env.development, no need to hardcode URL.
+    // by using .env.development, no need to hardcode URL, it will automatically follow url set in .env.developer. https://localhost:5001/api
     baseURL:import.meta.env.VITE_API_URL,
     // the browser will send cookie with every API request after logging in.
     withCredentials: true

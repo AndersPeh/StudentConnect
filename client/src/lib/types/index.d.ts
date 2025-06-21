@@ -1,3 +1,4 @@
+// define objects structure here for Typescript.
 type Activity = {
   id: string
   title: string
@@ -11,7 +12,14 @@ type Activity = {
   longitude: number
 }
 
-export type LocationIQSuggestion = {
+type User = {
+  id: string;
+  email: string;
+  displayName: string;
+  imageUrl?: string;
+}
+
+type LocationIQSuggestion = {
     place_id:        string;
     osm_id:          string;
     osm_type:        string;
@@ -27,7 +35,7 @@ export type LocationIQSuggestion = {
     address:         LocationIQAddress;
 }
 
-export type LocationIQAddress = {
+type LocationIQAddress = {
     name:           string;
     house_number:   string;
     road:           string;

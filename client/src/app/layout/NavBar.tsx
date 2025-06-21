@@ -12,10 +12,14 @@ import { NavLink } from "react-router";
 import MenuItemLink from "../shared/components/MenuItemLink";
 import { useStore } from "../../lib/hooks/useStore";
 import { Observer } from "mobx-react-lite";
+import { useAccount } from "../../lib/hooks/useAccount";
 
 export default function NavBar() {
   // access uiStore from useStore -> useContext -> StoreContext.Provider -> store -> uiStore.
   const { uiStore } = useStore();
+
+  // to get currentUser from the useQuery that GET logged in user information.
+  const { currentUser } = useAccount();
 
   return (
     // Box allows NavBar to take full width.
@@ -55,7 +59,16 @@ export default function NavBar() {
               <MenuItemLink to="/errors">Errors</MenuItemLink>
             </Box>
             {/* Section 3 of NavBar. */}
-            <MenuItem>User Menu</MenuItem>
+            <Box display="flex" alignItems="center">
+              {currentUser ? (
+                <Typography>Welcome {currentUser.displayName}</Typography>
+              ) : (
+                <>
+                  <MenuItemLink to="/login">Login</MenuItemLink>
+                  <MenuItemLink to="/register">Register</MenuItemLink>
+                </>
+              )}
+            </Box>
           </Toolbar>
         </Container>
 

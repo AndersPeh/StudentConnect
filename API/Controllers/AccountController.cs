@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
+// Although Identity system provides default route, creating custom routes here for more tailored solutions.
 // inherits features of BaseApiController like [Route("api/[controller]")].
 // the base route becomes api/account by automatically removing Controller from AccountController and changing it to lowercase.
 // takes signInManager of User from Dependency Injection to manipulate Identity System.
