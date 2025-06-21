@@ -11,7 +11,9 @@ const sleep = (delay:number) =>{
 
 const agent = axios.create({
     // by using .env.development, no need to hardcode URL.
-    baseURL:import.meta.env.VITE_API_URL
+    baseURL:import.meta.env.VITE_API_URL,
+    // the browser will send cookie with every API request after logging in.
+    withCredentials: true
 });
 
 // when the request is going out, set isLoading to true.

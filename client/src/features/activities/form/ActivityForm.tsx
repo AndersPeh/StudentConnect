@@ -34,6 +34,8 @@ export default function ActivityForm() {
   // extract id from URL path then pass it to useActivities to execute the query that is only enabled when there is id.
   const { id } = useParams();
 
+  // id can be undefined because useActivities sets enabled: !id as the trigger condition for useQuery of all activites, enabled: !!id for fetching particular activity.
+  // updateActivity is only used when activity is available which is from fetching specific activity when id is available.
   const { updateActivity, createActivity, activity, isLoadingActivity } =
     useActivities(id);
 

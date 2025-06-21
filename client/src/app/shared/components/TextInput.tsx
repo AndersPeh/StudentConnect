@@ -8,7 +8,7 @@ import {
 // & is an intersection type operator, it means an object of type Props must have all required properties
 // from UseControllerProps (name, control) and TextFieldProps (no required property).
 // control and name props belong to UseControllerProps, label prop belongs to TextFieldProps.
-// Because control provided is <ActivitySchema> type, <T> automatically becomes <ActivitySchema> type.
+// If control provided is <ActivitySchema> type, <T> automatically becomes <ActivitySchema> type.
 // Because of <T extends FieldValues>, <T> becomes <ActivitySchema> object where keys are strings and any values.
 // For example, name="title". name becomes key and this key has to match one of the keys in activitySchema.
 type Props<T extends FieldValues> = {} & UseControllerProps<T> & TextFieldProps;
@@ -31,10 +31,10 @@ export default function TextInput<T extends FieldValues>(props: Props<T>) {
       value={field.value || ""}
       fullWidth
       variant="outlined"
-      // After zodResolver validates the field value, if it doesnt match ActivitySchema, it returns error object to here.
+      // After zodResolver validates the field value, if it doesnt match the defined Schema, it returns error object to here.
       // highlights the border of textfield red when the fieldState exists in errors object.
       error={!!fieldState.error}
-      // displays validation message from activitySchema.
+      // displays validation message from defined Schema.
       helperText={fieldState.error?.message}
     />
   );

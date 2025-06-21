@@ -8,6 +8,7 @@ import Counter from "../../features/counter/Counter";
 import TestErrors from "../../features/errors/TestErrors";
 import NotFound from "../../features/errors/NotFound";
 import ServerError from "../../features/errors/ServerError";
+import LoginForm from "../../features/account/LoginForm";
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +40,8 @@ export const router = createBrowserRouter([
       { path: "not-found", element: <NotFound /> },
 
       { path: "server-error", element: <ServerError /> },
+
+      { path: "login", element: <LoginForm /> },
 
       // when user visits a page that doesnt exist, the user will be redirected to not found.
       { path: "*", element: <Navigate replace to="/not-found" /> },
