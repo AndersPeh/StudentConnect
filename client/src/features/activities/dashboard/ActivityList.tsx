@@ -3,9 +3,11 @@ import ActivityCard from "./ActivityCard";
 import { useActivities } from "../../../lib/hooks/useActivities";
 
 export default function ActivityList() {
-  const { activities, isPending } = useActivities();
+  const { activities, isLoading } = useActivities();
 
-  if (!activities || isPending) return <Typography>Loading...</Typography>;
+  if (isLoading) return <Typography>Loading...</Typography>;
+
+  if (!activities) return <Typography>No activity found.</Typography>;
 
   return (
     // main container, display: "flex" displays in row but activates gap property, set flexDirection to be vertical and gap of each ActivityCard 3.

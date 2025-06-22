@@ -5,11 +5,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Paper, Typography } from "@mui/material";
 import { LockOpen } from "@mui/icons-material";
 import TextInput from "../../app/shared/components/TextInput";
+import { useLocation, useNavigate } from "react-router";
 
 export default function LoginForm() {
   //destructure the loginUser returned by useAccount to get access to the useMutation instance to trigger login and state properties like isSubmitting.
   const { loginUser } = useAccount();
-
+  const navigate = useNavigate();
+  const location = useLocation();
   // setup for react hook form.
   const {
     // control connects input components like TextInput to the form state and validation logic (set in loginSchema for validation logic and mode for timing of validation).
@@ -29,7 +31,14 @@ export default function LoginForm() {
   // onSubmit only accepts LoginSchema data type.
   const onSubmit = async (data: LoginSchema) => {
     // calls mutate function from the loginUser to pass validated user credentials in login request through axios.post to backend API.
-    await loginUser.mutateAsync(data);
+    // mutateAsync instead of mutate only because need to await for the user info data.
+    await loginUser.mutateAsync(data, {
+      onSuccess: () => {
+        // if the state stores the page where user was initially from, navigate user to there after logging in.
+        // if the user directly visited the login page, send user to homepage displaying activities list.
+        navigate(location.state?.from || "/activities");
+      },
+    });
   };
 
   return (

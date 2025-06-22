@@ -9,6 +9,7 @@ import TestErrors from "../../features/errors/TestErrors";
 import NotFound from "../../features/errors/NotFound";
 import ServerError from "../../features/errors/ServerError";
 import LoginForm from "../../features/account/LoginForm";
+import RequireAuth from "./RequireAuth";
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +20,21 @@ export const router = createBrowserRouter([
     element: <App />,
 
     children: [
+      {
+        element: <RequireAuth />,
+        // children (routes) specified here will require Authentication else user will be redirected to login form.
+        // basically apply RequireAuth logic to children routes.
+        children: [
+          { path: "activities", element: <ActivityDashboard /> },
+
+          { path: "activities/:id", element: <ActivityDetailPage /> },
+
+          { path: "manage/:id", element: <ActivityForm /> },
+
+          { path: "createActivity", element: <ActivityForm key="create" /> },
+        ],
+      },
+
       { path: "", element: <HomePage /> },
 
       // can't use prop drilling from parent component to children component anymore,

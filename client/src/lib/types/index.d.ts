@@ -1,4 +1,4 @@
-// define objects structure here for Typescript.
+// define objects type here for Typescript.
 type Activity = {
   id: string
   title: string

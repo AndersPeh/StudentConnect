@@ -1,20 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import agent from "../api/agent";
 import { useLocation } from "react-router";
-import type { Activity } from "../types";
 import type { FieldValues } from "react-hook-form";
+import { useAccount } from "./useAccount";
 
 // useQuery for fetching data, useMutation for creating / updating data.
 export const useActivities = (id?: string) => {
 
   const queryClient = useQueryClient();
+
+  const {currentUser} = useAccount();
+
   // get path URL location.
   const location = useLocation();
 
   // useQuery is automatically executed when the App component mounts.
   // destructures useQuery to get {data}, put it into variable named activities.
-  // useQuery manages loading state while queryFn is running. isPending is true during that process.
-  const { data: activities, isPending } = useQuery({
+  // useQuery manages loading state while queryFn is running. isLoading when first fetch of a query is running.
+  const { data: activities, isLoading } = useQuery({
     // queryKey is the unique id for useQuery to check internal cache to see if there is already data for this queryKey.
     // If there is data in the cache, useQuery returns data without fetching.
     queryKey: ["activities"],
@@ -35,7 +38,7 @@ export const useActivities = (id?: string) => {
 
     // dont execute this useQuery when there is id (should execute useQuery for specific activity).
     // execute this useQuery when the pathname is /activities only.
-    enabled: !id && location.pathname==='/activities',
+    enabled: !id && location.pathname==='/activities' && !!currentUser,
 
     // make a staletime of 5 seconds so React Query won't mark any data as stale for the time period unless it is invalidated. 
     // When it is refreshed, React Query will fetch data from cache instead of making new request.
@@ -52,7 +55,7 @@ export const useActivities = (id?: string) => {
     },
     // without enable, useQuery of specific activity will run everytime when the app runs, resulting in undefined.
     // only enable it when id is true (passed from ActivityDetail), (!!id) converts id into boolean.
-    enabled: !!id
+    enabled: !!id && !!currentUser
   });
 
   const updateActivity = useMutation({
@@ -92,7 +95,7 @@ export const useActivities = (id?: string) => {
   })
 
   return { activities, 
-    isPending, 
+    isLoading, 
     updateActivity, 
     createActivity, 
     deleteActivity,
