@@ -36,14 +36,28 @@ Currently under active development as a self-learning project.
 <table>
   <tr align="center">
     <td><p>Details Screen</p><img src="AppPics/ActivityDetails.png" width="100%"></td>
-    <td><p>Form Screen</p><img src="AppPics/ActivityForm.png" width="100%"></td>
+    <td><p>Form Screen</p><img src="AppPics/EditActivity.png" width="100%"></td>
   </tr>
 </table>
 
 <table>
   <tr align="center">
-    <td><p>Not Found Error</p><img src="AppPics/NotFound.png" width="100%"></td>
-    <td><p>Input Validation</p><img src="AppPics/InputValidation.png" width="100%"></td>
+    <td><p>Details Screen</p><img src="AppPics/CreateActivity.png" width="100%"></td>
+    <td><p>Form Screen</p><img src="AppPics/NotFound.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr align="center">
+    <td><p>Not Found Error</p><img src="AppPics/InputValidation_AddressAutoCompletion.png" width="100%"></td>
+    <td><p>Input Validation</p><img src="AppPics/Registration_Validation.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr align="center">
+    <td><p>Not Found Error</p><img src="AppPics/SignInValidation.png" width="100%"></td>
+    <td><p>Input Validation</p><img src="AppPics/ComplexPasswordValidation.png" width="100%"></td>
   </tr>
 </table>
 
@@ -77,8 +91,6 @@ Currently under active development as a self-learning project.
 
 ## Upcoming Features
 
-- Identity
-- Client login and register
 - Configuration of Entity Framework Relationships
 - Client side attendance feature
 - API Image upload
