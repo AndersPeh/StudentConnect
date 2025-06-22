@@ -65,7 +65,7 @@ export default function UserMenu() {
         <Divider />
         <MenuItem
           onClick={() => {
-            // use mutate only instead of mutateasync as we dont need to await the result.
+            // use mutate only instead of mutateasync as we dont need to await the result to perform anything after logging out user.
             logoutUser.mutate();
             handleClose();
           }}

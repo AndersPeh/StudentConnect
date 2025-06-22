@@ -1,42 +1,52 @@
 import { useForm } from "react-hook-form";
 import { useAccount } from "../../lib/hooks/useAccount";
-import { loginSchema, type LoginSchema } from "../../lib/schemas/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Paper, Typography } from "@mui/material";
 import { LockOpen } from "@mui/icons-material";
 import TextInput from "../../app/shared/components/TextInput";
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link } from "react-router";
+import {
+  registerSchema,
+  type RegisterSchema,
+} from "../../lib/schemas/registerSchema";
 
-export default function LoginForm() {
-  // destructure the loginUser returned by useAccount to get access to the useMutation instance to trigger login and state properties like isSubmitting.
-  const { loginUser } = useAccount();
-  const navigate = useNavigate();
-  const location = useLocation();
+export default function RegisterForm() {
+  // destructure the registerUser returned by useAccount to get access to the useMutation instance to trigger register and state properties like isSubmitting.
+  const { registerUser } = useAccount();
   // setup for react hook form.
   const {
-    // control connects input components like TextInput to the form state and validation logic (set in loginSchema for validation logic and mode for timing of validation).
+    // control connects input components like TextInput to the form state and validation logic (set in registerSchema for validation logic and mode for timing of validation).
     control,
     // handles form submission, it triggers validation then calls onSubmit function.
     handleSubmit,
     // status of the form. isValid is true if all fields pass validation.
     formState: { isValid, isSubmitting },
-    // the form has to match LoginSchema.
-  } = useForm<LoginSchema>({
+    // React Hook Form allows manually setting error for each field based on error message from the API.
+    setError,
+    // the form has to match RegisterSchema.
+  } = useForm<RegisterSchema>({
     // sets validation to run when a user clicks out of a field for instant feedback.
     mode: "onTouched",
-    // tells react hook form to use loginSchema for validation.
-    resolver: zodResolver(loginSchema),
+    // tells react hook form to use registerSchema for validation.
+    resolver: zodResolver(registerSchema),
   });
 
-  // onSubmit only accepts LoginSchema data type.
-  const onSubmit = async (data: LoginSchema) => {
-    // calls mutate function from the loginUser to pass validated user credentials in login request through axios.post to backend API.
-    // mutateAsync instead of mutate only because need to await for the user info data to be returned before navigating the user to their intended page.
-    await loginUser.mutateAsync(data, {
-      onSuccess: () => {
-        // if the state stores the page where user was initially from, navigate user to there after logging in.
-        // if the user directly visited the login page, send user to homepage displaying activities list.
-        navigate(location.state?.from || "/activities");
+  // onSubmit only accepts RegisterSchema data type.
+  const onSubmit = async (data: RegisterSchema) => {
+    // calls mutate function from the registerUser to pass validated user credentials in register request through axios.post to backend API.
+    // mutateAsync is needed to wait and display the error after mutation.
+    await registerUser.mutateAsync(data, {
+      // when receive error message from the API, if the error message is an array, loop through the error array,
+      // if the individual error includes email, set it as the error message of email field so it will be displayed in red under email field.
+      // same logic for password.
+      onError: (error) => {
+        if (Array.isArray(error)) {
+          error.forEach((err) => {
+            if (err.includes("Email")) setError("email", { message: err });
+            else if (err.includes("Password"))
+              setError("password", { message: err });
+          });
+        }
       },
     });
   };
@@ -65,10 +75,11 @@ export default function LoginForm() {
       >
         {/* displays unlocked icon */}
         <LockOpen fontSize="large" />
-        <Typography variant="h4">Sign In</Typography>
+        <Typography variant="h4">Register</Typography>
       </Box>
       {/* control={control} connects TextInput to react hook form so it will be validated and managed according to useForm configuration. */}
       <TextInput label="Email" control={control} name="email" />
+      <TextInput label="Display Name" control={control} name="displayName" />
       {/* type='password' for hiding password. */}
       <TextInput
         label="Password"
@@ -82,18 +93,18 @@ export default function LoginForm() {
         variant="contained"
         size="large"
       >
-        Login
+        Register
       </Button>
       <Typography sx={{ textAlign: "center" }}>
-        New user?
+        Existing user?
         {/* use Link instead of NavLink from React Router here because no active styling is needed. */}
         <Typography
           sx={{ marginLeft: 2 }}
           component={Link}
-          to="/register"
+          to="/login"
           color="primary"
         >
-          Register
+          Sign In
         </Typography>
       </Typography>
     </Paper>

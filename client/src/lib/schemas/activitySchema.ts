@@ -1,9 +1,5 @@
 import {z} from 'zod';
-
-const requiredString = (fieldName: string) => z
-    .string({required_error: `${fieldName} is required`})
-
-    .min(1, {message: `${fieldName} is required`});
+import { requiredString } from '../util/util';
 
 // activitySchema defines the shape of the form's data, the form must have following keys.
 // z.object means define an object schema.

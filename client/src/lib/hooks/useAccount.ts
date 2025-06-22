@@ -1,7 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import type { LoginSchema } from "../schemas/loginSchema"
 import agent from "../api/agent";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
+import type { RegisterSchema } from "../schemas/registerSchema";
+import { toast } from "react-toastify";
 
 export const useAccount = () => {
     // to use invalidate queries on user queryKey (to run getting user information again.)
@@ -9,6 +11,8 @@ export const useAccount = () => {
 
     // for navigating to other pages.
     const navigate = useNavigate();
+
+    const location = useLocation();
 
     // useMutation for handling login process.
     const loginUser = useMutation({
@@ -28,6 +32,18 @@ export const useAccount = () => {
             });
         }
     });
+
+    // send POST request to register endpoint to register user and validate credentials and check against the database.
+    const registerUser = useMutation({
+        mutationFn: async (creds: RegisterSchema) => {
+            // For register, we made custom controller for that, need to use /account/register.
+            await agent.post('/account/register', creds);
+        },
+        onSuccess:() =>{
+            toast.success('Successful Registration: You can login now!');
+            navigate('/login');
+        }
+    })
 
     // send POST request to logout endpoint to log out and remove the user information and activities received from useQuery previously.
     const logoutUser = useMutation({
@@ -54,7 +70,8 @@ export const useAccount = () => {
             return response.data;
         },
         // only get user information when user data doesnt exist else it will be stale and try again to get user info.
-        enabled: !queryClient.getQueryData(['user'])
+        // if the pathname is login or register, dont send GET request to get user info.
+        enabled: !queryClient.getQueryData(['user'])  && location.pathname !== '/login' && location.pathname !== '/register'
     })
 
     // useAccount hook returns an object that contains this 'loginUser' constant.
@@ -63,5 +80,6 @@ export const useAccount = () => {
         currentUser,
         logoutUser,
         loadingUserInfo,
+        registerUser,
     }
 }

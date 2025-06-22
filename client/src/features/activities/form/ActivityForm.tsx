@@ -132,7 +132,16 @@ export default function ActivityForm() {
         />
 
         <Box display="flex" justifyContent="end" gap={3}>
-          <Button color="inherit">Cancel</Button>
+          {/* Add type = button because any button inside a form acts as type = submit which triggers onSubmit by default. 
+          type = button tells the browser that this button is not for submitting the form.
+          */}
+          <Button
+            color="inherit"
+            onClick={() => navigate("/activities")}
+            type="button"
+          >
+            Cancel
+          </Button>
           <Button
             type="submit"
             color="success"
