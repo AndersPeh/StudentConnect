@@ -2,15 +2,14 @@
 
 ## Connecting Students Across Universities
 
-**StudentConnect** started after I identified a lack of a centralised platform for 1.6 million university students in Australia to connect across universities. I am currently developing a full-stack application using React and .NET to address the need. This application aims to be a dedicated platform for students from different universities to connect, collaborate, and interact.
+**StudentConnect** started after I identified a lack of a centralised social event platform for 1.6 million university students in Australia to connect across universities. I am currently developing a full-stack application using React and .NET to address the need. This application aims to be a dedicated platform for students from different universities to connect, collaborate, and interact.
 
 ### The Challenge for Students Today
 
 As a student, I've experienced firsthand the difficulties in connecting with students for various activities:
 
 - **Finding Event Buddies:** Navigating numerous, often spam-filled Social Media groups to find people for events is a hassle. It's hard to find active groups with genuine members.
-- **Collaborating on Career Development:** Students are often looking for other students to work on projects, join competitions, or share career advice, but a centralised platform for this is missing.
-- **Trading and Selling Items:** When students want to sell textbooks, furniture, or other items to other students at reasonable prices, they struggle to find an effective, targeted marketplace beyond inactive social media groups.
+- **Collaborating on Career Development:** Students are often looking for other students to work on projects, join competitions, or hangout, but a centralised platform for this is missing.
 
 The core issue is clear: **University students need a dedicated, trustworthy, and engaging space to connect with others, both within their own university and with students from other universities.**
 
@@ -19,8 +18,7 @@ The core issue is clear: **University students need a dedicated, trustworthy, an
 It's being built to provide a focused environment where students can:
 
 - **Current Focus:** Hang Out & Network- Organise or join professional events, competitions, or social gatherings.
-- Upcoming: Career Growth- Collaborate on projects, share internship opportunities, and support each other's professional development.
-- Upcoming: Student Marketplace- A safe and easy way to buy, sell, or trade items with other students.
+- Upcoming: Career Growth- Collaborate on projects, hacktathon, and support each other's professional development.
 
 ### Project Status
 
@@ -36,14 +34,28 @@ Currently under active development as a self-learning project.
 <table>
   <tr align="center">
     <td><p>Details Screen</p><img src="AppPics/ActivityDetails.png" width="100%"></td>
-    <td><p>Form Screen</p><img src="AppPics/ActivityForm.png" width="100%"></td>
+    <td><p>Edit Activity Form</p><img src="AppPics/EditActivity.png" width="100%"></td>
   </tr>
 </table>
 
 <table>
   <tr align="center">
+    <td><p>Create Activity Form</p><img src="AppPics/CreateActivity.png" width="100%"></td>
     <td><p>Not Found Error</p><img src="AppPics/NotFound.png" width="100%"></td>
-    <td><p>Input Validation</p><img src="AppPics/InputValidation.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr align="center">
+    <td><p>Form Input Validation and Address Auto Completion</p><img src="AppPics/InputValidation_AddressAutoCompletion.png" width="100%"></td>
+    <td><p>Registration Validation</p><img src="AppPics/Registration_Validation.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr align="center">
+    <td><p>Sign In Form Validation</p><img src="AppPics/SignInValidation.png" width="100%"></td>
+    <td><p>Complex Password Validation</p><img src="AppPics/ComplexPasswordValidation.png" width="100%"></td>
   </tr>
 </table>
 
@@ -53,7 +65,7 @@ Currently under active development as a self-learning project.
 
 - **Vite:** Configured to run the development server on port 3000. Included mkcert to enable HTTPS for local development to mimick a production environment more closely.
 - **React Router:** In this Single Page Application, React Router handles navigation between different views without full page reloads. It improves user experience by updating necessary data and re-renders necessary views only. NavLink is used to detect active state of links for styling navigation bar to indicate the current page.
-- **React Query:** It handles fetching, automatic caching, synchronising and updating server data in client side with significant reduction in boilerplate. useQuery handles fetching all and single activities, caches them and only sends request to server again when data is stale or invalidated. useMutation handles creating, updating and deleting an activity. It invalidates data so useQuery will be triggered to refetch all activities.
+- **React Query:** It handles fetching, automatic caching, synchronising and updating server data in client side with significant reduction in boilerplate. useQuery handles fetching all and single activities, caches them and only sends request to server again when data is stale or invalidated. useMutation handles creating, updating and deleting data. It invalidates data so useQuery will be triggered to refetch data. React Query is also used to remove queries for authentication purpose.
 - **Axios:** It makes API requests from the browser to the backend. It automatically parses JSON data, intercepts request and response to set loading state and handles error through toast or navigating to error page.
 - **MobX:** It is used to manage Loading bar by making isLoading an observable with methods to set it true or false. It provides a clean way to re-render LinearProgress according to observable by wrapping it under the observer Higher Order Component.
 - **Context API:** Instead of doing prop drilling, create context of MobX store, then wrap the entire application under Context.Provider allows the MobX store accessible to all components in it. Calling useContext allows any component to access MobX store which is a dependency injection.
@@ -77,9 +89,6 @@ Currently under active development as a self-learning project.
 
 ## Upcoming Features
 
-- Identity
-- Client login and register
-- Configuration of Entity Framework Relationships
 - Client side attendance feature
 - API Image upload
 - Client Image upload
@@ -88,5 +97,4 @@ Currently under active development as a self-learning project.
 - Paging, Sorting, Filtering
 - Connect to Sql Server
 - Deploy to Azure
-- Identity Cookbook
 - Only users with email that ends with .edu.au can register.
