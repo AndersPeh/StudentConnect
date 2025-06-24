@@ -1271,6 +1271,22 @@
           "bin/placeholder/Domain.dll": {}
         }
       },
+      "Infrastructure/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Application": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Infrastructure.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Infrastructure.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Persistence/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
@@ -3453,6 +3469,11 @@
       "path": "../Domain/Domain.csproj",
       "msbuildProject": "../Domain/Domain.csproj"
     },
+    "Infrastructure/1.0.0": {
+      "type": "project",
+      "path": "../Infrastructure/Infrastructure.csproj",
+      "msbuildProject": "../Infrastructure/Infrastructure.csproj"
+    },
     "Persistence/1.0.0": {
       "type": "project",
       "path": "../Persistence/Persistence.csproj",
@@ -3462,6 +3483,7 @@
   "projectFileDependencyGroups": {
     "net9.0": [
       "Application >= 1.0.0",
+      "Infrastructure >= 1.0.0",
       "Microsoft.EntityFrameworkCore.Design >= 9.0.0"
     ]
   },
@@ -3492,6 +3514,9 @@
           "projectReferences": {
             "C:\\Users\\Anders\\OneDrive - Griffith University\\Desktop\\self learning\\Dotnet\\StudentConnect\\Application\\Application.csproj": {
               "projectPath": "C:\\Users\\Anders\\OneDrive - Griffith University\\Desktop\\self learning\\Dotnet\\StudentConnect\\Application\\Application.csproj"
+            },
+            "C:\\Users\\Anders\\OneDrive - Griffith University\\Desktop\\self learning\\Dotnet\\StudentConnect\\Infrastructure\\Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\Anders\\OneDrive - Griffith University\\Desktop\\self learning\\Dotnet\\StudentConnect\\Infrastructure\\Infrastructure.csproj"
             }
           }
         }

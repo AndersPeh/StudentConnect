@@ -2,8 +2,10 @@ using API.Middleware;
 using Application.Activities.Queries;
 using Application.Activities.Validators;
 using Application.Core;
+using Application.Interfaces;
 using Domain;
 using FluentValidation;
+using Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -51,6 +53,11 @@ builder.Services.AddMediatR(x =>
     x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>();
 
 });
+
+// tells DI container to map the IUserAccessor interface to the UserAccessor class.
+// AddScoped means a new instance is created once per HTTP request, the DI container will use the same instance for every code that uses
+// DI to inject it until the HTTP request is finished.
+builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 
 // Registers AddAutoMapper with DI container.
 // AutoMapper will look for typeof(MappingProfiles) in Assembly of Application Layer, 
@@ -102,7 +109,7 @@ app.MapControllers();
 // The route of /api will be added to any route of identity endpoints such as login, register, logout, manage/info etc.
 app.MapGroup("api").MapIdentityApi<User>();
 
-// *******************************************************************************************************
+// *******************************************************************************************************************************************************
 // Create temporary DI scope for startup tasks to resolve and dispose services (AppDbContext instance) after try block finishes and before the application starts running (app.Run).
 using var scope = app.Services.CreateScope();
 
