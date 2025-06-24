@@ -2,15 +2,14 @@
 
 ## Connecting Students Across Universities
 
-**StudentConnect** started after I identified a lack of a centralised platform for 1.6 million university students in Australia to connect across universities. I am currently developing a full-stack application using React and .NET to address the need. This application aims to be a dedicated platform for students from different universities to connect, collaborate, and interact.
+**StudentConnect** started after I identified a lack of a centralised social event platform for 1.6 million university students in Australia to connect across universities. I am currently developing a full-stack application using React and .NET to address the need. This application aims to be a dedicated platform for students from different universities to connect, collaborate, and interact.
 
 ### The Challenge for Students Today
 
 As a student, I've experienced firsthand the difficulties in connecting with students for various activities:
 
 - **Finding Event Buddies:** Navigating numerous, often spam-filled Social Media groups to find people for events is a hassle. It's hard to find active groups with genuine members.
-- **Collaborating on Career Development:** Students are often looking for other students to work on projects, join competitions, or share career advice, but a centralised platform for this is missing.
-- **Trading and Selling Items:** When students want to sell textbooks, furniture, or other items to other students at reasonable prices, they struggle to find an effective, targeted marketplace beyond inactive social media groups.
+- **Collaborating on Career Development:** Students are often looking for other students to work on projects, join competitions, or hangout, but a centralised platform for this is missing.
 
 The core issue is clear: **University students need a dedicated, trustworthy, and engaging space to connect with others, both within their own university and with students from other universities.**
 
@@ -19,8 +18,7 @@ The core issue is clear: **University students need a dedicated, trustworthy, an
 It's being built to provide a focused environment where students can:
 
 - **Current Focus:** Hang Out & Network- Organise or join professional events, competitions, or social gatherings.
-- Upcoming: Career Growth- Collaborate on projects, share internship opportunities, and support each other's professional development.
-- Upcoming: Student Marketplace- A safe and easy way to buy, sell, or trade items with other students.
+- Upcoming: Career Growth- Collaborate on projects, hacktathon, and support each other's professional development.
 
 ### Project Status
 
@@ -91,7 +89,6 @@ Currently under active development as a self-learning project.
 
 ## Upcoming Features
 
-- Configuration of Entity Framework Relationships
 - Client side attendance feature
 - API Image upload
 - Client Image upload
@@ -100,5 +97,4 @@ Currently under active development as a self-learning project.
 - Paging, Sorting, Filtering
 - Connect to Sql Server
 - Deploy to Azure
-- Identity Cookbook
 - Only users with email that ends with .edu.au can register.
