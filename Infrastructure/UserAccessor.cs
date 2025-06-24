@@ -28,5 +28,12 @@ public class UserAccessor(IHttpContextAccessor httpContextAccessor, AppDbContext
         // if return null, throw error message.
         return httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)
             ?? throw new Exception("No user found");
+
+        // NameIdentifier = User ID. Can find it by adding Breakpoint at line var user = await userAccessor.GetUserAsync(); in CreateActivity.cs
+        // then run debugger (.Net Core Attach, select API.exe).
+        // send a POST request in Postman, another POST reqeust to create activity.
+        // HttpContext -> User -> Identity -> Claims -> nameidentifier.
+
+
     }
 }

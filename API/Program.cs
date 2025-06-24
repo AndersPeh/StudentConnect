@@ -55,7 +55,8 @@ builder.Services.AddMediatR(x =>
 });
 
 // tells DI container to map the IUserAccessor interface to the UserAccessor class.
-// AddScoped means a new instance is created once per HTTP request, the DI container will use the same instance for every code that uses
+// When any class requires injection of IUserAccessor, DI container injects UserAccessor because it is a concrete class that implements the interface.
+// AddScoped means a new instance is created once per HTTP request, the DI container will use the same instance for every class that uses
 // DI to inject it until the HTTP request is finished.
 builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 

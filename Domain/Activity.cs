@@ -6,8 +6,7 @@ namespace Domain;
 public class Activity
 {
     // this property has to be public for Entity Framework to access to it.
-    // GUID generates a new Globally Unique Identifier suitable for primary keys
-    // across different system.
+    // GUID generates a new Globally Unique Identifier suitable for primary keys across different layers.
     public string Id { get; set; } = Guid.NewGuid().ToString();
 
     // Because Id is initialised, it doesn't need "required", it won't be null.

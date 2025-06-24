@@ -166,3 +166,5 @@ C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\Stud
 C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\bin\Debug\net9.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\bin\Debug\net9.0\Microsoft.Extensions.Options.dll
 C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\bin\Debug\net9.0\Microsoft.Extensions.Primitives.dll
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\bin\Debug\net9.0\Infrastructure.dll
+C:\Users\Anders\OneDrive - Griffith University\Desktop\self learning\Dotnet\StudentConnect\API\bin\Debug\net9.0\Infrastructure.pdb
