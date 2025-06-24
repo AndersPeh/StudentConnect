@@ -12,5 +12,13 @@ public class User : IdentityUser
 
     public string? ImageUrl { get; set; }
 
+    // navigation properties (use conventional way to create a joint table for establishing many to many relationship with Activity table)
+    // however, this method doesn't allow us to customise the name or properties of the joint table.
+    // public ICollection<Activity> Activities { get; set; } = [];
+
+    // Navigation property Activities for establishing a one to many relationship from User to ActivityAttendee.
+    // A User can have many ActivityAttendee. This can be used to load attendees associated to the User.
+    // ICollection provides functionality like Add, Remove, Count for EF Core..
+    public ICollection<ActivityAttendee> Activities { get; set; } = [];
 
 }
