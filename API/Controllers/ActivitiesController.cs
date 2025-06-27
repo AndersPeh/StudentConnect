@@ -18,14 +18,14 @@ public class ActivitiesController : BaseApiController
     [HttpGet]
 
     // GetActivities method handles HTTP Get request /api/activities.
-    // It returns a List of Activity objects in ActionResult.
+    // It returns a List of ActivityDto objects in ActionResult.
     // Task <TResult> means the asynchronous operation returns a value of type TResult upon completion.
-    public async Task<ActionResult<List<Activity>>> GetActivities()
+    public async Task<ActionResult<List<ActivityDto>>> GetActivities()
 
     {
         // instantiates request object Query to Mediator. 
         // Mediator knows which handler to use because a handler in the Application layer is specified to handle GetActivityList.Query .
-        // After receiving result from Application layer, returns ActionResult which wraps a List of Activity (match Domain.Activity)
+        // After receiving result from Application layer, returns ActionResult which wraps a List of ActivityDto (match Domain.Activity)
         // into JSON body of ActionResult containing Status Code: 200 OK.
         return await Mediator.Send(new GetActivityList.Query());
     }
@@ -35,7 +35,7 @@ public class ActivitiesController : BaseApiController
     [HttpGet("{id}")]
 
     // GetActivityDetail uses a route template parameter {id}, so it expects a value in the URL path.
-    // It returns a Result type of Activity object indicating success or failure to HandleResult.
+    // It returns a Result type of ActivityDto object indicating success or failure to HandleResult.
     // HandleResult inherited from BaseApiController will return responses accordingly.
     public async Task<ActionResult<ActivityDto>> GetActivityDetail(string id)
 
