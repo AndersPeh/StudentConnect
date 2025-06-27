@@ -35,9 +35,9 @@ public class ActivitiesController : BaseApiController
     [HttpGet("{id}")]
 
     // GetActivityDetail uses a route template parameter {id}, so it expects a value in the URL path.
-    // It returns an Result type of Activity object indicating success or failure to HandleResult.
+    // It returns a Result type of Activity object indicating success or failure to HandleResult.
     // HandleResult inherited from BaseApiController will return responses accordingly.
-    public async Task<ActionResult<Activity>> GetActivityDetail(string id)
+    public async Task<ActionResult<ActivityDto>> GetActivityDetail(string id)
 
     {
 

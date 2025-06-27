@@ -19,6 +19,7 @@ public class Activity
 
     public required string Category { get; set; }
 
+    // if it's not set in the DTO, it will be set as false by default in C#.
     public bool IsCancelled { get; set; }
 
     // location props
