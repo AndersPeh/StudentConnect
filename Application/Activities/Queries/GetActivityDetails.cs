@@ -27,11 +27,11 @@ public class GetActivityDetails
             // FindAsync finds row with request.Id and returns details of the specific activity.
             // var activity = await context.Activities
             //     .FindAsync([request.Id], cancellationToken);
-
             var activity = await context.Activities
-                // For each activity object, access its Attendees navigation property,
-                // Then for each ActivityAttendee object, access its User navigation property.
-                // Find an Activity where its Id matches the request id.
+
+                // For the Activity object where its Id matches the request id, load its ActivityAttendee objects,
+                // Then for each ActivityAttendee object, load its User object. (this includes PasswordHash, SecurityStamp, TwoFactorEnabled etc.)
+                // need to use Projection method instead of eager loading to prevent loading unnecessary data.
                 .Include(x => x.Attendees)
                 .ThenInclude(x => x.User)
                 // Finds the first recorsd or return null.
