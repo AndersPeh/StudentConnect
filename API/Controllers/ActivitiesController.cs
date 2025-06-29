@@ -11,9 +11,20 @@ namespace API.Controllers;
 // ActivitiesController inherits from BaseApiController for features like Route("api/[controller]") and IMediator.
 // For ActivitiesController, .Net automatically removes Controller keyword, changes Activities to lowercase,
 // so the base route becomes api/activities.
+
+// Below is provided in Program.cs to set up the Mediator pipeline. Whenever ActivitiesController sends a Query or Command to the Mediator,
+// It will go to ValidationBehavior to use Validator if any for validating the request before it sending to the Handler.
+
+// builder.Services.AddMediatR(x =>
+// {
+//     x.AddOpenBehavior(typeof(ValidationBehavior<,>));
+//     x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>();
+// });
+
 public class ActivitiesController : BaseApiController
 {
-
+    // By segregating Command and Query Responbility, every class is kept simple to handle either read or write operations only.
+    // For Queries, they typically return DTOs.
     // API endpoint: GET /api/activities
     [HttpGet]
 
@@ -47,6 +58,7 @@ public class ActivitiesController : BaseApiController
     }
 
     // *******************************************************************************************************
+    // For Commands, they typically returns a simple success/ failure ActionResult or an ID, not a complex data object.
 
     [HttpPost]
 
@@ -79,5 +91,14 @@ public class ActivitiesController : BaseApiController
     public async Task<ActionResult> DeleteActivity(string id)
     {
         return HandleResult(await Mediator.Send(new DeleteActivity.Command { Id = id }));
+    }
+
+    // *******************************************************************************************************
+    [HttpPost("{id}/attend")]
+
+    // Attend takes ActivityId for updating attendance status, returns ActionResult (Success or Failure),
+    public async Task<ActionResult> Attend(string id)
+    {
+        return HandleResult(await Mediator.Send(new UpdateAttendance.Command { Id = id }));
     }
 }
