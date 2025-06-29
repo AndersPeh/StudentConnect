@@ -43,7 +43,7 @@ export default function ActivityForm() {
   useEffect(() => {
     // if id exists (means editing activity, activity will be truthy), reset will fill in the form with the data from activity object.
     if (activity)
-      // Because server returns cit, venue, latitude and longitude but client uses location object, use spread operator to get everything.
+      // Because server returns city, venue, latitude and longitude but client uses location object, use spread operator to get everything.
       // Then set location object in activity manually.
       reset({
         ...activity,

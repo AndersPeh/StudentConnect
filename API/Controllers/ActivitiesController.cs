@@ -75,10 +75,12 @@ public class ActivitiesController : BaseApiController
 
     // *******************************************************************************************************
 
-    [HttpPut]
+    [HttpPut("{id}")]
+    [Authorize(Policy = "IsActivityHost")]
 
-    public async Task<ActionResult> EditActivity(EditActivityDto activityDto)
+    public async Task<ActionResult> EditActivity(string id, EditActivityDto activityDto)
     {
+        activityDto.Id = id;
         return HandleResult(await Mediator.Send(new EditActivity.Command { ActivityDto = activityDto }));
     }
 
@@ -86,6 +88,7 @@ public class ActivitiesController : BaseApiController
 
     // when data is needed in the path, must specify in the HTTP method.
     [HttpDelete("{id}")]
+    [Authorize(Policy = "IsActivityHost")]
 
     // return Status 200 Ok if delete successfully.
     public async Task<ActionResult> DeleteActivity(string id)

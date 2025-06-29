@@ -5,7 +5,7 @@ using Domain;
 using Microsoft.AspNetCore.Http;
 using Persistence;
 
-namespace Infrastructure;
+namespace Infrastructure.Security;
 
 // UserAccessor is required to implement GetUserAsync and GetUserId methods.
 // httpContextAccessor is for accessing user info in the cookie.

@@ -90,8 +90,12 @@ export default function ActivityCard({ activity }: Props) {
       >
         <Typography variant="body2">{activity.description}</Typography>
         <Button
+          // Button behaves as a {Link} component from the React Router library.
           component={Link}
           // clicking this button will append activity.id to the URL path.
+          // This URL will match the route set in Routes.tsx { path: "activities/:id", element: <ActivityDetailPage /> },
+          // so React Router will automatically unmount the ActivityDashboard (parent section of ActivityCard),
+          // then mounts ActivityDetailPage.
           to={`/activities/${activity.id}`}
           size="medium"
           variant="contained"
