@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-// ActivitiesController inherits from BaseApiController for features like Route("api/[controller]") and IMediator.
+// ActivitiesController inherits from BaseApiController for features like Route("api/activities") and IMediator.
 // For ActivitiesController, .Net automatically removes Controller keyword, changes Activities to lowercase,
 // so the base route becomes api/activities.
 
@@ -76,6 +76,9 @@ public class ActivitiesController : BaseApiController
     // *******************************************************************************************************
 
     [HttpPut("{id}")]
+
+    // This applies the IsActivityHost policy from Program.cs to this API endpoint.
+    // Before executing the code inside this method, the user must be authenticated and satisfy the policy named IsActivityHost.
     [Authorize(Policy = "IsActivityHost")]
 
     public async Task<ActionResult> EditActivity(string id, EditActivityDto activityDto)

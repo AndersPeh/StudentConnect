@@ -84,14 +84,19 @@ builder.Services.AddIdentityApiEndpoints<User>(opt =>
 // tells the Identity system to use EF Core for storing user and role information.
 .AddEntityFrameworkStores<AppDbContext>();
 
+// Adds Authorization services to the DI container.
 builder.Services.AddAuthorization(opt =>
 {
+    // Adds a new policy named IsActivityHost, for reference in ActivitiesController.cs.
     opt.AddPolicy("IsActivityHost", policy =>
     {
+        // In order to satisfy IsActivityHost policy, the authorization middleware will look for a handler to satisfy IsHostRequirement.
         policy.Requirements.Add(new IsHostRequirement());
     });
 });
 
+// Registers the handler with the DI container. When the system processes an IAuthorizationRequirement and finds that it is an IsHostRequirement,
+// the class that should be used is IsHostRequirementHandler. So the authorization middleware will use IsHostRequirementHandler to satisfy IsHostRequirement.
 builder.Services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
 
 // creates the web application object with services to define HTTP request pipeline.

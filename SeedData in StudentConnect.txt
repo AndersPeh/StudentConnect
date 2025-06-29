@@ -1,0 +1,12 @@
+SeedData in StudentConnect
+
+1. Go back to StudentConnect main in cmd prompt.
+2. Delete Database: dotnet ef database drop -p Persistence -s API.
+3. Cmd prompt will respond:
+Build started...
+Build succeeded.
+Are you sure you want to drop the database 'main' on server 'studentconnect.db'? (y/N)
+y
+Dropping database 'main' on server 'studentconnect.db'.
+Successfully dropped database 'main'.
+4. cd back to API, run dotnet watch.
