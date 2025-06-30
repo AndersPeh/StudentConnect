@@ -6,10 +6,9 @@ import { useAccount } from "./useAccount";
 
 // useQuery for fetching data, useMutation for creating / updating data.
 export const useActivities = (id?: string) => {
-
   const queryClient = useQueryClient();
 
-  const {currentUser} = useAccount();
+  const { currentUser } = useAccount();
 
   // get path URL location.
   const location = useLocation();
@@ -27,79 +26,104 @@ export const useActivities = (id?: string) => {
     queryFn: async () => {
       // makes HTTP Get request to the backend API endpoint, return type is array of Activity objects.
       // by using agent, URL can be shortened.
-      const response = await agent.get<Activity[]>(
-        "/activities"
-      );
+      const response = await agent.get<Activity[]>("/activities");
 
       // axios automatically parses JSON, allowing us to directly get data from response.
       // useQuery updates its loading state, caches the fetched data against the queryKey, isPending becomes false.
+      // this return caches the data in queryKey: ["activities"], it doesnt return data: activities.
       return response.data;
     },
 
     // dont execute this useQuery when there is id (should execute useQuery for specific activity).
-    // execute this useQuery when the pathname is /activities only.
-    enabled: !id && location.pathname==='/activities' && !!currentUser,
+    // execute this useQuery when the pathname is /activities only and currentUser exists.
+    enabled: !id && location.pathname === "/activities" && !!currentUser,
 
-    // make a staletime of 5 seconds so React Query won't mark any data as stale for the time period unless it is invalidated. 
+    // select only runs after queryFn has successfully completed and returned data.
+    // select is for transforming the cached data received from the return of queryFn, before it is returned as data: activities.
+    select: (data) => {
+      // This returns the final output of this query, data: activities. It maps the array of Activity from API call as individual activity.
+      return data.map((activity) => {
+        // This transforms individual activity to the map, forming the transformed activity array.
+        return {
+          ...activity,
+          // Add isHost to the activity object, it is true if the currentUser.id matches the hostId of the activity.
+          isHost: currentUser?.id === activity.hostId,
+          // Add isGoing, it is true if currentUser.id exists in the attendess.
+          isGoing: activity.attendees.some((x) => x.id === currentUser?.id),
+        };
+      });
+    },
+
+    // make a staletime of 5 seconds so React Query won't mark any data as stale for the time period unless it is invalidated.
     // When it is refreshed, React Query will fetch data from cache instead of making new request.
     staleTime: 5000,
-
   });
 
-  const {data:activity, isLoading: isLoadingActivity} = useQuery({
+  const { data: activity, isLoading: isLoadingActivity } = useQuery({
     // React Query treats the data for each activity Id as separate cache entry.
-    queryKey:['activities', id],
-    queryFn: async()=>{
+    queryKey: ["activities", id],
+    queryFn: async () => {
       const response = await agent.get<Activity>(`/activities/${id}`);
       return response.data;
     },
     // without enable, useQuery of specific activity will run everytime when the app runs, resulting in undefined.
     // only enable it when id is true (passed from ActivityDetail), (!!id) converts id into boolean.
-    enabled: !!id && !!currentUser
+    enabled: !!id && !!currentUser,
+
+    // Transform the cached individual activty from queryFn API call using select.
+    select: (data) => {
+      // This returns data: activity.
+      return {
+        ...data,
+        isHost: currentUser?.id === data.hostId,
+        isGoing: data.attendees.some((x) => x.id === currentUser?.id),
+      };
+    },
   });
 
   const updateActivity = useMutation({
-    mutationFn: async(activity: Activity) =>{
-      await agent.put('/activities', activity)
+    mutationFn: async (activity: Activity) => {
+      await agent.put("/activities", activity);
     },
     // If put request is successful invalidate queryKey, internal cache becomes stale, useQuery will fetch the data again.
-    onSuccess: async()=>{
+    onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["activities"]
+        queryKey: ["activities"],
       });
-    }
+    },
   });
 
   const createActivity = useMutation({
-    mutationFn: async(activity: FieldValues)=>{
-      const response = await agent.post('/activities', activity);
+    mutationFn: async (activity: FieldValues) => {
+      const response = await agent.post("/activities", activity);
       // axios parses response automatically and returns id from HTTP Request.
       return response.data;
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey:["activities"]
-      })
-    }
-  })
+        queryKey: ["activities"],
+      });
+    },
+  });
 
   const deleteActivity = useMutation({
-    mutationFn: async(id: string) =>{
-      await agent.delete(`/activities/${id}`)
+    mutationFn: async (id: string) => {
+      await agent.delete(`/activities/${id}`);
     },
-    onSuccess: async()=>{
+    onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey:["activities"]
-      })
-    }
-  })
+        queryKey: ["activities"],
+      });
+    },
+  });
 
-  return { activities, 
-    isLoading, 
-    updateActivity, 
-    createActivity, 
+  return {
+    activities,
+    isLoading,
+    updateActivity,
+    createActivity,
     deleteActivity,
     activity,
-    isLoadingActivity, 
+    isLoadingActivity,
   };
 };
