@@ -12,17 +12,19 @@ import {
 } from "@mui/material";
 import { Link } from "react-router";
 import { formatDate } from "../../../lib/util/util";
+import AvatarPopover from "../../../app/shared/components/AvatarPopover";
 
 type Props = {
   activity: Activity;
 };
 
 export default function ActivityCard({ activity }: Props) {
-  const isHost = false;
-  const isGoing = false;
-  const label = isHost ? "You are hosting" : "You are going";
-  const isCancelled = false;
-  const color = isHost ? "secondary" : isGoing ? "warning" : "default";
+  const label = activity.isHost ? "You are hosting" : "You are going";
+  const color = activity.isHost
+    ? "secondary"
+    : activity.isGoing
+    ? "warning"
+    : "default";
 
   return (
     // for each activity in activities, display a Card.
@@ -37,15 +39,23 @@ export default function ActivityCard({ activity }: Props) {
           }}
           subheader={
             <>
-              Hosted by <Link to={`/profiles/Anders`}>Anders</Link>
+              Hosted by{" "}
+              <Link to={`/profiles/${activity.hostId}`}>
+                {activity.hostDisplayName}
+              </Link>
             </>
           }
         />
         <Box display="flex" flexDirection="column" gap={2} marginRight={2}>
-          {(isHost || isGoing) && (
-            <Chip label={label} color={color} sx={{ borderRadius: 2 }} />
+          {(activity.isHost || activity.isGoing) && (
+            <Chip
+              variant="outlined"
+              label={label}
+              color={color}
+              sx={{ borderRadius: 2 }}
+            />
           )}
-          {isCancelled && (
+          {activity.isCancelled && (
             <Chip label="Cancelled" color="error" sx={{ borderRadius: 2 }} />
           )}
         </Box>
@@ -78,7 +88,9 @@ export default function ActivityCard({ activity }: Props) {
           gap={2}
           sx={{ backgroundColor: "grey.200", paddingY: 3, paddingLeft: 3 }}
         >
-          Attendees
+          {activity.attendees.map((attendee) => (
+            <AvatarPopover profile={attendee} key={attendee.id} />
+          ))}
         </Box>
       </CardContent>
 
