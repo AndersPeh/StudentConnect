@@ -89,7 +89,6 @@ Currently under active development as a self-learning project.
 
 ## Upcoming Features
 
-- Client side attendance feature
 - API Image upload
 - Client Image upload
 - SignalR
