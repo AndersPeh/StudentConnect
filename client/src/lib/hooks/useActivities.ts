@@ -59,6 +59,7 @@ export const useActivities = (id?: string) => {
     staleTime: 5000,
   });
 
+  // send GET request to query individual activity details.
   const { data: activity, isLoading: isLoadingActivity } = useQuery({
     // React Query treats the data for each activity Id as separate cache entry.
     queryKey: ["activities", id],
@@ -81,11 +82,15 @@ export const useActivities = (id?: string) => {
     },
   });
 
+  // send PUT request to update a specific activity, refetch activities if successfully edited the activity.
   const updateActivity = useMutation({
     mutationFn: async (activity: Activity) => {
       await agent.put("/activities", activity);
     },
     // If put request is successful invalidate queryKey, internal cache becomes stale, useQuery will fetch the data again.
+    // When activities key is invalidated, [activities, id] key is also invalidated because all query keys that start with "activities" are invalidated.
+    // If invalidate queryKey: ["activities", id] only, the detail page will reflect the changes but the activities page wont.
+    // Because activities query wasnt invalidated, so the activities page will show old data.
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["activities"],
@@ -93,6 +98,7 @@ export const useActivities = (id?: string) => {
     },
   });
 
+  // send POST request to create an activity, refetch activities if successfully created the activity.
   const createActivity = useMutation({
     mutationFn: async (activity: FieldValues) => {
       const response = await agent.post("/activities", activity);
@@ -106,6 +112,7 @@ export const useActivities = (id?: string) => {
     },
   });
 
+  // send DELETE request to remove a specific activity, refetch activities if successful.
   const deleteActivity = useMutation({
     mutationFn: async (id: string) => {
       await agent.delete(`/activities/${id}`);
@@ -113,6 +120,19 @@ export const useActivities = (id?: string) => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["activities"],
+      });
+    },
+  });
+
+  // send POST request to update the attendance of a specific activty, refetch the specific activity if successful.
+  const updateAttendance = useMutation({
+    mutationFn: async (id: string) => {
+      await agent.post(`/activities/${id}/attend`);
+    },
+    onSuccess: async () => {
+      // Only need to update the attendance in activity detail page.
+      await queryClient.invalidateQueries({
+        queryKey: ["activities", id],
       });
     },
   });
@@ -125,5 +145,6 @@ export const useActivities = (id?: string) => {
     deleteActivity,
     activity,
     isLoadingActivity,
+    updateAttendance,
   };
 };

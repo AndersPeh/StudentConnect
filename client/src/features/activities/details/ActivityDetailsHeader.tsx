@@ -1,27 +1,26 @@
 import { Card, Badge, CardMedia, Box, Typography, Button } from "@mui/material";
 import { Link } from "react-router";
 import { formatDate } from "../../../lib/util/util";
+import { useActivities } from "../../../lib/hooks/useActivities";
 
 type Props = {
   activity: Activity;
 };
 
 export default function ActivityDetailsHeader({ activity }: Props) {
-  const isCancelled = false;
-  const isHost = true;
-  const isGoing = true;
-  const loading = false;
+  // pass activity.id to useActivities for it to be used in parts other than queryFn/ mutationFn like queryKey, enabled etc.
+  const { updateAttendance } = useActivities(activity.id);
 
   return (
     <Card
       sx={{
         position: "relative",
-        mb: 2,
+        marginBottom: 2,
         backgroundColor: "transparent",
         overflow: "hidden",
       }}
     >
-      {isCancelled && (
+      {activity.isCancelled && (
         <Badge
           sx={{ position: "absolute", left: 40, top: 20, zIndex: 1000 }}
           color="error"
@@ -61,31 +60,38 @@ export default function ActivityDetailsHeader({ activity }: Props) {
           <Typography variant="subtitle2">
             Hosted by{" "}
             <Link
-              to={`/profiles/username`}
+              to={`/profiles/${activity.hostId}`}
               style={{ color: "white", fontWeight: "bold" }}
             >
-              Anders
+              {activity.hostDisplayName}
             </Link>
           </Typography>
         </Box>
 
         {/* Buttons aligned to the right */}
         <Box sx={{ display: "flex", gap: 2 }}>
-          {isHost ? (
+          {/* When user is a host, updateAttendance.mutate will reverse the activity status when the button is pressed as set in the backend. 
+          By default, the activity is active. So when user clicks it, it will be cancelled, then press again to re-activate.... */}
+          {activity.isHost ? (
             <>
               <Button
                 variant="contained"
-                color={isCancelled ? "success" : "error"}
-                onClick={() => {}}
+                color={activity.isCancelled ? "success" : "error"}
+                // Pass activity.id to updateAttendance.mutate to use it in mutationFn.
+                onClick={() => updateAttendance.mutate(activity.id)}
+                // isPending status from React Query.
+                disabled={updateAttendance.isPending}
               >
-                {isCancelled ? "Re-activate Activity" : "Cancel Activity"}
+                {activity.isCancelled
+                  ? "Re-activate Activity"
+                  : "Cancel Activity"}
               </Button>
               <Button
                 variant="contained"
                 color="primary"
                 component={Link}
                 to={`/manage/${activity.id}`}
-                disabled={isCancelled}
+                disabled={activity.isCancelled}
               >
                 Manage Event
               </Button>
@@ -93,11 +99,13 @@ export default function ActivityDetailsHeader({ activity }: Props) {
           ) : (
             <Button
               variant="contained"
-              color={isGoing ? "primary" : "info"}
-              onClick={() => {}}
-              disabled={isCancelled || loading}
+              color={activity.isGoing ? "primary" : "info"}
+              // the server will check if the user exists in the attendee database. If user exists, then user will be removed.
+              // else, user will be added.
+              onClick={() => updateAttendance.mutate(activity.id)}
+              disabled={updateAttendance.isPending || activity.isCancelled}
             >
-              {isGoing ? "Cancel Attendance" : "Join Activity"}
+              {activity.isGoing ? "Cancel Attendance" : "Join Activity"}
             </Button>
           )}
         </Box>
