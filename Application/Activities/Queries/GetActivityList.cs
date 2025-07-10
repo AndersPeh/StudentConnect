@@ -29,11 +29,21 @@ public class GetActivityList
             return await context.Activities
                 // AutoMapper knows the source type is Activity based on context.Activities (it represents all Activity entities),
                 // It also knows destination type is ActivityDto from .ProjectTo<ActivityDto>.
-                // It then looks at MappingProfiles.cs, CreateMap<Activity, ActivityDto>() matches the criteria.
-                // It generates Select() expression that only select necessary data to transform Activity into ActivityDto, omitting unnecessary columns.
+                // ConfigurationProvider holds mapping rules from MappingProfiles.cs, CreateMap<Activity, ActivityDto>() matches the criteria.
+                // It generates Select() expression that only select necessary data to transform Activity into ActivityDto, 
+                // omitting unnecessary columns.
                 // Then the ActivityDto results will be converted into a list.
                 .ProjectTo<ActivityDto>(mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
         }
     }
 }
+
+// Without using ProjectTo, need to eagerly load everything from the database for Attendees and User entities. It will load unnecessary data,
+// increasing the network trafic (PasswordHash, Email etc).
+
+// return await context.Activities
+//  .Include( x => x.Attendees)
+//  .ThenInclude( x => x.User)
+//  .FirstOrDefaultAsync( x => request.Id == x.Id, cancellationToken);
+//  .ToListAsync(cancellationToken);

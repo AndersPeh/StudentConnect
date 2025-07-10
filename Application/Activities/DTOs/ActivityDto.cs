@@ -3,6 +3,8 @@ using Application.Profiles.DTOs;
 
 namespace Application.Activities.DTOs;
 
+// Without ActivityDto, if we return Activity directly, it will result in a loop where Activity returns ActivityAttendee,
+// then ActivityAttendee returns User and Activity, repeat...
 public class ActivityDto
 {
 

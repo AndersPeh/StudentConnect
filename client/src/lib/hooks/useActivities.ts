@@ -43,7 +43,7 @@ export const useActivities = (id?: string) => {
     select: (data) => {
       // This returns the final output of this query, data: activities. It maps the array of Activity from API call as individual activity.
       return data.map((activity) => {
-        // This transforms individual activity to the map, forming the transformed activity array.
+        // This transforms individual activity using map, forming the transformed activity array.
         return {
           ...activity,
           // Add isHost to the activity object, it is true if the currentUser.id matches the hostId of the activity.
@@ -87,8 +87,9 @@ export const useActivities = (id?: string) => {
     mutationFn: async (activity: Activity) => {
       await agent.put("/activities", activity);
     },
-    // If put request is successful invalidate queryKey, internal cache becomes stale, useQuery will fetch the data again.
-    // When activities key is invalidated, [activities, id] key is also invalidated because all query keys that start with "activities" are invalidated.
+    // If put request is successful, invalidate queryKey, internal cache becomes stale, useQuery will fetch the data again.
+    // When activities key is invalidated, [activities, id] key is also invalidated because all query keys that
+    // start with "activities" are invalidated.
     // If invalidate queryKey: ["activities", id] only, the detail page will reflect the changes but the activities page wont.
     // Because activities query wasnt invalidated, so the activities page will show old data.
     onSuccess: async () => {
@@ -129,11 +130,61 @@ export const useActivities = (id?: string) => {
     mutationFn: async (id: string) => {
       await agent.post(`/activities/${id}/attend`);
     },
-    onSuccess: async () => {
-      // Only need to update the attendance in activity detail page.
-      await queryClient.invalidateQueries({
-        queryKey: ["activities", id],
+    onMutate: async (activityId: string) => {
+      // Cancel the ongoing query for the specific activity.
+      await queryClient.cancelQueries({
+        queryKey: ["activities", activityId],
       });
+
+      // get the specific activity from cached activities.
+      const prevActivity = queryClient.getQueryData<Activity>([
+        "activities",
+        activityId,
+      ]);
+
+      // optimistically update the data (assuming the API endpoint will return positive result).
+      queryClient.setQueryData<Activity>(
+        ["activities", activityId],
+        (oldActivity) => {
+          if (!oldActivity || !currentUser) {
+            return oldActivity;
+          }
+
+          const isHost = oldActivity.hostId === currentUser.id;
+          const isAttending = oldActivity.attendees.some(
+            (x) => x.id === currentUser.id
+          );
+
+          return {
+            ...oldActivity,
+            isCancelled: isHost
+              ? !oldActivity.isCancelled
+              : oldActivity.isCancelled,
+            attendees: isAttending
+              ? isHost
+                ? oldActivity.attendees
+                : oldActivity.attendees.filter((x) => x.id !== currentUser.id)
+              : [
+                  ...oldActivity.attendees,
+                  {
+                    id: currentUser.id,
+                    displayName: currentUser.displayName,
+                    imageUrl: currentUser.imageUrl,
+                  },
+                ],
+          };
+        }
+      );
+      return { prevActivity };
+    },
+    onError: (error, activityId, context) => {
+      console.log(error);
+      if (context?.prevActivity) {
+        queryClient.setQueryData(
+          ["activities", activityId],
+          context.prevActivity
+        );
+      }
     },
   });
 
