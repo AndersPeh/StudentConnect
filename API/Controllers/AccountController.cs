@@ -25,6 +25,8 @@ public class AccountController(SignInManager<User> signInManager) : BaseApiContr
         {
             UserName = registerDto.Email,
             Email = registerDto.Email,
+            // customise /register route to add DisplayName. 
+            // Because the default /register route by .Net Identity only requires email and password.
             DisplayName = registerDto.DisplayName
         };
 

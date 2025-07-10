@@ -10,7 +10,8 @@ namespace API.Middleware;
 // IMiddleware tells .Net that ExceptionMiddleware is a middleware component that should be activated via Dependency Injection.
 
 // This middleware is placed first in Program.cs, so any exception in the pipeline can progagate upwards to reach it in the end.
-// When an exception occurs within Mediator handler and handler doesnt catch it, it will propagate upwards to Mediator pipeline (behavior top, handler bottom). 
+// When an exception occurs within Mediator handler and handler doesnt catch it, it will propagate upwards to Mediator pipeline:
+// validation behavior followed by handler. 
 // If no service can capture the exception, it will propagate out of the Mediator pipeline to controller action (Controller sends Command using Mediator.send),
 // If the exception is still not captured, it will propagate to middleware pipeline, so ExceptionMiddleware.
 

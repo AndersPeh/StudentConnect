@@ -106,7 +106,7 @@ var app = builder.Build();
 // Middleware: Configure the HTTP request pipeline.
 
 // Exception must be placed before any middleware to use it to catch and handle exceptions that occur in subsequent middleware or in controllers/ services.
-// Make it global error handler. Instructs .Net to pull it from the DI container and insert it into the HTTP request pipeline.
+// Make it global error handler. The DI container creates an instance of ExceptionMiddleware and insert it into the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
 
 // allows client of the address to access to the API.
@@ -115,15 +115,26 @@ app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod()
     .AllowCredentials()
     .WithOrigins("http://localhost:3000", "https://localhost:3000"));
 
-// Authenticate, then Authorise before using Controller to handle HTTP requests.
+// Activate Authentication and Authorisation middleware before using Controller to handle HTTP requests.
+// It inspects the HTTP request for the authentication cookie, decodes it to create a User object to know
+// if User is logged in and the identity of the User.
 app.UseAuthentication();
+// It takes authenticated User and check if the User is allowed to access the requested endpoint.
+// Because there are some endpoints where [Authorize(Policy = "IsActivityHost")] policy is enforced.
 app.UseAuthorization();
 
+// Both app.MapControllers() and app.MapGroup("api").MapIdentityApi<User>() run at the same time
+// to provide all endpoints for the application.
+// The server performs a single search against endpoints to find the endpoint that matches
+// HTTP method (GET, POST...) and the path (/api/something).
 // When the server receives a HTTP Request, MapControllers finds matching controller to handle it 
 // by dropping "Controller" from controllers to match route to controller name.
+// The route must match api/[controller] defined in BaseApiController so the server can find the right controller for the request.
 app.MapControllers();
 
 // The route of /api will be added to any route of identity endpoints such as login, register, logout, manage/info etc.
+// For Identity endpoints provided by .Net Identity, the default route is only /login but our routes always come with /api,
+// so need to add api to make it work.
 app.MapGroup("api").MapIdentityApi<User>();
 
 // *******************************************************************************************************************************************************

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    // The server maps routes of HTTP request based on api/[controller].
     [Route("api/[controller]")]
     [ApiController]
     public class BaseApiController : ControllerBase
