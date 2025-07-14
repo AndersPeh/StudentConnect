@@ -33,21 +33,21 @@ Currently under active development as a self-learning project.
 <table>
   <tr align="center">
     <td><p>Welcome Screen</p><img src="AppPics/Welcome.png" width="100%"></td>
-    <td><p>Details Screen</p><img src="AppPics/ProfileHovering.png" width="100%"></td>
+    <td><p>Profile Hovering</p><img src="AppPics/ProfileHovering.png" width="100%"></td>
   </tr>
 </table>
 
 <table>
   <tr align="center">
-    <td><p>Details Screen</p><img src="AppPics/ManageEvent.png" width="100%"></td>
+    <td><p>Activity Host Screen</p><img src="AppPics/ManageEvent.png" width="100%"></td>
     <td><p>Edit Activity Form</p><img src="AppPics/EditActivity.png" width="100%"></td>
   </tr>
 </table>
 
 <table>
   <tr align="center">
-    <td><p>Details Screen</p><img src="AppPics/ActivityDetails.png" width="100%"></td>
-    <td><p>Details Screen</p><img src="AppPics/AttendingActivity.png" width="100%"></td>
+    <td><p>Activity Attendee Screen (Before joining)</p><img src="AppPics/ActivityDetails.png" width="100%"></td>
+    <td><p>Activity Attendee Screen (After joining)</p><img src="AppPics/AttendingActivity.png" width="100%"></td>
   </tr>
 </table>
 
