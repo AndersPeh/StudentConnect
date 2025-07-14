@@ -113,27 +113,29 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod()
     // allows Browser to send credentials such as cookies to the API.
     .AllowCredentials()
+    // Origin Header of the HTTP request must be:
     .WithOrigins("http://localhost:3000", "https://localhost:3000"));
 
 // Activate Authentication and Authorisation middleware before using Controller to handle HTTP requests.
 // It inspects the HTTP request for the authentication cookie, decodes it to create a User object to know
-// if User is logged in and the identity of the User.
+// if User is logged in and the identity of the User. The User object becomes HttpContext.User.
 app.UseAuthentication();
 // It takes authenticated User and check if the User is allowed to access the requested endpoint.
-// Because there are some endpoints where [Authorize(Policy = "IsActivityHost")] policy is enforced.
+// Because there are some endpoints where authorisation policy is enforced.
+// like opt.Filters.Add(new AuthorizeFilter(policy)); and policy.Requirements.Add(new IsHostRequirement());
 app.UseAuthorization();
 
 // Both app.MapControllers() and app.MapGroup("api").MapIdentityApi<User>() run at the same time
 // to provide all endpoints for the application.
 // The server performs a single search against endpoints to find the endpoint that matches
-// HTTP method (GET, POST...) and the path (/api/something).
+// HTTP method (GET, POST...) and the request path (/api/something).
 // When the server receives a HTTP Request, MapControllers finds matching controller to handle it 
 // by dropping "Controller" from controllers to match route to controller name.
 // The route must match api/[controller] defined in BaseApiController so the server can find the right controller for the request.
 app.MapControllers();
 
 // The route of /api will be added to any route of identity endpoints such as login, register, logout, manage/info etc.
-// For Identity endpoints provided by .Net Identity, the default route is only /login but our routes always come with /api,
+// For Identity endpoints provided by .Net Identity, the default routes dont come with /api,
 // so need to add api to make it work.
 app.MapGroup("api").MapIdentityApi<User>();
 
