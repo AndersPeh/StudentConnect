@@ -40,6 +40,13 @@ Currently under active development as a self-learning project.
 <table>
   <tr align="center">
     <td><p>Activity Host Screen</p><img src="AppPics/ManageEvent.png" width="100%"></td>
+        <td><p>Activity Host Screen (After cancelling)</p><img src="AppPics/HostCancelled.png" width="100%"></td>
+    <td><p>Edit Activity Form</p><img src="AppPics/EditActivity.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr align="center">
     <td><p>Edit Activity Form</p><img src="AppPics/EditActivity.png" width="100%"></td>
   </tr>
 </table>
