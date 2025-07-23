@@ -12,7 +12,7 @@ namespace StudentConnect.Application.Tests;
 public class GetActivityListTests
 {
     // _context and _mapper hold the instances of GetActivityList Handler's dependencies.
-    // They are intialised once only.
+    // They are intialised once only, they can only be assigned value once.
 
     private readonly AppDbContext _context;
     private readonly IMapper _mapper;
