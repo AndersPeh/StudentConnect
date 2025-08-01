@@ -9,17 +9,31 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers;
 
 // ActivitiesController inherits from BaseApiController for features like Route("api/activities") and IMediator.
-// For ActivitiesController, .Net automatically removes Controller keyword, changes Activities to lowercase,
+// As .NET automatically removes Controller keyword, changes Activities to lowercase,
 // so the base route becomes api/activities.
 
 // Below is provided in Program.cs to set up the Mediator pipeline. Whenever ActivitiesController sends a Query or Command to the Mediator,
-// It will go to ValidationBehavior to use Validator if any for validating the request before it sending to the Handler.
+// It will go to ValidationBehavior to use Validator for validating the request before it sending to the Handler.
 
 // builder.Services.AddMediatR(x =>
 // {
 //     x.AddOpenBehavior(typeof(ValidationBehavior<,>));
+
+// After any Handler has processed the request, it will return response up the pipeline to ValidationBehavior.
+// Then ValidationBehavior will return response to the Mediator and Mediator will return response to the Controller.
+
 //     x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>();
 // });
+
+
+// Step	                        File/Class	                    What happens?
+// Controller sends request	    ActivitiesController	        Calls Mediator.Send(command)
+// Pipeline starts	            MediatR	                        Calls ValidationBehavior.Handle(...)
+// Validation passes	        ValidationBehavior	            Calls await next()
+// Handler runs	                CreateActivity.Handler	        Returns Result<string>.Success(activity.Id)
+// Response returns	            ValidationBehavior	            Returns handler's response up the pipeline
+// Response returns	            MediatR	                        Returns response to controller
+// Controller receives result	ActivitiesController	        Handles result (e.g., via HandleResult)
 
 public class ActivitiesController : BaseApiController
 {

@@ -5,11 +5,12 @@ using MediatR;
 namespace Application.Core;
 
 // TRequest and TResponse are generic placeholders that will be replaced by actual values when called, 
-// so handlers with different types of Request/Response can call it.
+// because handlers have different types of Request/Response.
 // TRequest refers to Command or Query created in controller (like CreateActivity.Command).
-// As DI container is used to inject instances of services, 
-// it injects IValidator (like AbstractValidator<CreateActivity.Command>) that processes this specific TRequest (Command).
+// DI container injects IValidator that processes this specific TRequest (Command).
 // It is nullable because not every request needs a validator.
+// As ValidationBehavior returns to the Mediator, so it needs to take TResponse to know exactly what
+// type to return (ie. ActionResult<ActivityDto>) so it wont return wrong data type causing Controller to have an error.
 public class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? validator = null)
     // IPipelineBehavior puts this ValidationBehavior first in the pipeline before handler.
     : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
@@ -29,7 +30,8 @@ public class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? valid
             throw new ValidationException(validationResult.Errors);
         }
 
-        // process to handler (next in the pipeline) after validation.
+        // process to handler (next in the pipeline) after validation. Handler will return to ValidationBehavior 
+        // and ValidationBehavior has to return to the Mediator, then Mediator will return the response to the Controller.
         return await next();
     }
 }

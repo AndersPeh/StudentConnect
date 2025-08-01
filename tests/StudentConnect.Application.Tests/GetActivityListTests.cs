@@ -120,6 +120,85 @@ public class GetActivityListTests
         result.Should().BeEquivalentTo(expectedActivities);
 
     }
+
+    [Fact]
+    public async Task Handle_ShouldReturnEmptyList_WhenNoActivitiesExist()
+    {
+        // Arrange: Set up conditions and data needed for the test.
+
+        // User entities.
+        var users = new List<User>
+        {
+            new() { Id = Guid.NewGuid().ToString(), UserName = "andy", DisplayName = "Andy" },
+            new() { Id = Guid.NewGuid().ToString(), UserName = "bobby", DisplayName = "Bobby" },
+            new() { Id = Guid.NewGuid().ToString(), UserName = "cindy", DisplayName = "Cindy" },
+        };
+
+        // Activity entities.
+        var activities = new List<Activity>
+        {
+            new Activity
+            {
+                Id = Guid.NewGuid().ToString(),
+                Title = "Dotnet Gathering",
+                Date = DateTime.UtcNow,
+                Description = "Introduction to C# Unit Testing.",
+                Category = "Backend",
+                IsCancelled = false,
+                City = "Brisbane",
+                Venue = "The Precinct",
+                Attendees =
+                [
+                    // Andy is the host
+                    new() { UserId = users[0].Id, User = users[0], IsHost = true },
+                    // Bobby is an attendee
+                    new() { UserId = users[1].Id, User = users[1] }
+                ]
+            },
+
+            new Activity
+            {
+                Id = Guid.NewGuid().ToString(),
+                Title = "BrisJS Gathering",
+                Date = DateTime.UtcNow,
+                Description = "Introduction to TypeScript Unit Testing.",
+                Category = "Frontend",
+                IsCancelled = false,
+                City = "Brisbane",
+                Venue = "Auto & General Office",
+                Attendees =
+                [
+                    // Cindy is the host
+                    new() { UserId = users[2].Id, User = users[2], IsHost = true }
+                ]
+            },
+        };
+
+        // Add data to the in-memory database.
+        _context.Users.AddRange(users);
+        _context.Activities.AddRange(activities);
+        await _context.SaveChangesAsync();
+
+        // Act: Execute the code to be tested.
+        // Create an instance of the handler that we are testing, then pass pre-configured in-memory context and real mapper to it.
+        var handler = new GetActivityList.Handler(_context, _mapper);
+
+        // Create the query object which is empty (no need request details to get all activityattendees with ProjectTo).
+        var query = new GetActivityList.Query();
+
+        // Execute Handle method which will run the logic against the in-memory database.
+        var result = await handler.Handle(query, CancellationToken.None);
+
+        // Assert: Check the result using Fluent Assertions for readable checks.
+
+        // Create the expected result after mapping for comparing with the result later.
+        var expectedActivities = _mapper.Map<List<ActivityDto>>(activities);
+
+        // This performs a deep comparison to ensure the result from the handler is equivalent to expectedActivities
+        // after mapping our test data.
+        result.Should().BeEquivalentTo(expectedActivities);
+
+    }
 }
 
 // result.Should().NotBeNull();
