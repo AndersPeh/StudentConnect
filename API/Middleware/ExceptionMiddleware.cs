@@ -26,6 +26,9 @@ public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvir
         try
         {
             // process to next in the pipeline with HttpContext if no exception.
+            // In mediator pipeline, Mediator passes the request to each step, no need to pass anything.
+            // However, middleware pipeline is generic and stateless, it doesnt know which HTTP context is being processed.
+            // Each middleware must explicitly pass it to the next middleware.
             await next(context);
         }
         catch (ValidationException ex)
@@ -85,8 +88,19 @@ public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvir
         {
             foreach (var error in ex.Errors)
             {
+                // error example: Each error has a PropertyName (e.g., "ActivityDto.Title") and an ErrorMessage (e.g., "Title is required").
+                // check if validationErrors contains the current error (error.PropertyName),
+                // if it already contains, it means the error.PropertyName already has an array of existingErrors. 
+                // So the array of existingErrors will be appended with more ErrorMessage (error.ErrorMessage).
+                // Else, existingErrors will be null, so set error.ErrorMessage as the existingErrors.
+                // Needs to check first because if we do validationErrors[error.PropertyName] = [error.ErrorMessage] everytime,
+                // the previous error.ErrorMessage in existingErrors will be overridden.
                 if (validationErrors.TryGetValue(error.PropertyName, out var existingErrors))
                 {
+                    // validationErrors is the dict, with key error.PropertyName has value existingErrors. 
+                    // existingErrors is appended with new value through error.ErrorMessage.
+                    // Instead of writing existingErrors.Append(error.ErrorMessage).ToArray(), write collection expression
+                    // [.. existingErrors, error.ErrorMessage], the .. means append, the [] means array, append error.ErrorMessage to existingErrors.
                     validationErrors[error.PropertyName] = [.. existingErrors, error.ErrorMessage];
                 }
                 else
@@ -94,6 +108,15 @@ public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvir
                     validationErrors[error.PropertyName] = [error.ErrorMessage];
 
                 }
+                // Example Final response looks like this:
+                // {
+                //   "errors": {
+                //     "ActivityDto.Title": [
+                //       "Title is required",
+                //       "Title must be at least 3 characters"
+                //     ],
+                //     "ActivityDto.Date": [
+                //       "Date must be in the future"]}}
             }
         }
         // Error Response Header.

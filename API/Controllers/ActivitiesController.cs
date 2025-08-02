@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
+// A Controller should only yake HTTP request and return HTTP response, it shouldn't process any logic.
 // ActivitiesController inherits from BaseApiController for features like Route("api/activities") and IMediator.
 // As .NET automatically removes Controller keyword, changes Activities to lowercase,
 // so the base route becomes api/activities.
@@ -19,17 +20,18 @@ namespace API.Controllers;
 // {
 //     x.AddOpenBehavior(typeof(ValidationBehavior<,>));
 
+// Scans the Application layer for all IRequestHandler<TRequest, TResponse> implementations (like CreateActivity.Handler).
 // After any Handler has processed the request, it will return response up the pipeline to ValidationBehavior.
 // Then ValidationBehavior will return response to the Mediator and Mediator will return response to the Controller.
 
 //     x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>();
 // });
 
-
+// Example flow of Mediator Pipeline:
 // Step	                        File/Class	                    What happens?
 // Controller sends request	    ActivitiesController	        Calls Mediator.Send(command)
 // Pipeline starts	            MediatR	                        Calls ValidationBehavior.Handle(...)
-// Validation passes	        ValidationBehavior	            Calls await next()
+// Validation passes	        ValidationBehavior	            Calls await next() (delegate calls another method directly)
 // Handler runs	                CreateActivity.Handler	        Returns Result<string>.Success(activity.Id)
 // Response returns	            ValidationBehavior	            Returns handler's response up the pipeline
 // Response returns	            MediatR	                        Returns response to controller
@@ -65,6 +67,11 @@ public class ActivitiesController : BaseApiController
     public async Task<ActionResult<ActivityDto>> GetActivityDetail(string id)
 
     {
+        // Centralise the Success and Failure resuls processing in BaseApiController so dont need to write below in every HTTP method.
+        // Just need to call HandleResult method instead of writing lines below:
+        // if (!result.IsSuccess && result.Code == 404) return NotFound();
+        // if (result.IsSuccess && result.Value != null) return Ok(result.Value);
+        // return BadRequest(result.Error);
 
         // use object initialiser to pass { Id = id }.
         return HandleResult(await Mediator.Send(new GetActivityDetails.Query { Id = id }));

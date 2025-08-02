@@ -29,6 +29,8 @@ namespace API.Controllers
         // The T in HandleResult<T> specifies that HandleResult is a generic method that can operate on different types for T each time it is called.
         // Because Result<T> result needs a T to refer to, so HandleResult needs to specify a generic T.
         // The T can be Activity, string or Unit depending on what is returned from Command/ Query from Mediator in ActivitiesController.
+        // Because in return HandleResult(await Mediator.Send(new GetActivityDetails.Query { Id = id })),
+        // The await Mediator.Send(new GetActivityDetails.Query { Id = id }) returns Success or Failure result, so need to specify (Result<T> result).
 
         protected ActionResult HandleResult<T>(Result<T> result)
         {

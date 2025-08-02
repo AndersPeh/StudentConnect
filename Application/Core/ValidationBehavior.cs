@@ -15,10 +15,12 @@ public class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? valid
     // IPipelineBehavior puts this ValidationBehavior first in the pipeline before handler.
     : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
-    // Mediator.Send passes these from the controller: TRequest (Command), cancellationToken (if user cancels) and next = next behavior or handler in the pipeline.
+    // Mediator passes these from the controller: TRequest (Command), cancellationToken (if user cancels) and next = next behavior or handler in the pipeline.
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         // process to handler (next in the pipeline) when there is no validator for this request (validator files specify requests they take like AbstractValidator<CreateActivity.Command>).
+        // next() is a delegate that continues the pipeline for the same request instance from ValidationBehavior,
+        // so no need to pass request to it. 
         if (validator == null) return await next();
 
         // validator.ValidateAsync takes request, calls the instance of specific Validator injected (like CreateActivityValidator) to execute validation rules againt the request object.

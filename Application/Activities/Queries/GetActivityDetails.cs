@@ -51,10 +51,10 @@ public class GetActivityDetails
                 // condition in the LINQ expression for EF Core to include in the SQL query.
                 .FirstOrDefaultAsync(activity => request.Id == activity.Id, cancellationToken);
 
-            // Based on Result.cs, Result Failure object requires error message and code. return it to ActivitiesController.
+            // Based on Result.cs, Result Failure object requires error message and code. return the object from Failure method to ActivitiesController.
             if (activity == null) return Result<ActivityDto>.Failure("Activity Not Found", 404);
 
-            // Result Success object requires activity as value. return it to ActivitiesController.
+            // Result Success object requires activity as value. return the object from Success method to ActivitiesController.
             return Result<ActivityDto>.Success(activity);
         }
     }

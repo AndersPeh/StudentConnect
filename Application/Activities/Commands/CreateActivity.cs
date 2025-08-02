@@ -13,14 +13,18 @@ namespace Application.Activities.Commands;
 // After behaviors like validation, Mediator will come to here according to the pipeline.
 public class CreateActivity
 {
+    // It tells Mediator what response to expect when this Command is handled.
+    // When Mediator sends this Command, it expects to get back Result<string>.
     // returns string id. which is an instance of Result class where T is string.
     // IRequest has a contract (what), it expects a response of type string.
     public class Command : IRequest<Result<string>>
     {
-        // receives ActivityDto from Mediator.
+        // Mediator.Send(new CreateActivity.Command { ActivityDto = activityDto },
+        // so Mediator passes the ActivityDto in the Command.
         public required CreateActivityDto ActivityDto { get; set; }
     }
 
+    // IRequestHandler<Command, Result<string>> tells Mediator that the handler processes CreateActivity.Command and returns Result<string>.
     // This Handler handles requests of type CreateActivity.Command.
     // DI container will inject AppDbContext, IMapper by checking Program.cs.
     // Interface IMapper's contract (what) is it has to map source object to destination object.
@@ -28,6 +32,7 @@ public class CreateActivity
     // When DI container injects IUserAccessor userAccessor, it actually injects UserAccessor because UserAccessor is a concrete class that implements IUserAccessor.
     public class Handler(AppDbContext context, IMapper mapper, IUserAccessor userAccessor) : IRequestHandler<Command, Result<string>>
     {
+        // Handle must return the type specified by the Command so the Controller will get what it expects in the end.
         public async Task<Result<string>> Handle(Command request, CancellationToken cancellationToken)
         {
             // get user through GetUserAsync in UserAccessor.cs.
