@@ -28,6 +28,10 @@ public class AddPhoto
 
             var user = await userAccessor.GetUserAsync();
 
+            // uploadResult = public class PhotoUploadResult
+            // {public required string PublicId { get; set; }
+            //     public required string Url { get; set; }}
+
             // use uploadResult properties to create new Photo entity.
             var photo = new Photo
             {
@@ -36,7 +40,7 @@ public class AddPhoto
                 UserId = user.Id
             };
 
-            // If user.ImageUrl is null, assign photo.Url to it.
+            // If user.ImageUrl is null (means first photo of the user), assign photo.Url to it.
             user.ImageUrl ??= photo.Url;
 
             // After saving the photo to Cloud, save the Photo entity to the database.
