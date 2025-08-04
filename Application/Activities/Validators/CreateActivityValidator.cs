@@ -9,6 +9,8 @@ namespace Application.Activities.Validators;
 // CreateActivityValidator inherits from BaseActivityValidator, specifying CreateActivity.Command as <T>, CreateActivityDto as <TDto>.
 // By specifying BaseActivityValidator with CreateActivity.Command, CreateActivityValidator implements IValidator<CreateActivity.Command>.
 // DI container knows it has to use CreateActivityValidator when ValidationBehavior requests a validator for CreateActivity.Command.
+// When the selector method in BaseActivityValidator<T, TDto> : AbstractValidator<T> runs later, 
+// it will extract CreateActivityDto from CreateActivity.Command, then assess CreateActivityDto properties against validation logic.
 public class CreateActivityValidator : BaseActivityValidator<CreateActivity.Command, CreateActivityDto>
 {
     // Because CreateActivity.Command has a property: public required CreateActivityDto ActivityDto { get; set; },

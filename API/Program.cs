@@ -13,6 +13,10 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
+// AddScoped: Service is created once per HTTP request.
+// AddTransient: Service is created every time it is requested (could be multiple times per request).
+// AddSingleton: Service is created once for the entire application lifetime.
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the Dependency Injection container.

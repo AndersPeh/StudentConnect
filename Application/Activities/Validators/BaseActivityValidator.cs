@@ -4,15 +4,16 @@ using FluentValidation;
 
 namespace Application.Activities.Validators;
 
-// Because BaseActivityValidator will handle different kind of Commands from various activities like CreateActivity.Command,
-// specify <T> for AbstractValidator to handle generic Commands, refers to the type of object the validator will validate. For example, CreateActivity.Command.
-// TDto will be an instance of BaseActivityDto or a class derived from the Command (ActivityDto), a property of <T> for checking its properties like Title using RuleFor.
-// BaseActivityValidator takes <T> and <TDto>, extracts properties of TDto from <T> to validate.
+// Because BaseActivityValidator inherits from AbstractValidator, it has validation methods like RuleFor.
+// ValidationBehavior looks for validators that implements AbstractValidator to find suitable validator for the Command.
+// Because there are different Commands that contain different DTOs, to use the same validation rules
+// for these DTOs, need to make BaseActivityValidator take generic Command <T> and generic DTO <TDto>.
+// TDto : BaseActivityDto means only DTOs that inherit from BaseActivityDto can be validated by BaseActivityValidator.
 
 public class BaseActivityValidator<T, TDto> : AbstractValidator<T> where TDto : BaseActivityDto
 {
-    // In the primary constructor of BaseActivityValidator, there is a generic function named selector that takes generic type argument <T> 
-    // like Command and returns TDto for extracting its property like Title.
+    // In the primary constructor BaseActivityValidator, selector extracts the DTO (TDto) from a Command (T).
+    // Then validate the properties of the Dto against our logic.
     public BaseActivityValidator(Func<T, TDto> selector)
     {
         // x => selector(x).propertyName: x refers to Command (T) from Mediator, selector access the ActivityDto (TDto) in the Command.

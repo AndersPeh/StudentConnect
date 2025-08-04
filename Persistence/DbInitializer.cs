@@ -6,11 +6,10 @@ namespace Persistence;
 
 public class DbInitializer
 {
-    // Task without <> means it doesnt retur anything for async method.
+    // Task without <> means it doesnt return anything for async method.
     // static as it doesn't rely on data from DbInitializer.
     // SeedData uses dependency injection to inject AppDbContext and UserManager. UserManager methods will accept and return instances of User class.
     // In API -> Program.cs, it passes context to this method. It is a static method with dependency. 
-    // 
     public static async Task SeedData(AppDbContext context, UserManager<User> userManager)
     {
         // The list must contain user type data only.

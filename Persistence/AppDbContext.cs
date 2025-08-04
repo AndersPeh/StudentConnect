@@ -12,9 +12,6 @@ namespace Persistence;
 //  IdentityDbContext<User> already configures User for EF Core to query or save it. We just to need configure other entities here.
 public class AppDbContext(DbContextOptions options) : IdentityDbContext<User>(options)
 {
-    // required ensures that when AppDbContext is constructed, DbSet<Activity> and DbSet<ActivityAttendee> properties are always set by EF Core,
-    // so they won't be null. Because they have to be available for querying and saving data.
-
     // DbSet<Activity> provides methods (like Add, Remove) and LINQ extension methods (like Where) to manage Activity entities.
     // Entity Framework core maps DbSet<Activity> to Activities table in the database, so Activities property represents Activities table.
     // When any part uses AppDbContext.Activities, EF will translate C# queries into SQL commands.
