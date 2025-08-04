@@ -20,6 +20,8 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<User>(op
     // This allows EF Core to query / save ActivityAttendee data.
     public DbSet<ActivityAttendee> ActivityAttendees { get; set; } = null!;
 
+    public DbSet<Photo> Photos { get; set; } = null!;
+
     // OnModelCreating is for configuring C# classes map to the database schema.
     protected override void OnModelCreating(ModelBuilder builder)
     {

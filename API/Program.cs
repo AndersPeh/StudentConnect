@@ -66,6 +66,10 @@ builder.Services.AddMediatR(x =>
 // DI to inject it until the HTTP request is finished.
 builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 
+// DI Container knows PhotoService is the implementation class of IPhotoService. DI Container generates an instance per HTTP Request so it is reused
+// until it is discarded after the Http Request is done.
+builder.Services.AddScoped<IPhotoService, PhotoService>();
+
 // Registers AddAutoMapper with DI container.
 // AutoMapper will look for typeof(MappingProfiles) in Assembly of Application Layer, 
 // scans classes that inherit from AutoMapper.Profile to instantiate IMapper.

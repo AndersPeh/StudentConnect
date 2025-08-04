@@ -21,4 +21,7 @@ public class User : IdentityUser
     // ICollection provides functionality like Add, Remove, Count for EF Core..
     public ICollection<ActivityAttendee> Activities { get; set; } = [];
 
+    // This sets up One User to Many Photo relationship.
+    public ICollection<Photo> Photos { get; set; } = [];
+
 }
