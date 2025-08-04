@@ -46,14 +46,16 @@ public class AccountController(SignInManager<User> signInManager) : BaseApiContr
         return ValidationProblem();
     }
 
+    // Because /login endpoints can only authenticate a user by checking if username and password matches an existing user,
+    // It cant provide user info or check the login status of a user.
     // unauthenticated user can access this endpoint because client side needs to access to user-info to check 
-    // if username or email exists before registration.
+    // if user is already logged in.
     [AllowAnonymous]
     [HttpGet("user-info")]
     // GetUserInfo method returns ActionResult.
     public async Task<ActionResult> GetUserInfo()
     {
-        // if user is not authenticated, return no content.
+        // if user is not authenticated (logged in), return no content.
         if (User.Identity?.IsAuthenticated == false) return NoContent();
 
         //  Get user from Identity system.
