@@ -29,8 +29,9 @@ public class MappingProfiles : Profile
             // For the attendee hosting, access to its User property, extract DisplayName from it. 
             // So HostDisplayName is extracted through LINQ query.
             .ForMember(ActivityDtoDestination => ActivityDtoDestination.HostDisplayName, options => options.MapFrom(ActivityEntity =>
-            // C# compiler thinks FirstOrDefault(attendee => attendee.IsHost) will return null, so need to include ! to tell the compiler that it wont be null.
+                // C# compiler thinks FirstOrDefault(attendee => attendee.IsHost) will return null, so need to include ! to tell the compiler that it wont be null.
                 ActivityEntity.Attendees.FirstOrDefault(attendee => attendee.IsHost)!.User.DisplayName))
+
             .ForMember(ActivityDtoDestination => ActivityDtoDestination.HostId, options => options.MapFrom(ActivityEntity =>
                 ActivityEntity.Attendees.FirstOrDefault(attendee => attendee.IsHost)!.User.Id));
 
@@ -40,9 +41,15 @@ public class MappingProfiles : Profile
         CreateMap<ActivityAttendee, UserProfile>()
             .ForMember(UserProfileDestination => UserProfileDestination.DisplayName, options =>
                 options.MapFrom(ActivityAttendeeEntity => ActivityAttendeeEntity.User.DisplayName))
-            .ForMember(UserProfileDestination => UserProfileDestination.Bio, options => options.MapFrom(ActivityAttendeeEntity => ActivityAttendeeEntity.User.Bio))
-            .ForMember(UserProfileDestination => UserProfileDestination.ImageUrl, options => options.MapFrom(ActivityAttendeeEntity => ActivityAttendeeEntity.User.ImageUrl))
-            .ForMember(UserProfileDestination => UserProfileDestination.Id, options => options.MapFrom(ActivityAttendeeEntity => ActivityAttendeeEntity.User.Id));
+
+            .ForMember(UserProfileDestination => UserProfileDestination.Bio, options =>
+                options.MapFrom(ActivityAttendeeEntity => ActivityAttendeeEntity.User.Bio))
+
+            .ForMember(UserProfileDestination => UserProfileDestination.ImageUrl, options =>
+                options.MapFrom(ActivityAttendeeEntity => ActivityAttendeeEntity.User.ImageUrl))
+
+            .ForMember(UserProfileDestination => UserProfileDestination.Id, options =>
+                options.MapFrom(ActivityAttendeeEntity => ActivityAttendeeEntity.User.Id));
 
     }
 }

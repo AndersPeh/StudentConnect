@@ -43,9 +43,16 @@ public class IsHostRequirementHandler(AppDbContext dbContext, IHttpContextAccess
         // Access the User and Activity navigation properties of ActivityAttendee to find User and Activity in the database that match the
         // currently logged in User and activityId from the route parameter.
         var attendee = await dbContext.ActivityAttendees
-            // After the end of this Handler, EF Core will stop tracking it so it won't compare changes of ActivityAttendee in the subsequent class
-            // when SaveChangesAsync is called. For example, EditActivity.cs runs after this, if AsNoTracking is not included,
-            // EF Core will track changes of ActivityAttendee and update although we only want to track changes of Activity in EditActivity.cs.
+            // If .AsNoTracking() is not provided, any Command or Query operation after this will continue tracking the ActivityAttendees. 
+            // When saving, the EF Core will notice there is no ActivityAttendees from HttpRequest, so it will assume the changes is from having ActivityAttendees (from IsHostRequirement),
+            // to ActivityAttendees is null. So saving it means removing ActivityAttendees.
+
+            // For example, EditActivity Command needs to get Succeed message from IsHostRequirement first, then only proceed to EditActivity logic.
+            // If AsNoTracking is not provided, after finishing IsHostRequirement, the application will bring the ActivityAttendees to EditActivity logic in Api layer.
+            // After editing the activity, when saving changes, EF Core will see ActivityAttendees from IsHostRequirement as part of the Activity from the DB, 
+            // but the Edit Activity request has no ActivityAttendees, EF Core will misunderstand that ActivityAttendees of the Activity should be removed,
+            // causing ActivityAttendees to be removed by error. Actually, when the request doesnt come with ActivityAttendees, it just means ActivityAttendees is not edited,
+            // it shouldnt be removed.
             // IsHostRequirement is a read only operation and does not call SaveChangesAsync.
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.UserId == userId && x.ActivityId == activityId);

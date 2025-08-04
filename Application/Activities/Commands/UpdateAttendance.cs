@@ -53,7 +53,7 @@ public class UpdateAttendance
                 if (isHost) activity.IsCancelled = !activity.IsCancelled;
                 else activity.Attendees.Remove(attendance);
             }
-            // If User not found in the Users attending the Activity and the User is not the Host, Add the User as an Attendee.
+            // If User not found in the Users attending the Activity, Add the User as an Attendee.
             else
             {
                 activity.Attendees.Add(new ActivityAttendee
@@ -68,7 +68,7 @@ public class UpdateAttendance
             var result = await context.SaveChangesAsync(cancellationToken) > 0;
 
             // Result returns True if savechanges operation was executed, then send Success response.
-            return result ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Problem updating the DB", 400);
+            return result ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Problem updating the database", 400);
         }
     }
 }
