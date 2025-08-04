@@ -108,8 +108,6 @@ Currently under active development as a self-learning project.
 
 ## Upcoming Features
 
-- API Image upload
-- Client Image upload
 - SignalR
 - Comment and Follow feature
 - Paging, Sorting, Filtering
