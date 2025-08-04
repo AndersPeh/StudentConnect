@@ -6,6 +6,7 @@ using Application.Interfaces;
 using Domain;
 using FluentValidation;
 using Infrastructure;
+using Infrastructure.Photos;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -102,6 +103,12 @@ builder.Services.AddAuthorization(opt =>
 // Registers the handler with the DI container. When the system processes an IAuthorizationRequirement and finds that it is an IsHostRequirement,
 // the class that should be used is IsHostRequirementHandler. So the authorization middleware will use IsHostRequirementHandler to satisfy IsHostRequirement.
 builder.Services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
+
+// Registers CloudinarySettings configuration settings with DI container to use in other files.
+// GetSection("CloudinarySettings") gets the CloudName, ApiKey and ApiSecret from settings file, 
+// then bind that configured section to a class CloudinarySettings in the Infrastructure project, make it strongly type.
+// so any file can inject <CloudinarySettings> and it will be type safe as the type is created in CloudinarySettings of the Infrastructure project.
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
 // creates the web application object with services to define HTTP request pipeline.
 var app = builder.Build();
