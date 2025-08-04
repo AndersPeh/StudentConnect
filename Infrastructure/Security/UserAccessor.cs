@@ -7,6 +7,15 @@ using Persistence;
 
 namespace Infrastructure.Security;
 
+// Because UserAccessor has to access to ASP.NET (IHttpContextAccessor) to extract user info from cookies/ claims,
+// it is dependent on external service. For logic, we usually store in Application layer which is not dependent
+// on external service like API layer, so we cant store UserAccessor in Application layer.
+// As such, created a layer named Infrastructure that is dependent on external services.
+
+// Application layer should not be dependent on external services so any changes in external services wont affect
+// its logic. Application layer is loosely coupled to external services, so interface of UserAccessor is provided
+// in it. Interface just defines the contract, any changes in external services wont affect it.
+
 // UserAccessor is required to implement GetUserAsync and GetUserId methods.
 // httpContextAccessor is for accessing user info in the cookie.
 // use Dependency Injection to inject IHttpContextAccessor and AppDbContext (interact with database).

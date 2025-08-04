@@ -20,8 +20,16 @@ public class ActivityDto
 
     public bool IsCancelled { get; set; }
 
+    // Because HostDisplayName and HostId dont exist in Activity entity, when mapping,
+    // Automapper will use formember to retrieve them.
+    // This maps HostDisplayName from navigation property of Activity, which is ActivityAttendee.
+    // .ForMember(ActivityDtoDestination => ActivityDtoDestination.HostDisplayName, options => options.MapFrom(ActivitySource =>
+    // ActivitySource.Attendees.FirstOrDefault(attendee => attendee.IsHost)!.User.DisplayName))
     public required string HostDisplayName { get; set; }
 
+    // Below is mapped from navigation property of Activity, which is ActivityAttendee.
+    // .ForMember(d => d.HostId, o => o.MapFrom(s =>
+    // s.Attendees.FirstOrDefault(x => x.IsHost)!.User.Id));
     public required string HostId { get; set; }
 
     public required string City { get; set; }

@@ -37,7 +37,7 @@ public class GetActivityDetails
             // need to use Projection method instead of eager loading to prevent loading unnecessary data.
             // .Include(x => x.Attendees)
             // .ThenInclude(x => x.User)
-            // Finds the first recorsd or return null.
+            // Finds the first record or return null.
             // .FirstOrDefaultAsync(x => request.Id == x.Id, cancellationToken);
 
             // Projection method to load necessary data only. SQL query is much cleaner as Projection only selects data necessary to map Activity to ActivityDto.
