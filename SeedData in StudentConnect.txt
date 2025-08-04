@@ -10,3 +10,9 @@ y
 Dropping database 'main' on server 'studentconnect.db'.
 Successfully dropped database 'main'.
 4. cd back to API, run dotnet watch.
+
+Perform migration:
+dotnet ef migrations add Message -p Persistence -s API
+
+Remove migration:
+dotnet ef migrations add -p Persistence -s API

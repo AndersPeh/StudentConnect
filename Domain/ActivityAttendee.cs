@@ -16,7 +16,7 @@ public class ActivityAttendee
     // User and Activity are for establishing many to many relationships between User and Activity tables through ActivityAttendee join table.
     // User and Activity are navigation properties that allow us to set User and Activity objects for this attendee record. 
     // So we can navigate properties like Activity.title or User.DisplayName.
-    // null! tells the compiler that User and Activity that they won't be null at runtime although they are currenntly.
+    // null! tells the compiler that User and Activity won't be null at runtime although they are currently.
     // Because there is no constructor to initialise them when created, EF Core creates instance of ActivityAttendee class,
     // then populate its properties with data from the database.
     public User User { get; set; } = null!;
