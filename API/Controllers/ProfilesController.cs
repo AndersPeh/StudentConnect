@@ -38,4 +38,13 @@ public class ProfilesController : BaseApiController
         return HandleResult(await Mediator.Send(new DeletePhoto.Command { PhotoId = photoId }));
     }
 
+    // This endpoints handles Url that ends with /profiles/{photoId}/setMain.
+    [HttpPut("{photoId}/setMain")]
+
+    public async Task<ActionResult> SetMainPhoto(string photoId)
+    {
+        return HandleResult(await Mediator.Send(new SetMainPhoto.Command { PhotoId = photoId }));
+    }
+
+
 }

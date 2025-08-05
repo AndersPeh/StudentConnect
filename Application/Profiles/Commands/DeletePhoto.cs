@@ -8,6 +8,7 @@ namespace Application.Profiles.Commands;
 
 public class DeletePhoto
 {
+    // Just need to know the PhotoId that the user wishes to delete.
     public class Command : IRequest<Result<Unit>>
     {
         public required string PhotoId { get; set; }
