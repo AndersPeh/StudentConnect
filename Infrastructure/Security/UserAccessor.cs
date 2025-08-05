@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Application.Interfaces;
 using Domain;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Infrastructure.Security;
@@ -25,6 +26,9 @@ public class UserAccessor(IHttpContextAccessor httpContextAccessor, AppDbContext
     public async Task<User> GetUserAsync()
     {
         // It uses AppDbContext to find the user in the database using the ID from GetUserId() method.
+        // This method returns a User object but it doesnt eagerly load navigation properties like Photos,
+        // either eagerly load it using .Include(u => u.Photos).FirstOrDefaultAsync(u => u.Id == userId) because FindAsync doesnt work with eager loading.
+        // or create another method to do so.
         return await dbContext.Users.FindAsync(GetUserId())
             ?? throw new UnauthorizedAccessException("No user is logged in");
     }
@@ -42,7 +46,15 @@ public class UserAccessor(IHttpContextAccessor httpContextAccessor, AppDbContext
         // then run debugger (.Net Core Attach, select API.exe).
         // send a POST request in Postman, another POST reqeust to create activity.
         // HttpContext -> User -> Identity -> Claims -> nameidentifier.
+    }
 
+    public async Task<User> GetUserWithPhotosAsync()
+    {
+        var userId = GetUserId();
 
+        return await dbContext.Users
+            .Include(user => user.Photos)
+            .FirstOrDefaultAsync(user => user.Id == userId)
+                ?? throw new UnauthorizedAccessException("No user is logged in");
     }
 }

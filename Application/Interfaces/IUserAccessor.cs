@@ -10,6 +10,9 @@ public interface IUserAccessor
     // a method that must return the string ID of the current User.
     string GetUserId();
 
-    // an async method that must returns a full User object of the current User.
+    // an async method that must returns a full User object of the current User without navigation properties.
     Task<User> GetUserAsync();
+
+    // a method that returns User object with Photos navigation property.
+    Task<User> GetUserWithPhotosAsync();
 }

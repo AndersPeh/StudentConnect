@@ -2,6 +2,7 @@ using System;
 using Application.Profiles.Commands;
 using Application.Profiles.Queries;
 using Domain;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -29,4 +30,12 @@ public class ProfilesController : BaseApiController
     {
         return HandleResult(await Mediator.Send(new GetProfilePhotos.Query { UserId = userId }));
     }
+
+    // This endpoints handles Url that ends with /profiles/{photoId}/photos.
+    [HttpDelete("{photoId}/photos")]
+    public async Task<ActionResult> DeletePhoto(string photoId)
+    {
+        return HandleResult(await Mediator.Send(new DeletePhoto.Command { PhotoId = photoId }));
+    }
+
 }
