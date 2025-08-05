@@ -13,7 +13,7 @@ public class PhotoService : IPhotoService
 {
     private readonly Cloudinary _cloudinary;
 
-    // Inject CloudinarySettings through IOptions. Because .NET uses IOptions to inject strongly-typed configurtion objects.
+    // Inject CloudinarySettings through IOptions. Because .NET uses IOptions to inject strongly-typed configuration objects.
     public PhotoService(IOptions<CloudinarySettings> config)
     {
         var account = new Account(
