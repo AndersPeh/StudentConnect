@@ -1,5 +1,6 @@
 using System;
 using Application.Profiles.Commands;
+using Application.Profiles.DTOs;
 using Application.Profiles.Queries;
 using Domain;
 using MediatR;
@@ -46,5 +47,11 @@ public class ProfilesController : BaseApiController
         return HandleResult(await Mediator.Send(new SetMainPhoto.Command { PhotoId = photoId }));
     }
 
-
+    // This endpoints handles Url that ends with /profiles/{userId}.
+    [HttpGet("{userId}")]
+    // This endpoints takes userId from the route parameter.
+    public async Task<ActionResult<UserProfile>> GetProfile(string userId)
+    {
+        return HandleResult(await Mediator.Send(new GetProfile.Query { UserId = userId }));
+    }
 }

@@ -51,5 +51,7 @@ public class MappingProfiles : Profile
             .ForMember(UserProfileDestination => UserProfileDestination.Id, options =>
                 options.MapFrom(ActivityAttendeeEntity => ActivityAttendeeEntity.User.Id));
 
+        // To map from User object to UserProfile object.
+        CreateMap<User, UserProfile>();
     }
 }
