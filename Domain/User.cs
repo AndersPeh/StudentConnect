@@ -24,4 +24,6 @@ public class User : IdentityUser
     // This sets up One User to Many Photo relationship.
     public ICollection<Photo> Photos { get; set; } = [];
 
+
+
 }

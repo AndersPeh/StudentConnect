@@ -22,6 +22,8 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<User>(op
 
     public DbSet<Photo> Photos { get; set; } = null!;
 
+    public DbSet<Comment> Comments { get; set; } = null!;
+
     // OnModelCreating is for configuring C# classes map to the database schema.
     protected override void OnModelCreating(ModelBuilder builder)
     {

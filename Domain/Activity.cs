@@ -39,4 +39,9 @@ public class Activity
     // An Activity can have many ActivityAttendee. This can be used to load attendees associated to the activity.
     // ICollection provides functionality like Add, Remove, Count for EF Core..
     public ICollection<ActivityAttendee> Attendees { get; set; } = [];
+
+    // One Activity to Many Comments. Need to in Activity entity to query comments of a particular activity.
+    // Dont need it in User because no point querying comments of a particular user at the moment.
+    public ICollection<Comment> Comments { get; set; } = [];
+
 }
