@@ -53,5 +53,15 @@ public class MappingProfiles : Profile
 
         // To map from User object to UserProfile object.
         CreateMap<User, UserProfile>();
+
+        // Comment Entity requires using Navigation property User to get DisplayName and ImageUrl for mapping to
+        // CommentDto's DisplayName and ImageUrl.
+        CreateMap<Comment, CommentDto>()
+            .ForMember(CommentDtoDestination => CommentDtoDestination.DisplayName, options =>
+                options.MapFrom(CommentEntity => CommentEntity.User.DisplayName))
+
+            .ForMember(CommentDtoDestination => CommentDtoDestination.ImageUrl, options =>
+                options.MapFrom(CommentEntity => CommentEntity.User.ImageUrl));
+
     }
 }
