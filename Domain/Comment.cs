@@ -16,8 +16,8 @@ public class Comment
     public required string ActivityId { get; set; }
 
     // Navigation properties, establish Many to One relationships here.
-    public required User User { get; set; }
+    public User User { get; set; } = null!;
 
-    public required Activity Activity { get; set; }
+    public Activity Activity { get; set; } = null!;
 
 }
