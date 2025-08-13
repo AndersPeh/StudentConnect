@@ -1,4 +1,5 @@
 using API.Middleware;
+using API.SignalR;
 using Application.Activities.Queries;
 using Application.Activities.Validators;
 using Application.Core;
@@ -45,6 +46,9 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 // Registers CORS service which uses HTTP headers to tell Browsers to give the application 
 // running at localhost:3000 (frontend) access to resources from localhost:5001 (backend)
 builder.Services.AddCors();
+
+// To use SignalR Hub.
+builder.Services.AddSignalR();
 
 // Registers Mediator service with DI container. Mediator constructs a pipeline, 
 // behaviors will be placed first in the pipeline followed by Handler.
@@ -153,6 +157,10 @@ app.MapControllers();
 // For Identity endpoints provided by .Net Identity, the default routes dont come with /api,
 // so need to add api to make it work.
 app.MapGroup("api").MapIdentityApi<User>();
+
+// Tell the Server to send the HTTP request from /comments endpoint to CommentHub .
+// For example https://localhost:5001/comments?activityId=...
+app.MapHub<CommentHub>("/comments");
 
 // *******************************************************************************************************************************************************
 // Create temporary DI scope for startup tasks to resolve and dispose services (AppDbContext instance) after try block finishes and before the application starts running (app.Run).
