@@ -5,6 +5,7 @@ import {
   HubConnectionState,
 } from "@microsoft/signalr";
 import { useEffect, useRef } from "react";
+import { runInAction } from "mobx";
 
 // useComments takes optional activityId as a parameter to manage
 // SignalR connection for comments on a specific activity.
@@ -60,7 +61,15 @@ export const useComments = (activityId?: string) => {
       // when it receives "LoadComments" message, it will set comments property to the
       // full list of comments received from the server.
       this.hubConnection.on("LoadComments", (comments) => {
-        this.comments = comments;
+        // MobX requires that any modification of observable state (comments is an observable of commetStore),
+        // that happens outside MobX action to be wrapped in an action.
+        // so MobX knows about the change and will trigger re-rendering observer (ActivityDetailsChat).
+        runInAction(() => {
+          // As this action is called by SignalR, MobX doesnt know it is an action.
+          // need to specify runInAction so when it is executed, ActivityDetailsChat will be re-rendered.
+          // MobX action always has action or makeAutoObservable or runInAction keyword.
+          this.comments = comments;
+        });
       });
 
       // Whenever any user adds a new comment to the activity, the backend sends the new comment to all clients in the activity group.
@@ -69,7 +78,9 @@ export const useComments = (activityId?: string) => {
       // it inserts the new comment at the beginning of the comments array (unshift) so the latest comment
       // appears at the top of the UI.
       this.hubConnection.on("ReceiveComment", (comment) => {
-        this.comments.unshift(comment);
+        runInAction(() => {
+          this.comments.unshift(comment);
+        });
       });
     },
 
