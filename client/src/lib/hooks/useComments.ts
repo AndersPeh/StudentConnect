@@ -4,18 +4,23 @@ import {
   HubConnectionBuilder,
   HubConnectionState,
 } from "@microsoft/signalr";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 // useComments takes optional activityId as a parameter to manage
 // SignalR connection for comments on a specific activity.
 export const useComments = (activityId?: string) => {
+  // useRef persists across re-renders of useComments hook. So it can be used to check if establishing SignalR connection is needed.
+  const created = useRef(false);
+
   // use () => ({}) to directly return the function without having to specify the return statement.
-  // Create a MobX observable object called commentStore with a property named hubConnection.
-  // useLocalObservable means commentStore is created once when the component mounts, it always returns same object (hubConnection)
+  // Create a MobX observable object called commentStore with properties named hubConnection, comments.
+  // useLocalObservable means commentStore is created once when the component mounts, it always returns same object (hubConnection, comments)
   // across re-renders except when unmounted.
-  // Any MobX observer wrapped component that uses this store will automatically re-render when
-  // commentStore property (hubConnection) changes.
+  // Any MobX observer wrapped component that uses this commentStore will automatically re-render when
+  // commentStore properties (hubConnection, comments) change.
   const commentStore = useLocalObservable(() => ({
+    comments: [] as ChatComment[],
+
     // hubConnection is null by default. hubConnection is type HubConnection (when assigned by createHubConnection) or null.
     hubConnection: null as HubConnection | null,
 
@@ -47,6 +52,25 @@ export const useComments = (activityId?: string) => {
         .catch((error) =>
           console.log("Error establishing connection: ", error)
         );
+
+      // When the client first connects to the SignalR Hub for a specific activity,
+      // the backend sends all existing comments for that activity to the client using
+      // await Clients.Caller.SendAsync("LoadComments", result.Value) -> specific user only.
+      // As the client listens for LoadComments message from the backend,
+      // when it receives "LoadComments" message, it will set comments property to the
+      // full list of comments received from the server.
+      this.hubConnection.on("LoadComments", (comments) => {
+        this.comments = comments;
+      });
+
+      // Whenever any user adds a new comment to the activity, the backend sends the new comment to all clients in the activity group.
+      // await Clients.Group(command.ActivityId).SendAsync("ReceiveComment", comment.Value) -> all users in the group.
+      // As the client listens for "ReceiveComment" message from the backend, when it receives it,
+      // it inserts the new comment at the beginning of the comments array (unshift) so the latest comment
+      // appears at the top of the UI.
+      this.hubConnection.on("ReceiveComment", (comment) => {
+        this.comments.unshift(comment);
+      });
     },
 
     // After creating createHubConnection method, create a stopHubConnection method on commentStore
@@ -65,14 +89,18 @@ export const useComments = (activityId?: string) => {
   // Manage SignalR connection lifecycle with useEffect.
   useEffect(() => {
     // If activityId is set, call commentStore.createHubConnection from above to start a new SignalR connection of that activity.
-    if (activityId) {
+    // Only establish connection when created is false to avoid establishing multiple SignalR connections.
+    if (activityId && !created.current) {
       commentStore.createHubConnection(activityId);
+      created.current = true;
     }
 
     // Cleanup function. When the component unmounts because of activityId changes,
     // it calls stopHubConnection to clean up the connection.
     return () => {
       commentStore.stopHubConnection();
+      // reset comments array to empty array when activityId changes/ unmounts.
+      commentStore.comments = [];
     };
     // First render or When activityId or commentStore changes, it calls createHubConnection
     // to start a new connection for the specific activity.
