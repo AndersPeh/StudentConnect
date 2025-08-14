@@ -2,6 +2,7 @@ using System;
 using Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Persistence;
 
@@ -48,5 +49,27 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<User>(op
             .HasOne(x => x.Activity)
             .WithMany(x => x.Attendees)
             .HasForeignKey(x => x.ActivityId);
+
+        var dateTimeConverter = new ValueConverter<DateTime, DateTime>(
+            // When saving to the database, converts any DateTime value to UTC before saving.
+            value => value.ToUniversalTime(),
+            // When reading from the database, treat the value as UTC.
+            value => DateTime.SpecifyKind(value, DateTimeKind.Utc)
+        );
+
+        // Go through every entity type in models (Activity, Comment, Photo, ActivityAttendee),
+        foreach (var entityType in builder.Model.GetEntityTypes())
+        {
+            // Go through every property of each entity, if the property is
+            // DateTime, use the dateTimeConverter to read or save it as UTC.
+            foreach (var property in entityType.GetProperties())
+            {
+
+                if (property.ClrType == typeof(DateTime))
+                {
+                    property.SetValueConverter(dateTimeConverter);
+                }
+            }
+        }
     }
 }
