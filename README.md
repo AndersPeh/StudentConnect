@@ -108,7 +108,6 @@ Currently under active development as a self-learning project.
 
 ## Upcoming Features
 
-- SignalR
 - Comment and Follow feature
 - Paging, Sorting, Filtering
 - Connect to Sql Server
