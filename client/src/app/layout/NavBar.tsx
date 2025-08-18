@@ -55,8 +55,8 @@ export default function NavBar() {
             {/* Section 2 of NavBar with options to select. */}
             <Box sx={{ display: "flex" }}>
               <MenuItemLink to="/activities">Activities</MenuItemLink>
-              <MenuItemLink to="/counter">Counter</MenuItemLink>
-              <MenuItemLink to="/errors">Errors</MenuItemLink>
+              {/* <MenuItemLink to="/counter">Counter</MenuItemLink>
+              <MenuItemLink to="/errors">Errors</MenuItemLink> */}
             </Box>
             {/* Section 3 of NavBar. */}
             <Box display="flex" alignItems="center">

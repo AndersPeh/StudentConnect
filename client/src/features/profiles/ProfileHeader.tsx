@@ -10,7 +10,13 @@ import {
   Typography,
 } from "@mui/material";
 
-export default function ProfileHeader() {
+// profile is stored inside props of Type Props, need to destructure it later.
+type Props = {
+  profile: Profile;
+};
+
+// destructure profile from props to use profile.displayName directly. else, need to do props.profile.displayName.
+export default function ProfileHeader({ profile }: Props) {
   const isFollowing = true;
 
   return (
@@ -22,12 +28,16 @@ export default function ProfileHeader() {
         <Grid2 size={8}>
           <Stack direction="row" spacing={3} alignItems="center">
             {/* Large size Profile Picture. */}
-            <Avatar sx={{ width: 150, height: 150 }} />
+            <Avatar
+              src={profile.imageUrl}
+              alt={profile.displayName + " image"}
+              sx={{ width: 150, height: 150 }}
+            />
             {/* Box by default displays items vertically, it works without specifying display="flex" flexDirection="column". */}
             {/* However, gap={2} only works with display="flex" flexDirection="column" specified, so they are provided for gap, not to display items vertically. */}
             <Box display="flex" flexDirection="column" gap={2}>
               {/* Large Display Name on top of the vertical box. */}
-              <Typography variant="h4">Display name</Typography>
+              <Typography variant="h4">{profile.displayName}</Typography>
               {/* Following chip in the bottom of the vertical box */}
               {isFollowing && (
                 <Chip
