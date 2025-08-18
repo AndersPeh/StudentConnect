@@ -46,21 +46,34 @@ Currently under active development as a self-learning project.
 
 <table>
   <tr align="center">
-    <td><p>Edit Activity Form</p><img src="AppPics/EditActivity.png" width="100%"></td>
+    <td><p>Web Socket Live Comment</p><img src="WebSocketLiveComment.png" width="100%"></td>
   </tr>
 </table>
 
 <table>
   <tr align="center">
-    <td><p>Activity Attendee Screen (Before joining)</p><img src="AppPics/ActivityDetails.png" width="100%"></td>
+    <td><p>Profile Page</p><img src="AppPics/ProfilePage.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr align="center">
+    <td><p>Activity Attendee Screen (Before joining)</p><img src="AppPics/JoinActivity.png" width="100%"></td>
     <td><p>Activity Attendee Screen (After joining)</p><img src="AppPics/AttendingActivity.png" width="100%"></td>
   </tr>
 </table>
 
 <table>
   <tr align="center">
+    <td><p>Edit Activity Form</p><img src="AppPics/EditActivity.png" width="100%"></td>
     <td><p>Create Activity Form</p><img src="AppPics/CreateActivity.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr align="center">
     <td><p>Not Found Error</p><img src="AppPics/NotFound.png" width="100%"></td>
+    <td><p>Wrong Sign In Credentials</p><img src="AppPics/WrongSignInCredentials.png" width="100%"></td>
   </tr>
 </table>
 
