@@ -30,7 +30,6 @@ export const useAccount = () => {
       await queryClient.invalidateQueries({
         queryKey: ["user"],
       });
-      toast.success("Successful Login!");
       navigate("/activities");
     },
   });
