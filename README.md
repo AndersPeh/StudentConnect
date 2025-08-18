@@ -2,27 +2,21 @@
 
 ## Connecting Students Across Universities
 
-**StudentConnect** started after I identified a lack of a centralised social event platform for 1.6 million university students in Australia to connect across universities. I am currently developing a full-stack application using React and .NET to address the need. This application aims to be a dedicated platform for students from different universities to connect, collaborate, and interact.
+**StudentConnect** is my personal full-stack project, built with React (TypeScript) and .NET, aiming to solve the problem of how hard it is for Australian university students to find genuine events and connect with others across campuses. I started this because I found social media groups messy, full of spam, and not really designed for students to actually meet up, join events, or work on projects together.
 
-### The Challenge for Students Today
+### The Challenge
 
-As a student, I've experienced firsthand the difficulties in connecting with students for various activities:
-
-- **Finding Event Buddies:** Navigating numerous, often spam-filled Social Media groups to find people for events is a hassle. It's hard to find active groups with genuine members.
-- **Collaborating on Career Development:** Students are often looking for other students to work on projects, join competitions, or hangout, but a centralised platform for this is missing.
-
-The core issue is clear: **University students need a dedicated, trustworthy, and engaging space to connect with others, both within their own university and with students from other universities.**
+- **Finding Event Buddies:** It’s impossible to find active, real people to go to events with social media groups are all spam.
+- **Collaborating:** There’s nowhere to find other students for projects, competitions, or just to hang out, unless you already have a big network.
 
 ### My Solution: StudentConnect
 
-It's being built to provide a focused environment where students can:
-
-- **Current Focus:** Hang Out & Network- Organise or join professional events, competitions, or social gatherings.
-- Upcoming: Career Growth- Collaborate on projects, hacktathon, and support each other's professional development.
+It's being built to provide a focused environment where students can **Hang out & Network** – Organise or join professional and social events, competitions, or gatherings.
 
 ### Project Status
 
-Currently under active development as a self-learning project.
+Still under active development (I’m learning as I build it!).  
+Here are some screenshots from the app:
 
 <table>
   <tr align="center">
@@ -91,38 +85,68 @@ Currently under active development as a self-learning project.
   </tr>
 </table>
 
-## Tech Stack
+## Main Features & Tech (with Project Context)
 
-### Frontend: React (TypeScript)
+### Real-time Comments with SignalR
 
-- **Vite:** Configured to run the development server on port 3000. Included mkcert to enable HTTPS for local development to mimick a production environment more closely.
-- **React Router:** In this Single Page Application, React Router handles navigation between different views without full page reloads. It improves user experience by updating necessary data and re-renders necessary views only. NavLink is used to detect active state of links for styling navigation bar to indicate the current page.
-- **React Query:** It handles fetching, automatic caching, synchronising and updating server data in client side with significant reduction in boilerplate. useQuery handles fetching all and single activities, caches them and only sends request to server again when data is stale or invalidated. useMutation handles creating, updating and deleting data. It invalidates data so useQuery will be triggered to refetch data. React Query is also used to remove queries for authentication purpose.
-- **Axios:** It makes API requests from the browser to the backend. It automatically parses JSON data, intercepts request and response to set loading state and handles error through toast or navigating to error page.
-- **MobX:** It is used to manage Loading bar by making isLoading an observable with methods to set it true or false. It provides a clean way to re-render LinearProgress according to observable by wrapping it under the observer Higher Order Component.
-- **Context API:** Instead of doing prop drilling, create context of MobX store, then wrap the entire application under Context.Provider allows the MobX store accessible to all components in it. Calling useContext allows any component to access MobX store which is a dependency injection.
-- **React-Hook-Form**: It simplifies form creation and allows for state management and submission handling. It uses Zod to define a schema for validating user inputs. React-Hook-Form then checks users inputs against zod schema defined to ensure data matches rules before the form can be submitted.
+- I use **SignalR** (with `@microsoft/signalr` on the frontend and a custom `CommentHub` in the backend) to enable live chatting on each event.
+- When you open an event, the app sets up a persistent SignalR connection tied to that event’s ID. All users viewing that event join the same group in the backend.
+- If someone sends a comment, it’s sent straight to everyone else’s browser in real time—no need to refresh.
+- The connection is managed by my custom React hook (`useComments.ts`), which handles joining/leaving, reconnection, and listening for both the “LoadComments” (existing comments) and “ReceiveComment” (new comment) events.
+- The chat UI is in the `ActivityDetailsChat.tsx` file, with keyboard shortcuts (Enter to send, Shift+Enter for new line).
 
-### Backend: .NET (C#)
+### Photo Uploads & Transformation with Cloudinary
 
-- **Clean Architecture:** It is domain centric and sets inner layers to be independent of external layers. Domain Layer (most inner) is independent of other layers and it contains business entities. Persistence layer handles saving and fetching objects from database. It depends on Domain layer. Application layer handles application logic (use cases), it depends on Domain and Persistence layers. It interacts with the database by injecting dependency from Persistence layer. API layer handles HTTP requests and contains controllers, it depends on Application and Domain layer. In doing so, changing external layers like UI framework or Database won't affect business entities. It allows the app become scalable and maintanable.
-- **CQRS:** It separates operations into Queries (read data) and Commands (write data) to simplify business logic.
-- **Controllers:** Middleware processes the request to controller then controller sends them to Mediator and returns HTTP responses.
-- **Mediator Pattern:** Mediator decouples API controllers from the application logic handles. Whenever a HTTP request comes in, controllers will send command or query objects to Mediator. Mediator will then go through its pipeline to validate data received before dispatching the handler.
-- **Fluent Validation:** It defines validation rules and validates data against rules set before passing to the command handlers.
-- **AutoMapper:** It automatically maps source object to destination object, so data is in the right format before saving while significantly reducing boilerplates.
-- **Entity Framework Core:** It is an Object Relational Mapper that translates LINQ queries into SQL commands to interact with the database. It maps business entities to database tables and speeds up development.
-- **Middleware:** It chains middleware components together to form middleware pipeline to handle HTTP requests. When a result is returned by the Controller, it will propagate upwards in middleware pipeline until the top. Then .NET will send it to the client.
-- **CORS:** It allows frontend to send requests with any header and method to the server.
-- **ASPNET Core Identity:** It manages Identity of the application using Cookie. The cookie is HttpOnly, malicious Javascript will not be able to access the cookie. Https makes sending cookie over the network secure.
-- **Postman:** It is for testing API.
+- Profile and event photos are stored in **Cloudinary** via my own backend photo service (`PhotoService.cs`, using `CloudinaryDotNet`).
+- When you upload a photo, it’s sent to Cloudinary, which saves, transforms, and returns a URL.
+- Photos are always optimised for the right size and device. For example, in the profile photo gallery (`ProfilePhotos.tsx`), the Cloudinary URL is transformed to crop and compress the image for fast loading and better quality on any screen.
+- Deleting photos is also fully wired—when you delete a profile photo, my backend deletes it from both Cloudinary and the database, making sure you can’t accidentally delete your main profile pic.
 
-### Styling: Material-UI
+### Events & Activities
+
+- Creating, editing, and deleting events is all handled using forms powered by **React-Hook-Form** and **Zod** for schema validation. The form structure matches my backend DTOs for consistency.
+- Each event has a category (like Drinks, Culture, Film, etc.), location (with real-time search using LocationIQ), and date/time.
+- The dashboard allows filtering events by type (all, going, hosting) and by date, using a calendar component.
+- Deleting or editing events triggers backend logic to update the database and notifies other users if needed.
+
+### Profiles & Social Features
+
+- Each user has a profile page with a gallery of their photos, basic info, and (coming soon) lists of events they’re joining or hosting.
+- You can see followers/following (UI built, backend logic in progress).
+- Custom popover on hover for profile images, showing a quick profile card.
+
+### Other Key Tools & Patterns (used specifically in this project)
+
+- **MobX** for state management, especially for things like loading bars and chat updates.
+- **Axios** for all API calls, handling loading/error states globally and showing toasts or error pages.
+- **Material-UI** for all the UI components.
+- **CQRS and Mediator Pattern** (with MediatR) in .NET API for clear separation of commands and queries.
+- **FluentValidation** for all API-side validation (matching Zod schemas on the frontend).
+- **AutoMapper** for mapping between backend entities and DTOs.
+- **EF Core** with SQLite for database access.
+- **Clean Architecture**: Domain (business logic), Application (use cases), Persistence (EF), Infrastructure (external services like Cloudinary), API (controllers).
+
+---
 
 ## Upcoming Features
 
-- Comment and Follow feature
-- Paging, Sorting, Filtering
-- Connect to Sql Server
+- Follow/Unfollow logic fully working (UI is done)
+- Event paging, sorting, filtering
 - Deploy to Azure
-- Only users with email that ends with .edu.au can register.
+- Allow only .edu.au emails to register
+
+---
+
+## Running Locally
+
+- Backend: .NET 9, SQLite, see `API/Program.cs` for service wiring (SignalR, Cloudinary, etc).
+- Frontend: Vite + React + TypeScript, see `client/` for all source, and `.env.development` for API URLs.
+
+---
+
+## Why I Built This
+
+I wanted a real, practical way for students (including myself) to actually meet up, join groups, and make friends, without relying on messy Facebook groups.  
+I’ve tried to write the code and documentation so that anyone (including me in the future!) can understand how and why each tool is used, with all logic explained in code comments.
+
+---
