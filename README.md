@@ -46,7 +46,7 @@ Currently under active development as a self-learning project.
 
 <table>
   <tr align="center">
-    <td><p>Web Socket Live Comment</p><img src="WebSocketLiveComment.png" width="100%"></td>
+    <td><p>Signal R Web Socket Live Comment</p><img src="AppPics/WebSocketLiveComment.png" width="100%"></td>
   </tr>
 </table>
 
