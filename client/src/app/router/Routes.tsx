@@ -11,6 +11,7 @@ import ServerError from "../../features/errors/ServerError";
 import LoginForm from "../../features/account/LoginForm";
 import RequireAuth from "./RequireAuth";
 import RegisterForm from "../../features/account/RegisterForm";
+import ProfilePage from "../../features/profiles/ProfilePage";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,8 @@ export const router = createBrowserRouter([
           { path: "activities/:id", element: <ActivityDetailPage /> },
 
           { path: "manage/:id", element: <ActivityForm /> },
+
+          { path: "profiles/:id", element: <ProfilePage /> },
 
           // with a key, when swapping between edit and create form, React will detect it and displays the right form.
           { path: "createActivity", element: <ActivityForm key="create" /> },

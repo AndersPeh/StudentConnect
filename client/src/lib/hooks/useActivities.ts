@@ -43,6 +43,10 @@ export const useActivities = (id?: string) => {
     select: (data) => {
       // This returns the final output of this query, data: activities. It maps the array of Activity from API call as individual activity.
       return data.map((activity) => {
+        const host = activity.attendees.find(
+          (attendee) => attendee.id === activity.hostId
+        );
+
         // This transforms individual activity using map, forming the transformed activity array.
         return {
           ...activity,
@@ -50,6 +54,8 @@ export const useActivities = (id?: string) => {
           isHost: currentUser?.id === activity.hostId,
           // Add isGoing, it is true if currentUser.id exists in the attendess.
           isGoing: activity.attendees.some((x) => x.id === currentUser?.id),
+
+          hostImageUrl: host?.imageUrl,
         };
       });
     },
@@ -73,11 +79,16 @@ export const useActivities = (id?: string) => {
 
     // Transform the cached individual activty from queryFn API call using select.
     select: (data) => {
+      const host = data.attendees.find(
+        (attendee) => attendee.id === data.hostId
+      );
+
       // This returns data: activity.
       return {
         ...data,
         isHost: currentUser?.id === data.hostId,
         isGoing: data.attendees.some((x) => x.id === currentUser?.id),
+        hostImageUrl: host?.imageUrl,
       };
     },
   });
