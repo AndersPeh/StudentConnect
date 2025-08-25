@@ -26,8 +26,13 @@ Here are some screenshots from the app:
 
 <table>
   <tr align="center">
-    <td><p>Welcome Screen</p><img src="AppPics/Welcome.png" width="100%"></td>
     <td><p>Profile Hovering</p><img src="AppPics/ProfileHovering.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr align="center">
+    <td><p>Splash Screen</p><img src="AppPics/Welcome.png" width="100%"></td>
   </tr>
 </table>
 
@@ -47,6 +52,12 @@ Here are some screenshots from the app:
 <table>
   <tr align="center">
     <td><p>Profile Page</p><img src="AppPics/ProfilePage.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr align="center">
+    <td><p>Add/ Crop Photo in Profile Page</p><img src="AppPics/Dropzone_Cropper.png" width="100%"></td>
   </tr>
 </table>
 
