@@ -8,12 +8,16 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import PhotoUploadWidget from "../../app/shared/components/PhotoUploadWidget";
 
 export default function ProfilePhotos() {
   const { id } = useParams();
 
+  // For Object Destructuring, the name must match the return object key.
   const { photos, loadingPhotos, isCurrentUser } = useProfile(id);
 
+  // For Array Destructuring, only sequence matters. The first element is the current state value,
+  // the second element is the function to update the state value.
   const [editMode, setEditMode] = useState(false);
 
   if (loadingPhotos) return <Typography>Loading photos...</Typography>;
@@ -33,7 +37,7 @@ export default function ProfilePhotos() {
         </Box>
       )}
       {editMode ? (
-        <div>Photo widget goes here</div>
+        <PhotoUploadWidget />
       ) : (
         <ImageList sx={{ height: 450 }} cols={6} rowHeight={164}>
           {photos.map((eachPhoto) => (
