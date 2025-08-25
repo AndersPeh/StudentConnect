@@ -45,7 +45,7 @@ Here are some screenshots from the app:
 
 <table>
   <tr align="center">
-    <td><p>Signal R Web Socket Live Comment</p><img src="AppPics/WebSocketLiveComment.png" width="100%"></td>
+    <td><p>SignalR WebSocket Live Comment</p><img src="AppPics/WebSocketLiveComment.png" width="100%"></td>
   </tr>
 </table>
 
@@ -57,7 +57,7 @@ Here are some screenshots from the app:
 
 <table>
   <tr align="center">
-    <td><p>Add/ Crop Photo in Profile Page</p><img src="AppPics/Dropzone_Cropper.png" width="100%"></td>
+    <td><p>Add/ Crop Photo in Profile Page using React Dropzone and Cropper</p><img src="AppPics/Dropzone_Cropper.png" width="100%"></td>
   </tr>
 </table>
 
