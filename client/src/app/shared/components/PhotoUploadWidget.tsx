@@ -6,15 +6,19 @@ import Cropper, { type ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
 export default function PhotoUploadWidget() {
-  // For storing the uploaded files.
+  // For storing the uploaded files. setFiles updates the files with preview URL after running inside OnDrop.
   const [files, setFiles] = useState<object & { preview: string }[]>([]);
 
+  // useRef holds a value across re-renders and doesnt cause a re-render when it changes.
   const cropperRef = useRef<ReactCropperElement>(null);
 
   // useCallback creates the onDrop function and returns the exact same function across re-renders unless its dependencies change.
   // so useDropzone receives the same onDrop function across re-renders.
   const onDrop = useCallback((acceptedFiles: File[]) => {
+    // When user uploads an image, it is a raw image data and it has to be URL src to be displayed.
     setFiles(
+      // Take every file, create a temporary URL that points directly to the file's data in the browser's memory.
+      // then assign the URL to a new property called preview, so the temporary URL can be used as src to display the image.
       acceptedFiles.map((file) =>
         Object.assign(file, {
           // Error message shows createObjectURL(obj: Blob), so put file as Blob.
