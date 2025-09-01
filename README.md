@@ -137,8 +137,6 @@ Here are some screenshots from the app:
 - **EF Core** with SQLite for database access.
 - **Clean Architecture**: Domain (business logic), Application (use cases), Persistence (EF), Infrastructure (external services like Cloudinary), API (controllers).
 
----
-
 ## Upcoming Features
 
 - Follow/Unfollow logic fully working (UI is done)
@@ -146,18 +144,12 @@ Here are some screenshots from the app:
 - Deploy to Azure
 - Allow only .edu.au emails to register
 
----
-
 ## Running Locally
 
 - Backend: .NET 9, SQLite, see `API/Program.cs` for service wiring (SignalR, Cloudinary, etc).
 - Frontend: Vite + React + TypeScript, see `client/` for all source, and `.env.development` for API URLs.
 
----
-
 ## Why I Built This
 
 I wanted a real, practical way for students (including myself) to actually meet up, join groups, and make friends, without relying on messy Facebook groups.  
 I’ve tried to write the code and documentation so that anyone (including me in the future!) can understand how and why each tool is used, with all logic explained in code comments.
-
----
