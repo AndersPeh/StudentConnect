@@ -15,9 +15,9 @@ public class DbInitializer
         // The list must contain user type data only.
         var users = new List<User>
             {
-                new() {DisplayName = "Bob", UserName="bob@test.com", Email="bob@test.com"},
-                new() {DisplayName = "Tom", UserName="tom@test.com", Email="tom@test.com"},
-                new() {DisplayName = "Jane", UserName="jane@test.com", Email="jane@test.com"},
+                new() {Id="ben-id", DisplayName = "Ben", UserName="ben@test.com", Email="ben@test.com"},
+                new() {Id="john-id", DisplayName = "John", UserName="john@test.com", Email="john@test.com"},
+                new() {Id="jane-id", DisplayName = "Jane", UserName="jane@test.com", Email="jane@test.com"},
 
             };
         // if no user, seed user.
