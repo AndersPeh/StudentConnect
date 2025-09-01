@@ -30,6 +30,7 @@ export default function ProfileContent() {
       component={Paper}
       marginTop={2}
       padding={3}
+      paddingTop={0}
       elevation={3}
       height={500}
       // Flex means display items side by side (Tabs on the left and Box on the right in a row).
