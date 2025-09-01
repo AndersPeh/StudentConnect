@@ -30,7 +30,7 @@ export default function HomePage() {
         <Group sx={{ height: 110, width: 110 }} />
         <Typography variant="h1">Student Connect</Typography>
       </Box>
-      <Typography variant="h2">Welcome Mate!</Typography>
+      <Typography variant="h2">G'day!</Typography>
       <Button
         component={Link}
         to="/activities"
