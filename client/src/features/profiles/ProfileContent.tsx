@@ -1,6 +1,7 @@
 import { Box, Paper, Tab, Tabs } from "@mui/material";
 import { useState, type SyntheticEvent } from "react";
 import ProfilePhotos from "./ProfilePhotos";
+import ProfileAbout from "./ProfileAbout";
 
 export default function ProfileContent() {
   // useState to knowing which tab is being viewed through tab index. Displays About (index 0) by default.
@@ -17,7 +18,10 @@ export default function ProfileContent() {
   // Left side (labels) are all displayed in Tabs.
   // Right side (content) is displayed in the Box according to the index of the tab clicked.
   const tabContent = [
-    { label: "About", content: <div>About</div> },
+    {
+      label: "About",
+      content: <ProfileAbout />,
+    },
     { label: "Photos", content: <ProfilePhotos /> },
     { label: "Events", content: <div>Events</div> },
     { label: "Followers", content: <div>Followers</div> },
