@@ -9,12 +9,20 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import PhotoUploadWidget from "../../app/shared/components/PhotoUploadWidget";
+import StarButton from "../../app/shared/components/StarButton";
 
 export default function ProfilePhotos() {
   const { id } = useParams();
 
   // For Object Destructuring, the name must match the return object key.
-  const { photos, loadingPhotos, isCurrentUser, uploadPhoto } = useProfile(id);
+  const {
+    photos,
+    loadingPhotos,
+    isCurrentUser,
+    uploadPhoto,
+    profile,
+    setMainPhoto,
+  } = useProfile(id);
 
   // For Array Destructuring, only sequence matters. The first element is the current state value,
   // the second element is the function to update the state value.
@@ -73,6 +81,17 @@ export default function ProfilePhotos() {
                 // Only load the image when the image is about to show up.
                 loading="lazy"
               />
+              {isCurrentUser && (
+                // If the user is visiting his own profile, clicking the Star button will trigger setMain for that photo.
+                // A Put Request will be sent to set that photo as profile picture.
+                <Box
+                  sx={{ position: "absolute", top: 0, left: 0 }}
+                  onClick={() => setMainPhoto.mutate(eachPhoto)}
+                >
+                  {/* If the user is visiting his own profile, if the image url matches the profile picture url, highlights the image. */}
+                  <StarButton selected={eachPhoto.url === profile?.imageUrl} />
+                </Box>
+              )}
             </ImageListItem>
           ))}
         </ImageList>

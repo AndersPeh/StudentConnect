@@ -92,6 +92,42 @@ export const useProfile = (id?: string) => {
     },
   });
 
+  // When calling setMainPhoto, need to pass photo argument into it.
+  const setMainPhoto = useMutation({
+    mutationFn: async (photo: Photo) => {
+      // As the photoId is in the Url, no need to provide anything in the body.
+      await agent.put(`/profiles/${photo.id}/setMain`);
+    },
+
+    // use _ as the first argument is the returned data from HTTP response. As there is no data to return, use _ to replace it.
+    // Second argument refers to the variable passed from mutationFn (photo).
+    onSuccess: (_, photo) => {
+      queryClient.setQueryData(
+        ["user"],
+        // For the cached query "user", set the imageUrl to the photo.url of the argument passed from mutationFn.
+        (userData: User) => {
+          if (!userData) return userData;
+          return {
+            ...userData,
+            imageUrl: photo.url,
+          };
+        }
+      );
+
+      queryClient.setQueryData(
+        ["profile", id],
+        // For the cached query "profile", set the imageUrl to the photo.url of the argument passed from mutationFn.
+        (profile: Profile) => {
+          if (!profile) return profile;
+          return {
+            ...profile,
+            imageUrl: photo.url,
+          };
+        }
+      );
+    },
+  });
+
   // queryClient.getQueryData<User>(["user"]) means look for ['user'] key in the cache of React Query,
   // it is the queryKey from useAccount.ts hook that fetches logged-in user's information and stores it in the cache with ['user'] key.
   // There is no point doing useQuery here as there is already an existing query that gets user information.
@@ -110,5 +146,6 @@ export const useProfile = (id?: string) => {
     loadingPhotos,
     isCurrentUser,
     uploadPhoto,
+    setMainPhoto,
   };
 };
