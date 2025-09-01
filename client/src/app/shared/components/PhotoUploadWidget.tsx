@@ -1,6 +1,6 @@
 import { CloudUpload } from "@mui/icons-material";
 import { Box, Button, Grid2, Typography } from "@mui/material";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import Cropper, { type ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
@@ -17,6 +17,22 @@ export default function PhotoUploadWidget({ uploadPhoto, loading }: Props) {
   // useRef holds a value across re-renders and doesnt cause a re-render when it changes.
   const cropperRef = useRef<ReactCropperElement>(null);
 
+  // The return statement of useEffect is for cleaning up purpose.
+  // Whenever files change (user drops an image), trigger revokeObjectURL for cleaning up.
+  useEffect(() => {
+    // When React starts collecting garbage, revoke image file URLs so there will be no active pointer pointing at image file data.
+    // React will garbage collect those image file data.
+    return () => {
+      files.forEach((file) => URL.revokeObjectURL(file.preview));
+    };
+    // Cleanup function is set up when files is [] as PhotoUploadWidget mounts.
+    // It carries out the first cleanup when new array containing new image is added to files, but does nothing as files is [].
+    // Then it sets up new cleanup function for the new files containing imageA.
+    // When another new image is dropped, React will clean up the array containing imageA by revoking the URL.
+    // so memory of the browser will be released.
+    // When PhotoUploadWidget unmounts, the final cleanup will be carried out to revoke last remaining URL.
+  }, [files]);
+
   // useCallback creates the onDrop function and returns the exact same function across re-renders unless its dependencies change.
   // so useDropzone receives the same onDrop function across re-renders.
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -27,6 +43,9 @@ export default function PhotoUploadWidget({ uploadPhoto, loading }: Props) {
       acceptedFiles.map((file) =>
         Object.assign(file, {
           // Error message shows createObjectURL(obj: Blob), so put file as Blob.
+          // Because the browser keeps the URL in memory in the global context, when React runs its garbage collector, it sees URL is active in the global context,
+          // so the image file data won't be garbage collected as active URL is pointing to it. Consequently, image file data will never be disposed after
+          // each cancellation or successful upload. The browser will consume more and more memory to store image file data, leading to memory leaks.
           preview: URL.createObjectURL(file as Blob),
         })
       )
@@ -117,7 +136,7 @@ export default function PhotoUploadWidget({ uploadPhoto, loading }: Props) {
               style={{ width: 300, height: 300, overflow: "hidden" }}
             />
             <Button
-              sx={{ marginTop: 2 }}
+              sx={{ marginY: 1, width: 300 }}
               onClick={onCrop}
               variant="contained"
               color="secondary"
