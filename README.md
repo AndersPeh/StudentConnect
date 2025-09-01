@@ -63,7 +63,7 @@ Here are some screenshots from the app:
 
 <table>
   <tr align="center">
-    <td><p>View Other User's Profile Photos</p><img src="AppPics/Other_User_ProfilePhotos.png" width="100%"></td>
+    <td><p>View Other User's Profile Photos</p><img src="Other_User_ProfilePhotos.png" width="100%"></td>
   </tr>
 </table>
 
