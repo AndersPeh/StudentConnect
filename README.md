@@ -57,7 +57,13 @@ Here are some screenshots from the app:
 
 <table>
   <tr align="center">
-    <td><p>Add/ Crop/ Upload Photo in Profile Page using React Dropzone and Cropper</p><img src="AppPics/Dropzone_Cropper.png" width="100%"></td>
+    <td><p>Drop/ Crop/ Upload Photo in Profile Page using React Dropzone and Cropper</p><img src="AppPics/Dropzone_Cropper.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr align="center">
+    <td><p>View Other User's Profile Photos</p><img src="AppPics/Other_User_ProfilePhotos.png" width="100%"></td>
   </tr>
 </table>
 
