@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import PhotoUploadWidget from "../../app/shared/components/PhotoUploadWidget";
 import StarButton from "../../app/shared/components/StarButton";
+import DeleteButton from "../../app/shared/components/DeleteButton";
 
 export default function ProfilePhotos() {
   const { id } = useParams();
@@ -22,6 +23,7 @@ export default function ProfilePhotos() {
     uploadPhoto,
     profile,
     setMainPhoto,
+    deletePhoto,
   } = useProfile(id);
 
   // For Array Destructuring, only sequence matters. The first element is the current state value,
@@ -82,15 +84,28 @@ export default function ProfilePhotos() {
                 loading="lazy"
               />
               {isCurrentUser && (
-                // If the user is visiting his own profile, clicking the Star button will trigger setMain for that photo.
-                // A Put Request will be sent to set that photo as profile picture.
-                <Box
-                  sx={{ position: "absolute", top: 0, left: 0 }}
-                  onClick={() => setMainPhoto.mutate(eachPhoto)}
-                >
-                  {/* If the user is visiting his own profile, if the image url matches the profile picture url, highlights the image. */}
-                  <StarButton selected={eachPhoto.url === profile?.imageUrl} />
-                </Box>
+                <div>
+                  {/* If the user is visiting his own profile, clicking the Star button will trigger setMain for that photo. A Put Request will be sent to set that photo as profile picture. */}
+                  <Box
+                    sx={{ position: "absolute", top: 0, left: 0 }}
+                    onClick={() => setMainPhoto.mutate(eachPhoto)}
+                  >
+                    {/* If the user is visiting his own profile, if the image url matches the profile picture url, highlights the image. */}
+                    <StarButton
+                      selected={eachPhoto.url === profile?.imageUrl}
+                    />
+                  </Box>
+                  {/* Only allow user to delete non profile picture photo. */}
+                  {profile?.imageUrl !== eachPhoto.url && (
+                    <Box
+                      sx={{ position: "absolute", top: 0, right: 0 }}
+                      onClick={() => deletePhoto.mutate(eachPhoto.id)}
+                    >
+                      {/* If the user is visiting his own profile, for all images that are not the profile picture url, shows delete button. */}
+                      <DeleteButton />
+                    </Box>
+                  )}
+                </div>
               )}
             </ImageListItem>
           ))}

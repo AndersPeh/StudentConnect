@@ -128,6 +128,25 @@ export const useProfile = (id?: string) => {
     },
   });
 
+  // Need to pass photoId into deletePhoto to use it for making DELETE request and onSuccess process.
+  const deletePhoto = useMutation({
+    mutationFn: async (photoId: string) => {
+      await agent.delete(`/profiles/${photoId}/photos`);
+    },
+
+    // First argument: As there is no data returned from the DELETE request, use _ to replace it.
+    // Second argument:
+    onSuccess: (_, photoId) => {
+      queryClient.setQueryData(
+        ["photos", id],
+        // When the photo is deleted successfully, modify the queryKey ["photos", id] to use filter to hide it.
+        (photos: Photo[]) => {
+          return photos?.filter((photo) => photo.id !== photoId);
+        }
+      );
+    },
+  });
+
   // queryClient.getQueryData<User>(["user"]) means look for ['user'] key in the cache of React Query,
   // it is the queryKey from useAccount.ts hook that fetches logged-in user's information and stores it in the cache with ['user'] key.
   // There is no point doing useQuery here as there is already an existing query that gets user information.
@@ -147,5 +166,6 @@ export const useProfile = (id?: string) => {
     isCurrentUser,
     uploadPhoto,
     setMainPhoto,
+    deletePhoto,
   };
 };
