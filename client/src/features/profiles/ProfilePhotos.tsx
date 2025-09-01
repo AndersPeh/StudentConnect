@@ -14,18 +14,28 @@ export default function ProfilePhotos() {
   const { id } = useParams();
 
   // For Object Destructuring, the name must match the return object key.
-  const { photos, loadingPhotos, isCurrentUser } = useProfile(id);
+  const { photos, loadingPhotos, isCurrentUser, uploadPhoto } = useProfile(id);
 
   // For Array Destructuring, only sequence matters. The first element is the current state value,
   // the second element is the function to update the state value.
   const [editMode, setEditMode] = useState(false);
 
+  // passes file to uploadPhoto to make POST request to add photo and refetch photos if successful.
+  const handlePhotoUpload = (file: Blob) => {
+    // As there is nothing to do after uploadPhoto, no need to use mutateasync. Just fire and forget, then let onSuccess to handle the result.
+    // if uploadPhoto doesnt work, then setEditMode will remain true to let user to add again.
+    uploadPhoto.mutate(file, {
+      onSuccess: () => {
+        // Change the button back to Add Photo to show that editing is completed.
+        setEditMode(false);
+      },
+    });
+  };
+
   if (loadingPhotos) return <Typography>Loading photos...</Typography>;
 
   // Because const response = await agent.get<Photo[]>(`/profiles/${id}/photos`); returns an empty array even if there is no photo,
-  // need to check array length to know if it contains any photo.
-  if (!photos || photos.length === 0)
-    return <Typography>No photos found for this user.</Typography>;
+  if (!photos) return <Typography>No photos found for this user.</Typography>;
 
   return (
     <Box>
@@ -37,7 +47,10 @@ export default function ProfilePhotos() {
         </Box>
       )}
       {editMode ? (
-        <PhotoUploadWidget />
+        <PhotoUploadWidget
+          uploadPhoto={handlePhotoUpload}
+          loading={uploadPhoto.isPending}
+        />
       ) : (
         <ImageList sx={{ height: 450 }} cols={6} rowHeight={164}>
           {photos.map((eachPhoto) => (

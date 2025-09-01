@@ -1,11 +1,16 @@
 import { CloudUpload } from "@mui/icons-material";
-import { Box, Grid2, Typography } from "@mui/material";
+import { Box, Button, Grid2, Typography } from "@mui/material";
 import { useCallback, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import Cropper, { type ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
-export default function PhotoUploadWidget() {
+type Props = {
+  uploadPhoto: (file: Blob) => void;
+  loading: boolean;
+};
+
+export default function PhotoUploadWidget({ uploadPhoto, loading }: Props) {
   // For storing the uploaded files. setFiles updates the files with preview URL after running inside OnDrop.
   const [files, setFiles] = useState<object & { preview: string }[]>([]);
 
@@ -28,6 +33,26 @@ export default function PhotoUploadWidget() {
     );
     // Empty dependency array means create onDrop only once when the component first mount, never again as it doesnt depend on anything.
   }, []);
+
+  // React remembers the onCrop function, it only creates a new onCrop when [uploadPhoto] prop changes.
+  // As uploadPhoto is a mutation from React Query that does the same thing, onCrop will be created only once and remembered.
+  const onCrop = useCallback(() => {
+    // cropperRef.current? because cropperRef is null by default, it accesses the <Cropper> component.
+    // React places <Cropper> instance to cropperRef due to ref={cropperRef} in Cropper.
+    // .cropper includes methods of react-cropper.
+    // cropperRef.current is directly referring to live component instance of Cropper.
+    const cropper = cropperRef.current?.cropper;
+
+    // .getCroppedCanvas() is retrieved from .cropper, it returns HTML <canvas> element that contains the cropped image data.
+    // .toBlob((blob) converts the cropped image data to Blob (Binary Large Object), a file like object, which is needed to HTTP file upload.
+    cropper?.getCroppedCanvas().toBlob(
+      // .toBlob is an async function, after converting the cropped image data into Blob, it takes a callback function that uploads a photo (the newly created Blob object).
+      (blob) => {
+        // This is passed from ProfilePhotos.tsx to make POST request to upload photo.
+        uploadPhoto(blob as Blob);
+      }
+    );
+  }, [uploadPhoto]);
 
   // Default properties from React Dropzone. useDropzone takes the same onDrop function across re-renders,
   // so it doesnt have to rerun internal logic every re-render.
@@ -61,12 +86,17 @@ export default function PhotoUploadWidget() {
         <Typography variant="overline" color="secondary">
           Step 2 - Resize image
         </Typography>
-        {/* As user can only drop 1 image, get the first element of the files array to display. */}
+        {/* As user can only drop 1 image, get the first element of the files array to display. 
+        Only shows the cropper the the first element of the file exists (after user uploads a photo),
+        Cropper shows a crop sqaure on image uploaded src={files[0]?.preview}.
+        */}
         {files[0]?.preview && (
           <Cropper
             src={files[0]?.preview}
+            // To have a ref to the Cropper instance for converting the cropped image data to Blob for uploading in the next step.
+            ref={cropperRef}
             style={{ height: 300, width: "90%" }}
-            // Square images
+            // Square crop
             initialAspectRatio={1}
             aspectRatio={1}
             preview=".img-preview"
@@ -86,6 +116,15 @@ export default function PhotoUploadWidget() {
               className="img-preview"
               style={{ width: 300, height: 300, overflow: "hidden" }}
             />
+            <Button
+              sx={{ marginTop: 2 }}
+              onClick={onCrop}
+              variant="contained"
+              color="secondary"
+              disabled={loading}
+            >
+              Upload
+            </Button>
           </>
         )}
       </Grid2>

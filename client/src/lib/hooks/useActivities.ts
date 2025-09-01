@@ -53,7 +53,9 @@ export const useActivities = (id?: string) => {
           // Add isHost to the activity object, it is true if the currentUser.id matches the hostId of the activity.
           isHost: currentUser?.id === activity.hostId,
           // Add isGoing, it is true if currentUser.id exists in the attendess.
-          isGoing: activity.attendees.some((x) => x.id === currentUser?.id),
+          isGoing: activity.attendees.some(
+            (attendee) => attendee.id === currentUser?.id
+          ),
 
           hostImageUrl: host?.imageUrl,
         };
@@ -87,7 +89,9 @@ export const useActivities = (id?: string) => {
       return {
         ...data,
         isHost: currentUser?.id === data.hostId,
-        isGoing: data.attendees.some((x) => x.id === currentUser?.id),
+        isGoing: data.attendees.some(
+          (attendee) => attendee.id === currentUser?.id
+        ),
         hostImageUrl: host?.imageUrl,
       };
     },
@@ -156,6 +160,7 @@ export const useActivities = (id?: string) => {
       // optimistically update the data (assuming the API endpoint will return positive result).
       queryClient.setQueryData<Activity>(
         ["activities", activityId],
+        // For the cached Activity (oldActivity), modify it as if the update is successful.
         (oldActivity) => {
           if (!oldActivity || !currentUser) {
             return oldActivity;
@@ -163,19 +168,23 @@ export const useActivities = (id?: string) => {
 
           const isHost = oldActivity.hostId === currentUser.id;
           const isAttending = oldActivity.attendees.some(
-            (x) => x.id === currentUser.id
+            (attendee) => attendee.id === currentUser.id
           );
 
           return {
             ...oldActivity,
+
+            // if the user is Host, reverse the current isCancelled status.
             isCancelled: isHost
               ? !oldActivity.isCancelled
               : oldActivity.isCancelled,
             attendees: isAttending
-              ? isHost
+              ? // If the user is attending and is not host, remove user from attendees.
+                isHost
                 ? oldActivity.attendees
                 : oldActivity.attendees.filter((x) => x.id !== currentUser.id)
-              : [
+              : // If the user is not attending, add user to the attendees.
+                [
                   ...oldActivity.attendees,
                   {
                     id: currentUser.id,
@@ -186,6 +195,7 @@ export const useActivities = (id?: string) => {
           };
         }
       );
+      // returns the previously cached activity to reverse in case the update wasnt successful.
       return { prevActivity };
     },
     onError: (error, activityId, context) => {
@@ -193,6 +203,7 @@ export const useActivities = (id?: string) => {
       if (context?.prevActivity) {
         queryClient.setQueryData(
           ["activities", activityId],
+          // replace the current cached activity with previously cached activity.
           context.prevActivity
         );
       }

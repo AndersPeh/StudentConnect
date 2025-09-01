@@ -30,7 +30,6 @@ export const useAccount = () => {
       await queryClient.invalidateQueries({
         queryKey: ["user"],
       });
-      navigate("/activities");
     },
   });
 

@@ -10,7 +10,9 @@ import { runInAction } from "mobx";
 // useComments takes optional activityId as a parameter to manage
 // SignalR connection for comments on a specific activity.
 export const useComments = (activityId?: string) => {
-  // useRef persists across re-renders of useComments hook. So it can be used to check if establishing SignalR connection is needed.
+  // useRef persists across re-renders but is used for internal logic only, it shouldnt change the UI. So it can be used to check if establishing SignalR connection is needed.
+  // useRef persists across re-renders without trigerring a re-render when it is updated. Perfect for something that shouldnt change the UI when it is updated.
+  // useState is not suitable here as it changes the UI when it is updated. useState persists across re-render but triggers re-render as well.
   const created = useRef(false);
 
   // use () => ({}) to directly return the function without having to specify the return statement.
