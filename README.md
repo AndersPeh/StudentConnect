@@ -51,13 +51,13 @@ Here are some screenshots from the app:
 
 <table>
   <tr align="center">
-    <td><p>Profile Page</p><img src="AppPics/ProfilePage.png" width="100%"></td>
+    <td><p>Profile Page with Set Profile Picture and Delete features</p><img src="AppPics/ProfilePage.png" width="100%"></td>
   </tr>
 </table>
 
 <table>
   <tr align="center">
-    <td><p>Add/ Crop Photo in Profile Page using React Dropzone and Cropper</p><img src="AppPics/Dropzone_Cropper.png" width="100%"></td>
+    <td><p>Add/ Crop/ Upload Photo in Profile Page using React Dropzone and Cropper</p><img src="AppPics/Dropzone_Cropper.png" width="100%"></td>
   </tr>
 </table>
 
