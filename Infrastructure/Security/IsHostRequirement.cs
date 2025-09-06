@@ -44,8 +44,6 @@ public class IsHostRequirementHandler(AppDbContext dbContext, IHttpContextAccess
         // currently logged in User and activityId from the route parameter.
         var attendee = await dbContext.ActivityAttendees
             // If .AsNoTracking() is not provided, any Command or Query operation after this will continue tracking the ActivityAttendees. 
-            // When saving, the EF Core will notice there is no ActivityAttendees from HttpRequest, so it will assume the changes is from having ActivityAttendees (from IsHostRequirement),
-            // to ActivityAttendees is null. So saving it means removing ActivityAttendees.
 
             // For example, EditActivity Command needs to get Succeed message from IsHostRequirement first, then only proceed to EditActivity logic.
             // If AsNoTracking is not provided, after finishing IsHostRequirement, the application will bring the ActivityAttendees to EditActivity logic in Api layer.

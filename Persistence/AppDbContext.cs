@@ -14,7 +14,7 @@ namespace Persistence;
 public class AppDbContext(DbContextOptions options) : IdentityDbContext<User>(options)
 {
     // DbSet<Activity> provides methods (like Add, Remove) and LINQ extension methods (like Where) to manage Activity entities.
-    // Entity Framework core maps DbSet<Activity> to Activities table in the database, so Activities property represents Activities table.
+    // Entity Framework core maps DbSet<Activity> to Activities table in the database, so Activity represents Activities table.
     // When any part uses AppDbContext.Activities, EF will translate C# queries into SQL commands.
     public DbSet<Activity> Activities { get; set; } = null!;
 
@@ -30,40 +30,49 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<User>(op
     // OnModelCreating is for configuring C# classes map to the database schema.
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        // Because EF Core usually looks for an ID from entity to use as a primary key.
+        // For entities that use composite primary key, need to specify it in OnModelCreating.
         base.OnModelCreating(builder);
 
         // define relationships, keys, constraints that cannot be expressed by C# property types and attributes.
-        // add ActivityId and UserId Primary Keys to ActivityAttendee.
-        builder.Entity<ActivityAttendee>(x => x.HasKey(a => new { a.ActivityId, a.UserId }));
+        // add ActivityId and UserId as composite primary key to ActivityAttendee.
+        builder.Entity<ActivityAttendee>(activityAttendeeEntity => activityAttendeeEntity.HasKey(compositeKey => new { compositeKey.ActivityId, compositeKey.UserId }));
 
         // establish relationship: ActivityAttendee belongs to a User, so UserId is a foreign key.
-        // .WithMany(x => x.Activities) tells EF Core that the navigation property on the User entity is called Activities.
-        // This Activities represents ActivityAttendee records for that User.
         builder.Entity<ActivityAttendee>()
-            .HasOne(x => x.User)
-            .WithMany(x => x.Activities)
-            .HasForeignKey(x => x.UserId);
+            .HasOne(activityAttendeeInstance => activityAttendeeInstance.User)
+            // .WithMany tells EF Core that the navigation property on the User entity is called Activities.
+            // userInstance.Activities represents ActivityAttendee records for that User.
+            .WithMany(userInstance => userInstance.Activities)
+            .HasForeignKey(activityAttendeeInstance => activityAttendeeInstance.UserId);
 
         // establish relationship: ActivityAttendee belongs to an Activity, so ActivityId is a foreign key.
-        // .WithMany(x => x.Attendees) tells EF Core that the navigation property on the Activity entity is called Attendees.
-        // This Attendees represents ActivityAttendee records for that Activty.
         builder.Entity<ActivityAttendee>()
-            .HasOne(x => x.Activity)
-            .WithMany(x => x.Attendees)
-            .HasForeignKey(x => x.ActivityId);
+            .HasOne(activityAttendeeInstance => activityAttendeeInstance.Activity)
+            // .WithMany(x => x.Attendees) tells EF Core that the navigation property on the Activity entity is called Attendees.
+            // activityInstance.Attendees represents ActivityAttendee records for that Activty.
+            .WithMany(activityInstance => activityInstance.Attendees)
+            .HasForeignKey(activityAttendeeInstance => activityAttendeeInstance.ActivityId);
 
-        builder.Entity<UserFollowing>(x =>
+        builder.Entity<UserFollowing>(userFollowingEntity =>
         {
-            x.HasKey(k => new { k.ObserverId, k.TargetId });
+            // UserFollowing table has composite primary key of ObserverId and TargetId.
+            userFollowingEntity.HasKey(compositeKey => new { compositeKey.ObserverId, compositeKey.TargetId });
 
-            x.HasOne(o => o.Observer)
-                .WithMany(f => f.Followings)
-                .HasForeignKey(o => o.ObserverId)
+            // UserFollowing entity belongs to 1 Observer from User entity (Foreign Key Observer Id).
+            userFollowingEntity.HasOne(userFollowingInstance => userFollowingInstance.Observer)
+            // A User entity has many Followings navigation property.
+                .WithMany(userInstance => userInstance.Followings)
+                .HasForeignKey(userFollowingInstance => userFollowingInstance.ObserverId)
+                // When parent entity (User entity) is deleted, the UserFollowing records where the User is Observer will be deleted.
                 .OnDelete(DeleteBehavior.Cascade);
 
-            x.HasOne(o => o.Target)
-                .WithMany(f => f.Followers)
-                .HasForeignKey(o => o.TargetId)
+            // UserFollowing entity belongs to 1 Target from User entity (Foreign Key Target Id).
+            userFollowingEntity.HasOne(userFollowingInstance => userFollowingInstance.Target)
+                // A User entity has many Followers navigation property.
+                .WithMany(userInstance => userInstance.Followers)
+                .HasForeignKey(userFollowingInstance => userFollowingInstance.TargetId)
+                // When parent entity (User entity) is deleted, the UserFollowing records where the User is Target will be deleted.
                 .OnDelete(DeleteBehavior.Cascade);
         });
 

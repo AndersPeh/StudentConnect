@@ -8,17 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-// A Controller should only yake HTTP request and return HTTP response, it shouldn't process any logic.
+// A Controller should only take HTTP request and return HTTP response, it shouldn't process any logic.
 // ActivitiesController inherits from BaseApiController for features like Route("api/activities") and IMediator.
 // As .NET automatically removes Controller keyword, changes Activities to lowercase,
 // so the base route becomes api/activities.
-
-// Below is provided in Program.cs to set up the Mediator pipeline. Whenever ActivitiesController sends a Query or Command to the Mediator,
-// It will go to ValidationBehavior to use Validator for validating the request before it sending to the Handler.
-
-// builder.Services.AddMediatR(x =>
-// {
-//     x.AddOpenBehavior(typeof(ValidationBehavior<,>));
 
 // Scans the Application layer for all IRequestHandler<TRequest, TResponse> implementations (like CreateActivity.Handler).
 // After any Handler has processed the request, it will return response up the pipeline to ValidationBehavior.

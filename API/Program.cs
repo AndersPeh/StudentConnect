@@ -109,7 +109,7 @@ builder.Services.AddAuthorization(opt =>
 });
 
 // Registers the handler with the DI container. When the system processes an IAuthorizationRequirement and finds that it is an IsHostRequirement,
-// the class that should be used is IsHostRequirementHandler. So the authorization middleware will use IsHostRequirementHandler to satisfy IsHostRequirement.
+// the class that should be used is IsHostRequirementHandler. So the authorisation middleware will use IsHostRequirementHandler to satisfy IsHostRequirement.
 builder.Services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
 
 // Registers CloudinarySettings configuration settings with DI container to use in other files.

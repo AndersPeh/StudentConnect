@@ -24,7 +24,9 @@ public class User : IdentityUser
     // This sets up One User to Many Photo relationship.
     public ICollection<Photo> Photos { get; set; } = [];
 
+    // When a User is queried, EF Core will look for Observer Id that matches User Id in UserFollowing to find out User's followings.
     public ICollection<UserFollowing> Followings { get; set; } = [];
 
+    // When a User is queried, EF Core will look for Target Id that matches User Id in UserFollowing to find out User's followers.
     public ICollection<UserFollowing> Followers { get; set; } = [];
 }
