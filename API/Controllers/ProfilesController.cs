@@ -54,4 +54,11 @@ public class ProfilesController : BaseApiController
     {
         return HandleResult(await Mediator.Send(new GetProfile.Query { UserId = userId }));
     }
+
+    // This endpoints handles Url that ends with {targetUserId}/follow.
+    [HttpPost("{targetUserId}/follow")]
+    public async Task<ActionResult> FollowToggle(string targetUserId)
+    {
+        return HandleResult(await Mediator.Send(new FollowToggle.Command { TargetUserId = targetUserId }));
+    }
 }
