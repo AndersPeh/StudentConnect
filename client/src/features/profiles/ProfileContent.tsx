@@ -2,6 +2,7 @@ import { Box, Paper, Tab, Tabs } from "@mui/material";
 import { useState, type SyntheticEvent } from "react";
 import ProfilePhotos from "./ProfilePhotos";
 import ProfileAbout from "./ProfileAbout";
+import ProfileFollowings from "./ProfileFollowings";
 
 export default function ProfileContent() {
   // useState to knowing which tab is being viewed through tab index. Displays About (index 0) by default.
@@ -24,8 +25,9 @@ export default function ProfileContent() {
     },
     { label: "Photos", content: <ProfilePhotos /> },
     { label: "Events", content: <div>Events</div> },
-    { label: "Followers", content: <div>Followers</div> },
-    { label: "Following", content: <div>Following</div> },
+    // Tab 3 is Followers, use this to check the activeTab for predicate in ProfileFollowings.tsx
+    { label: "Followers", content: <ProfileFollowings activeTab={value} /> },
+    { label: "Following", content: <ProfileFollowings activeTab={value} /> },
   ];
 
   return (

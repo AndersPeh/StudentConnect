@@ -21,7 +21,7 @@ export default function ProfilePage() {
     <Grid2 container>
       <Grid2 size={12}>
         {/* pass the user profile to ProfileHeader to display image, name... */}
-        <ProfileHeader profile={profile} />
+        <ProfileHeader />
         <ProfileContent />
       </Grid2>
     </Grid2>

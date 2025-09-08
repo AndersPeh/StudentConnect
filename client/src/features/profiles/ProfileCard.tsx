@@ -23,8 +23,11 @@ export default function ProfileCard({ profile }: Props) {
         sx={{
           borderRadius: 3,
           padding: 3,
-          maxWidth: 300,
+          width: 250,
+          height: 380,
           textDecoration: "none",
+          display: "flex",
+          flexDirection: "column",
         }}
         elevation={4}
       >
@@ -37,7 +40,7 @@ export default function ProfileCard({ profile }: Props) {
           alt={profile.displayName + " image"}
         />
         {/* Other than User image, also displays User name in profile card. */}
-        <CardContent>
+        <CardContent sx={{ flexGrow: 1 }}>
           <Box display="flex" flexDirection="column" gap={1}>
             <Typography variant="h5">{profile.displayName}</Typography>
             {profile.bio && (

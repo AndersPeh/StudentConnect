@@ -16,3 +16,6 @@ dotnet ef migrations add Message -p Persistence -s API
 
 Remove migration:
 dotnet ef migrations add -p Persistence -s API
+
+For generating script to upload to Vertabelo.
+dotnet ef migrations script -o test.sql -p Persistence -s API

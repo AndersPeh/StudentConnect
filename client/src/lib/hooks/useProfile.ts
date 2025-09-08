@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import agent from "../api/agent";
 import { useMemo } from "react";
 
-export const useProfile = (id?: string) => {
+export const useProfile = (id?: string, predicate?: string) => {
   const queryClient = useQueryClient();
 
   const { data: profile, isLoading: loadingProfile } = useQuery<Profile>({
@@ -16,7 +16,7 @@ export const useProfile = (id?: string) => {
     },
 
     // Only execute get profile when id is available.
-    enabled: !!id,
+    enabled: !!id && !predicate,
   });
 
   // send GET request to get array of Photo of the user.
@@ -29,8 +29,23 @@ export const useProfile = (id?: string) => {
       return response.data;
     },
 
-    // Only execute get photos when id is available.
-    enabled: !!id,
+    // Only execute get photos when id is passed in but predicate is not passed in.
+    enabled: !!id && !predicate,
+  });
+
+  const { data: followings, isLoading: loadingFollowings } = useQuery<
+    Profile[]
+  >({
+    queryKey: ["followings", id, predicate],
+    queryFn: async () => {
+      const response = await agent.get<Profile[]>(
+        `/profiles/${id}/follow-list?predicate=${predicate}`
+      );
+      return response.data;
+    },
+
+    // Only enable this query to run when both id and predicate are passed in as arguments.
+    enabled: !!id && !!predicate,
   });
 
   // takes file as a argument and sends it to add-photo endpoint.
@@ -138,7 +153,7 @@ export const useProfile = (id?: string) => {
     onSuccess: (_, photoId) => {
       queryClient.setQueryData(
         ["photos", id],
-        // When the photo is deleted successfully, modify the queryKey ["photos", id] to use filter to hide it.
+        // When the photo is deleted successfully, modify the cached photos in queryKey ["photos", id] to use filter to hide it.
         (photos: Photo[]) => {
           return photos?.filter((photo) => photo.id !== photoId);
         }
@@ -154,8 +169,13 @@ export const useProfile = (id?: string) => {
     onSuccess: () => {
       queryClient.setQueryData(
         ["profile", id],
-        // Modify the profile query key by adding or reducing the followersCount.
+        // Modify the cached profile in the profile query key by adding or reducing the followersCount.
         (profile: Profile) => {
+          // Because we can only click follow button which affects followers list, just need to invalidate the followers.
+          // Put queryClient.invalidateQueries inside queryClient.setQueryData as optimistic update for users to see instant update.
+          queryClient.invalidateQueries({
+            queryKey: ["followings", id, "followers"],
+          });
           // !profile is when profile doesnt exist, but !profile.followersCount can mean when profile.followersCount is 0.
           // so need to use === undefined instead of !.
           if (!profile || profile.followersCount === undefined) return profile;
@@ -173,6 +193,7 @@ export const useProfile = (id?: string) => {
       );
     },
   });
+
   // queryClient.getQueryData<User>(["user"]) means look for ['user'] key in the cache of React Query,
   // it is the queryKey from useAccount.ts hook that fetches logged-in user's information and stores it in the cache with ['user'] key.
   // There is no point doing useQuery here as there is already an existing query that gets user information.
@@ -194,5 +215,7 @@ export const useProfile = (id?: string) => {
     setMainPhoto,
     deletePhoto,
     updateFollowing,
+    followings,
+    loadingFollowings,
   };
 };
