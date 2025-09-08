@@ -17,8 +17,6 @@ type Props = {
 
 // destructure profile from props to use profile.displayName directly. else, need to do props.profile.displayName.
 export default function ProfileHeader({ profile }: Props) {
-  const isFollowing = true;
-
   return (
     // White card container with rounded corners and elevation shadow. Internal padding of 4.
     <Paper elevation={3} sx={{ padding: 4, borderRadius: 3 }}>
@@ -39,7 +37,7 @@ export default function ProfileHeader({ profile }: Props) {
               {/* Large Display Name on top of the vertical box. */}
               <Typography variant="h4">{profile.displayName}</Typography>
               {/* Following chip in the bottom of the vertical box */}
-              {isFollowing && (
+              {profile.following && (
                 <Chip
                   variant="outlined"
                   color="secondary"
@@ -61,12 +59,12 @@ export default function ProfileHeader({ profile }: Props) {
               {/* Left side the of Flex box. */}
               <Box textAlign="center">
                 <Typography variant="h6">Followers</Typography>
-                <Typography variant="h3">63</Typography>
+                <Typography variant="h3">{profile.followersCount}</Typography>
               </Box>
               {/* Right side the of Flex box. */}
               <Box textAlign="center">
                 <Typography variant="h6">Following</Typography>
-                <Typography variant="h3">51</Typography>
+                <Typography variant="h3">{profile.followingCount}</Typography>
               </Box>
             </Box>
             {/* Second part of the Stack. */}
@@ -77,9 +75,9 @@ export default function ProfileHeader({ profile }: Props) {
             <Button
               fullWidth
               variant="outlined"
-              color={isFollowing ? "error" : "success"}
+              color={profile.following ? "error" : "success"}
             >
-              {isFollowing ? "Unfollow" : "Follow"}
+              {profile.following ? "Unfollow" : "Follow"}
             </Button>
           </Stack>
         </Grid2>

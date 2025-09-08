@@ -16,7 +16,6 @@ type Props = {
 
 // Profile Card appears when User mouse hovers to other user icon in ActivityCard.
 export default function ProfileCard({ profile }: Props) {
-  const following = false;
   return (
     // use Link from React Router to route user to the URL.
     <Link to={`/profiles/${profile.id}`} style={{ textDecoration: "none" }}>
@@ -55,7 +54,7 @@ export default function ProfileCard({ profile }: Props) {
               </Typography>
             )}
             {/* if following the user, shows following chip. */}
-            {following && (
+            {profile.following && (
               <Chip
                 size="small"
                 label="Following"
@@ -75,7 +74,9 @@ export default function ProfileCard({ profile }: Props) {
         >
           {/* Person icon followed by number of followers. */}
           <Person />
-          <Typography sx={{ marginLeft: 1 }}>20 Followers</Typography>
+          <Typography sx={{ marginLeft: 1 }}>
+            {profile.followersCount} Followers
+          </Typography>
         </Box>
       </Card>
     </Link>

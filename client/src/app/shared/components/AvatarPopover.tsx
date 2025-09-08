@@ -29,6 +29,10 @@ export default function AvatarPopover({ profile }: Props) {
         alt={profile.displayName + " image"}
         // image of the attendee.
         src={profile.imageUrl}
+        sx={{
+          border: profile.following ? 3 : 0,
+          borderColor: "secondary.main",
+        }}
         // Tells React this is a Link component which triggers React Router to route user to the URL.
         component={Link}
         to={`/profiles/${profile.id}`}
