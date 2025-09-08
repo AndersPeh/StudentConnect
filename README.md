@@ -74,6 +74,18 @@ Here are some screenshots from the app:
 
 <table>
   <tr align="center">
+    <td><p>Followers Tab</p><img src="AppPics/FollowersTab.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr align="center">
+    <td><p>Following Tab</p><img src="AppPics/FollowingTab.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr align="center">
     <td><p>Activity Attendee Screen (Before joining)</p><img src="AppPics/JoinActivity.png" width="100%"></td>
     <td><p>Activity Attendee Screen (After joining)</p><img src="AppPics/AttendingActivity.png" width="100%"></td>
   </tr>
