@@ -3,7 +3,6 @@ using Application.Profiles.Commands;
 using Application.Profiles.DTOs;
 using Application.Profiles.Queries;
 using Domain;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -60,5 +59,13 @@ public class ProfilesController : BaseApiController
     public async Task<ActionResult> FollowToggle(string targetUserId)
     {
         return HandleResult(await Mediator.Send(new FollowToggle.Command { TargetUserId = targetUserId }));
+    }
+
+    // This endpoints handles Url that ends with {userId}/follow-list.
+    // Predicate will be derived from query params string ({{url}}/api/profiles/ben-id/follow-list?predicate=followings).
+    [HttpGet("{userId}/follow-list")]
+    public async Task<ActionResult<List<UserProfile>>> GetFollowings(string userId, string predicate)
+    {
+        return HandleResult(await Mediator.Send(new GetFollowings.Query { UserId = userId, Predicate = predicate }));
     }
 }

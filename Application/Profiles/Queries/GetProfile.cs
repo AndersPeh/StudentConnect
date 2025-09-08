@@ -1,5 +1,6 @@
 using System;
 using Application.Core;
+using Application.Interfaces;
 using Application.Profiles.DTOs;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -19,7 +20,7 @@ public class GetProfile
         public required string UserId { get; set; }
     }
 
-    public class Handler(AppDbContext context, IMapper mapper) :
+    public class Handler(AppDbContext context, IMapper mapper, IUserAccessor userAccessor) :
         IRequestHandler<Query, Result<UserProfile>>
     {
         public async Task<Result<UserProfile>> Handle(Query request, CancellationToken cancellationToken)
@@ -28,7 +29,8 @@ public class GetProfile
             // sensitive fields like password hashes and navigation properties into memory, reducing risk and memory usage.
             // It translates mapper.ConfigurationProvider which is CreateMap<User, UserProfile>() into SQL Select Statements for necessary columns only.
             var profile = await context.Users
-                .ProjectTo<UserProfile>(mapper.ConfigurationProvider)
+            // Pass current user id to Mapper for finding out if the logged in user is following the selected user.
+                .ProjectTo<UserProfile>(mapper.ConfigurationProvider, new { currentUserId = userAccessor.GetUserId() })
                 .SingleOrDefaultAsync(user => user.Id == request.UserId, cancellationToken);
 
             return profile == null ?

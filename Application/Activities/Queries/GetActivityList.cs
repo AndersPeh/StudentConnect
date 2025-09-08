@@ -1,5 +1,6 @@
 using System;
 using Application.Activities.DTOs;
+using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
@@ -18,7 +19,7 @@ public class GetActivityList
     // Mediator instantiates the Handler to process the query, so DI refers to AppDbContext registered in API layer,
     // then DI instantiates AppDbContext from Persistence layer and use constructor injection to inject to the Handler.
 
-    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Query, List<ActivityDto>>
+    public class Handler(AppDbContext context, IMapper mapper, IUserAccessor userAccessor) : IRequestHandler<Query, List<ActivityDto>>
     {
         // Handle method uses EF Core in Persistence layer to query all rows from the database (ToListAsync), map result into ActivityDto objects from Domain layer,
         // Mediator will retun result to the ActivitiesController mediator.Send(new GetActivityList.Query()).
@@ -33,7 +34,7 @@ public class GetActivityList
                 // It generates Select() expression that only select necessary data to transform Activity into ActivityDto, 
                 // omitting unnecessary columns.
                 // Then the ActivityDto results will be converted into a list.
-                .ProjectTo<ActivityDto>(mapper.ConfigurationProvider)
+                .ProjectTo<ActivityDto>(mapper.ConfigurationProvider, new { currentUserId = userAccessor.GetUserId() })
                 .ToListAsync(cancellationToken);
         }
     }

@@ -1,6 +1,7 @@
 using System;
 using Application.Activities.DTOs;
 using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
@@ -20,7 +21,7 @@ public class GetActivityDetails
 
     // This Handler handles requests of type GetActivityDetails.Query.
     // IRequestHandler<in TRequest, TResponse>, it takes query as request and returns ActivityDto type result.
-    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Query, Result<ActivityDto>>
+    public class Handler(AppDbContext context, IMapper mapper, IUserAccessor userAccessor) : IRequestHandler<Query, Result<ActivityDto>>
     {
         // must match Task<Result<Activity>> with IRequest<Result<Activity>>, because both specify what will be returned.
         public async Task<Result<ActivityDto>> Handle(Query request, CancellationToken cancellationToken)
@@ -47,7 +48,7 @@ public class GetActivityDetails
                 // AutoMapper looks at mapping configuration in MappingProfiles.cs, it sees CreateMap<Activity, ActivityDto>() rules.
                 // It uses the mapping rules to build a LINQ.Select() expression for EF Core to translate it into SQL Query.
                 // The Select() expression will only Select columns from Activities, ActivityAttendee and Users tables necessary to populate the ActivityDto.
-                .ProjectTo<ActivityDto>(mapper.ConfigurationProvider)
+                .ProjectTo<ActivityDto>(mapper.ConfigurationProvider, new { currentUserId = userAccessor.GetUserId() })
                 // condition in the LINQ expression for EF Core to include in the SQL query.
                 .FirstOrDefaultAsync(activity => request.Id == activity.Id, cancellationToken);
 

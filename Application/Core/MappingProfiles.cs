@@ -14,6 +14,9 @@ public class MappingProfiles : Profile
     // It saves the step of assining property from ActivityDto to new Activity object before saving. 
     public MappingProfiles()
     {
+        // Optional to have current user id and it will be used to check if the current user is following the selected user.
+        string? currentUserId = null;
+
         // control what the client needs to provide to the server, omit unnecessary data from the client like Id and isCancelled.
         // tell IMapper when the sourceObject is Activity, map it to Activity destinationObject.
         CreateMap<Activity, Activity>();
@@ -49,10 +52,33 @@ public class MappingProfiles : Profile
                 options.MapFrom(ActivityAttendeeEntity => ActivityAttendeeEntity.User.ImageUrl))
 
             .ForMember(UserProfileDestination => UserProfileDestination.Id, options =>
-                options.MapFrom(ActivityAttendeeEntity => ActivityAttendeeEntity.User.Id));
+                options.MapFrom(ActivityAttendeeEntity => ActivityAttendeeEntity.User.Id))
+
+            .ForMember(UserProfileDestination => UserProfileDestination.FollowingCount, options =>
+                options.MapFrom(ActivityAttendeeEntity => ActivityAttendeeEntity.User.Followings.Count))
+
+            .ForMember(UserProfileDestination => UserProfileDestination.FollowersCount, options =>
+                options.MapFrom(ActivityAttendeeEntity => ActivityAttendeeEntity.User.Followers.Count))
+
+            // Because ActivityAttendee is mapped to UserProfile, GetActivityDetails and GetActivityList pass logged in user id 
+            // to Mapper to check if the logged in user follows the activity attendee (for ActivityDto).
+            .ForMember(UserProfileDestination => UserProfileDestination.Following, options =>
+                options.MapFrom(ActivityAttendeeEntity => ActivityAttendeeEntity.User.Followers
+                    .Any(eachFollower => eachFollower.ObserverId == currentUserId)));
 
         // To map from User object to UserProfile object.
-        CreateMap<User, UserProfile>();
+        CreateMap<User, UserProfile>()
+            .ForMember(UserProfileDestination => UserProfileDestination.FollowersCount, options =>
+                options.MapFrom(UserEntity => UserEntity.Followers.Count))
+
+            .ForMember(UserProfileDestination => UserProfileDestination.FollowingCount, options =>
+                options.MapFrom(UserEntity => UserEntity.Followings.Count))
+
+            // Map from the followers of the selected user where the current user is the observer to find out 
+            // if current user is following the selected user.
+            .ForMember(UserProfileDestination => UserProfileDestination.Following, options =>
+                options.MapFrom(UserEntity =>
+                    UserEntity.Followers.Any(eachFollower => eachFollower.ObserverId == currentUserId)));
 
         // Comment Entity requires using Navigation property User to get DisplayName and ImageUrl for mapping to
         // CommentDto's DisplayName and ImageUrl.
