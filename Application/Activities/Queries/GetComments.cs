@@ -15,7 +15,7 @@ public class GetComments
     // When Mediator passes HTTP Request containing ActivityId to here, tell it to expect Result<List<CommentDto>>.
     public class Query : IRequest<Result<List<CommentDto>>>
     {
-        public string ActivityId { get; set; }
+        public required string ActivityId { get; set; }
     }
 
     // It takes Query for ActivityId and tells Mediator that it will return Result<List<CommentDto>>.
