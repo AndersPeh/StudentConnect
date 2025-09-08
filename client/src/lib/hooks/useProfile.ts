@@ -2,7 +2,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import agent from "../api/agent";
 import { useMemo } from "react";
 
-// Take the user Id and return user profile as data and loadingProfile as isLoading state after executing the query.
 export const useProfile = (id?: string) => {
   const queryClient = useQueryClient();
 
@@ -147,6 +146,33 @@ export const useProfile = (id?: string) => {
     },
   });
 
+  const updateFollowing = useMutation({
+    mutationFn: async () => {
+      await agent.post(`/profiles/${id}/follow`);
+    },
+
+    onSuccess: () => {
+      queryClient.setQueryData(
+        ["profile", id],
+        // Modify the profile query key by adding or reducing the followersCount.
+        (profile: Profile) => {
+          // !profile is when profile doesnt exist, but !profile.followersCount can mean when profile.followersCount is 0.
+          // so need to use === undefined instead of !.
+          if (!profile || profile.followersCount === undefined) return profile;
+
+          // If the user was following, then the user is no longer following.
+          // If the user was not following, then the user is now following.
+          return {
+            ...profile,
+            following: !profile.following,
+            followersCount: profile.following
+              ? profile.followersCount - 1
+              : profile.followersCount + 1,
+          };
+        }
+      );
+    },
+  });
   // queryClient.getQueryData<User>(["user"]) means look for ['user'] key in the cache of React Query,
   // it is the queryKey from useAccount.ts hook that fetches logged-in user's information and stores it in the cache with ['user'] key.
   // There is no point doing useQuery here as there is already an existing query that gets user information.
@@ -167,5 +193,6 @@ export const useProfile = (id?: string) => {
     uploadPhoto,
     setMainPhoto,
     deletePhoto,
+    updateFollowing,
   };
 };
