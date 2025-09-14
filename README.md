@@ -56,6 +56,18 @@ Here are some screenshots from the app:
 
 <table>
   <tr align="center">
+    <td><p>SignalR WebSocket Details</p><img src="AppPics/WebSocket_Details.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr align="center">
+    <td><p>SignalR WebSocket Diagram</p><img src="AppPics/SignalR diagram.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr align="center">
     <td><p>Profile Page with Set Profile Picture and Delete features</p><img src="AppPics/ProfilePage.png" width="100%"></td>
   </tr>
 </table>
