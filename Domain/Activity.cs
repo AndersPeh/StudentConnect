@@ -1,6 +1,12 @@
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace Domain;
+
+// Create index on Date property for faster pagination query (query.Where(Activity => Activity.Date >= request.Cursor.Value)).
+// A separate data structure is created which is sorted by Date column, it contains the date value and a pointer that points
+// to the location of the actual record (the entire row in the Activities table).
+[Index(nameof(Date))]
 
 // blueprint of the Activities table in AppDbContext (Persistence layer).
 public class Activity

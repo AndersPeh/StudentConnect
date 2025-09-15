@@ -51,27 +51,32 @@ public class GetActivityList
         {
             var query = context.Activities
             // Order by Cursor type, which is Activity's Date.
-                            .OrderBy(Activity => Activity.Date)
-                            // Indicates the query has not been executed yet, building an expression tree.
-                            .AsQueryable();
+                        .OrderBy(Activity => Activity.Date)
+                        // Indicates the query has not been executed yet, building an expression tree.
+                        .AsQueryable();
 
             // If Cursor has the DateTime value, then start from the Cursor value.
             // The Cursor comes from the extra activity in Take, to use as the starting point of next batch.
             if (request.Cursor.HasValue)
             {
+                // Index the Date property of Activity table for faster SQL query.
+                // Database query optimiser determines that Date index seek is faster than full table scan,
+                // so the database will use the index to run the query.
                 query = query.Where(Activity => Activity.Date >= request.Cursor.Value);
             }
 
             var activities = await query
             // Always take extra 1 activity for getting the Date of the last activity and Client can use it as a cursor.
                 .Take(request.PageSize + 1)
+
                 // AutoMapper knows the source type is Activity based on context.Activities (it represents all Activity entities),
                 // It also knows destination type is ActivityDto from .ProjectTo<ActivityDto>.
                 // ConfigurationProvider holds mapping rules from MappingProfiles.cs, CreateMap<Activity, ActivityDto>() matches the criteria.
                 // It generates Select() expression that only select necessary data to transform Activity into ActivityDto, omitting unnecessary columns.
                 // Then the ActivityDto results will be converted into a list.
                 .ProjectTo<ActivityDto>(mapper.ConfigurationProvider, new { currentUserId = userAccessor.GetUserId() })
-                // Materialisation method to call EF Core to translate the Queryable to SQL query, then execute it.
+
+                // Materialisation method to call EF Core to translate the LINQ express tree to SQL query, then execute it.
                 .ToListAsync(cancellationToken);
 
             DateTime? nextCursor = null;

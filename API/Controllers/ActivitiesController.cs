@@ -2,6 +2,7 @@ using System;
 using Application.Activities.Commands;
 using Application.Activities.DTOs;
 using Application.Activities.Queries;
+using Application.Core;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,26 +36,26 @@ public class ActivitiesController : BaseApiController
     // By segregating Command and Query Responbility, every class is kept simple to handle either read or write operations only.
     // For Queries, they typically return DTOs.
     // API endpoint: GET /api/activities
+    // Because cursor is an optional query string parameter, no need to specify in the route. When model binder sees query string named cursor,
+    // then it will bind to  GetActivities(DateTime? cursor).
     [HttpGet]
 
     // GetActivities method handles HTTP Get request /api/activities.
-    // It returns a List of ActivityDto objects in ActionResult.
-    // Task <TResult> means the asynchronous operation returns a value of type TResult upon completion.
-    public async Task<ActionResult<List<ActivityDto>>> GetActivities()
+    // It returns a PagedList of ActivityDto and DateTime nextCursor in ActionResult.
+    public async Task<ActionResult<PagedList<ActivityDto, DateTime?>>> GetActivities(DateTime? cursor)
 
     {
-        // instantiates request object Query to Mediator. 
         // Mediator knows which handler to use because a handler in the Application layer is specified to handle GetActivityList.Query .
-        // After receiving result from Application layer, returns ActionResult which wraps a List of ActivityDto (match Domain.Activity)
+        // After receiving result from Application layer, returns ActionResult which wraps a PagedList of ActivityDto (match Domain.Activity)
         // into JSON body of ActionResult containing Status Code: 200 OK.
-        return await Mediator.Send(new GetActivityList.Query());
+        return HandleResult(await Mediator.Send(new GetActivityList.Query { Cursor = cursor }));
     }
 
     // *******************************************************************************************************
 
     [HttpGet("{id}")]
 
-    // GetActivityDetail uses a route template parameter {id}, so it expects a value in the URL path.
+    // GetActivityDetail uses a route parameter {id}, so it expects a value in the URL path.
     // It returns a Result type of ActivityDto object indicating success or failure to HandleResult.
     // HandleResult inherited from BaseApiController will return responses accordingly.
     public async Task<ActionResult<ActivityDto>> GetActivityDetail(string id)
@@ -103,11 +104,9 @@ public class ActivitiesController : BaseApiController
 
     // *******************************************************************************************************
 
-    // when data is needed in the path, must specify in the HTTP method.
     [HttpDelete("{id}")]
     [Authorize(Policy = "IsActivityHost")]
 
-    // return Status 200 Ok if delete successfully.
     public async Task<ActionResult> DeleteActivity(string id)
     {
         return HandleResult(await Mediator.Send(new DeleteActivity.Command { Id = id }));
