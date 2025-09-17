@@ -59,6 +59,8 @@ export const useActivities = (id?: string) => {
       // the activitiesGroup is returned by select(data) below.
       return response.data;
     },
+    // set a 5 minutes stale time so activities will only be refetched after 5 minutes.
+    staleTime: 1000 * 60 * 5,
 
     // This is the cursor for first API call (first time loading Activities page).
     initialPageParam: null,
@@ -124,10 +126,6 @@ export const useActivities = (id?: string) => {
             ),
           })
         ),
-
-        // make a staletime of 5 seconds so React Query won't mark any data as stale for the time period unless it is invalidated.
-        // When it is refreshed, React Query will fetch data from cache instead of making new request.
-        staleTime: 5000,
       }),
   });
 

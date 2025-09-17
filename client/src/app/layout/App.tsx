@@ -20,7 +20,7 @@ function App() {
       ) : (
         <>
           <NavBar />
-          <Container maxWidth="xl" sx={{ marginTop: 3 }}>
+          <Container maxWidth="xl" sx={{ paddingTop: 13 }}>
             {/* when user browses to one of its child routes, the element of the child route will replace the outlet section. */}
             <Outlet />
           </Container>

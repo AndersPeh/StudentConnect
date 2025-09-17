@@ -27,11 +27,10 @@ export default function NavBar() {
     <Box sx={{ flexGrow: 1 }}>
       {/* main NavBar */}
       <AppBar
-        position="static"
+        position="fixed"
         sx={{
           backgroundImage:
             "linear-gradient(135deg, #182a73 0%, #218aae 69%, #20a7ac 89%)",
-          position: "relative",
         }}
       >
         {/* constrains NavBar's content width on wide screen, center it.  */}
