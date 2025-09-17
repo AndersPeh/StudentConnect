@@ -50,7 +50,7 @@ public class GetActivityList
         {
             var query = context.Activities
             // Order by Cursor type, which is Activity's Date.
-                        .OrderBy(Activity => Activity.Date)
+                        .OrderByDescending(Activity => Activity.Date)
                         // Indicates the query has not been executed yet, building an expression tree.
                         .AsQueryable();
 
@@ -61,7 +61,7 @@ public class GetActivityList
                 // Index the Date property of Activity table for faster SQL query.
                 // Database query optimiser determines that Date index seek is faster than full table scan,
                 // so the database will use the index to run the query.
-                query = query.Where(Activity => Activity.Date >= request.Cursor.Value);
+                query = query.Where(Activity => Activity.Date <= request.Cursor.Value);
             }
 
             var activities = await query
