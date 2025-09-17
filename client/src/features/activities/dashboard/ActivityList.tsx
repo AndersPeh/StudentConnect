@@ -1,10 +1,28 @@
 import { Box, Typography } from "@mui/material";
 import ActivityCard from "./ActivityCard";
 import { useActivities } from "../../../lib/hooks/useActivities";
-import { Fragment } from "react/jsx-runtime";
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
 
 export default function ActivityList() {
-  const { activitiesGroup, isLoading } = useActivities();
+  const { activitiesGroup, isLoading, hasNextPage, fetchNextPage } =
+    useActivities();
+  // threshold: 0.5 means when user sees half of the activity that is tagged as ref, it will automatically load next page.
+  // ref tells useInView which element to watch, inView is false by default.
+  // inView returns true when 50% of the ref element becomes visible.
+  const { ref, inView } = useInView({ threshold: 0.5 });
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      // fetchNextPage calls queryFn and puts the next cursor from the latestPagedList to make API call.
+      fetchNextPage();
+    }
+    // useEffect reruns when any of the dependencies change.
+    // When inView changes (ref element is 50% visible) and if inView && hasNextPage are true, useEffect will fetch the next page.
+    // fetchNextPage is a function defined outside the useEffect but is used inside it, so need to include it in the dependency array in case it changes.
+    // hasNextPage dependency is for ensuring useEffect to rerun after it becomes false when there is no next cursor,
+    // so it knows hasNextPage has become false and doesnt execute fetchNextPage anymore.
+  }, [fetchNextPage, inView, hasNextPage]);
 
   if (isLoading) return <Typography>Loading...</Typography>;
 
@@ -17,21 +35,22 @@ export default function ActivityList() {
       // In every pagedList, go to items, map every item which is an activity.
       */}
       {activitiesGroup.pages.map((pagedList, index) => (
-        // Fragment is for attaching the key to every pagedList for React to keep track of pagedList added/ changes/ removed.
-        // by grouping ActivityCard together. Fragment doesnt add extra element to the HTML DOM,
-        // so the DOM thinks the Box structure is without Fragment.
-        // <Box>
-        // Gap will be applied properly between each ActivityCard.
-        //   <ActivityCard />
-        //   <ActivityCard />
-        //   <ActivityCard />
-        // </Box>
-        <Fragment key={index}>
+        // Key needs to be attached to every pagedList for React to keep track of pagedList added/ changes/ removed.
+        <Box
+          key={index}
+          // ref element must be the last pagedList, length counts from 1, so it is 1 more than the index which starts from 0, use -1 to find the last element.
+          // Add a ref tag to the last pagedList so when user sees 50% of the last pagedList (half of the activities inside it),
+          // it will trigger the useEffect to fetch next page.
+          ref={index === activitiesGroup.pages.length - 1 ? ref : null}
+          display="flex"
+          flexDirection="column"
+          gap={3}
+        >
           {pagedList.items.map((activity) => (
             // React needs id to identify each activity to track them individually.
             <ActivityCard key={activity.id} activity={activity} />
           ))}
-        </Fragment>
+        </Box>
       ))}
     </Box>
   );
