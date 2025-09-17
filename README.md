@@ -131,6 +131,18 @@ Here are some screenshots from the app:
   </tr>
 </table>
 
+<table>
+  <tr align="center">
+    <td><p>Database Indexing on Activity Date</p><img src="AppPics/Database_Indexing.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr align="center">
+    <td><p>Why I implement Cursor Based Pagination</p><img src="AppPics/Pagination_Explaination.png" width="100%"></td>
+  </tr>
+</table>
+
 ## Main Features & Tech (with Project Context)
 
 ### Real-time Comments with SignalR
