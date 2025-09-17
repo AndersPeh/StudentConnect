@@ -19,14 +19,17 @@ export const useActivities = (id?: string) => {
   const location = useLocation();
 
   // destructures useInfiniteQuery to get data as activities and isLoading.
-  // useInfiniteQuery manages loading state while queryFn is running. isLoading when first fetch of a query is running.
-  // When JSON doesnt have a Date type, the DateTime cursor from the backend is converted to a string automatically.
   const {
+    // Because data contains arrays of pages and pageparams, they are essentially activities in different groups.
     data: activitiesGroup,
+    // isLoading is only true when React query first runs the API call without cached data for queryKey: ["activities"] and
+    // is running queryFn for the first time. The screen is empty and user waiting for the initial activities to appear.
     isLoading,
+    // User waiting for the next page to be fetched.
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
+    // As JSON doesnt have a Date type, the DateTime cursor from the backend is converted to a string automatically.
   } = useInfiniteQuery<PagedList<Activity, string>>({
     // queryKey is the unique id to check internal cache to see if there is already data for this queryKey.
     // If there is data in the cache, useInfiniteQuery returns data without fetching.
@@ -37,7 +40,7 @@ export const useActivities = (id?: string) => {
     // pageParam is the cursor to point the next starting point.
     // pageParam is null by default for defensive programming as initialPageParam: null already sets null for first API call to fetch activities.
     queryFn: async ({ pageParam = null }) => {
-      // makes HTTP Get request to the backend API endpoint, return an array of Activity objects.
+      // makes HTTP Get request to the backend API endpoint, return an array of Activity objects and next cursor.
       // by using agent, URL can be shortened.
       const response = await agent.get<PagedList<Activity, string>>(
         "/activities",
@@ -50,8 +53,10 @@ export const useActivities = (id?: string) => {
       );
 
       // axios automatically parses JSON, allowing us to directly get data from response.
-      // useInfiniteQuery updates its loading state, caches the fetched data against the queryKey, isPending becomes false.
-      // this return caches the data in queryKey: ["activities"], it doesnt return data: activities.
+      // The return response.data contains a PagedList with Activity object and nextCursor string.
+      // useInfiniteQuery updates its loading state, caches the fetched data against the queryKey, isLoading becomes false.
+      // this return caches the data in queryKey: ["activities"], it doesnt return data: activitiesGroup directly,
+      // the activitiesGroup is returned by select(data) below.
       return response.data;
     },
 
@@ -61,40 +66,69 @@ export const useActivities = (id?: string) => {
     // This is the cursor for subsequent API calls (after first time loading Activities page).
     // It gets nextCursor from latest PagedList because PagedList always returns Activity objects + next cursor except first time.
     getNextPageParam: (latestPagedList) => latestPagedList.nextCursor,
+
     // dont execute this useInfiniteQuery when there is id (should execute useQuery for specific activity).
     // execute this useInfiniteQuery when the pathname is /activities only and currentUser exists.
     enabled: !id && location.pathname === "/activities" && !!currentUser,
 
     // select only runs after queryFn has successfully completed and returned data.
-    // select is for transforming the cached data received from the return of queryFn, before it is returned as data: activities.
-    select: (data) => ({
-      ...data,
-      pages: data.pages.map((page) => ({
-        ...page,
-        items: page.items.map((activity) => {
-          const host = activity.attendees.find(
-            (attendee) => attendee.id === activity.hostId
-          );
+    // select doesnt take the response.data, it takes the cached data for this query key, which can contain multiple PagedList.
+    // select is for transforming the cached data of the query key, before it is returned as data: activitiesGroup.
+    // data contains:
+    //     {
+    //   pages: [
+    //     Page 1's data
+    //     { items: [/* activities 1-3 */], nextCursor: "cursor-for-page-2 (DateTime of activity 4)" },
+    //     Page 2's data
+    //     { items: [/* activities 4-6 */], nextCursor: "cursor-for-page-3 (DateTime of activity 7)" },
+    //     Page 3's data
+    //     { items: [/* activities 7-9 */], nextCursor: null (no activity after this) }
+    //   ],
+    //   pageParams: [
+    //     null, // The pageParam used for page 1 because there is no cursor when the Activities page is first loaded.
+    //     "cursor-for-page-2", // The pageParam used for page 2
+    //     "cursor-for-page-3"  // The pageParam used for page 3
+    //   ]
+    // }
+    select:
+      // Transform the data.
+      (data) => ({
+        // spread the data, then override pages by specifying it. pageParams is untouched.
+        ...data,
+        // Override pages of data.
+        pages: data.pages.map(
+          // For every page, spread the page so nextCursor wont be modified.
+          (pagedList) => ({
+            ...pagedList,
+            // Modify items of every page to contain properties we need.
+            items: pagedList.items.map(
+              // For every activity, find out the host.
+              (activity) => {
+                const host = activity.attendees.find(
+                  (attendee) => attendee.id === activity.hostId
+                );
 
-          // This transforms individual activity using map, forming the transformed activity array.
-          return {
-            ...activity,
-            // Add isHost to the activity object, it is true if the currentUser.id matches the hostId of the activity.
-            isHost: currentUser?.id === activity.hostId,
-            // Add isGoing, it is true if currentUser.id exists in the attendess.
-            isGoing: activity.attendees.some(
-              (attendee) => attendee.id === currentUser?.id
+                // This transforms individual activity using map, forming the transformed activity for the frontend.
+                return {
+                  ...activity,
+                  // Add isHost to the activity object, it is true if the currentUser.id matches the hostId of the activity.
+                  isHost: currentUser?.id === activity.hostId,
+                  // Add isGoing, it is true if currentUser.id exists in the attendess.
+                  isGoing: activity.attendees.some(
+                    (attendee) => attendee.id === currentUser?.id
+                  ),
+
+                  hostImageUrl: host?.imageUrl,
+                };
+              }
             ),
+          })
+        ),
 
-            hostImageUrl: host?.imageUrl,
-          };
-        }),
-      })),
-
-      // make a staletime of 5 seconds so React Query won't mark any data as stale for the time period unless it is invalidated.
-      // When it is refreshed, React Query will fetch data from cache instead of making new request.
-      staleTime: 5000,
-    }),
+        // make a staletime of 5 seconds so React Query won't mark any data as stale for the time period unless it is invalidated.
+        // When it is refreshed, React Query will fetch data from cache instead of making new request.
+        staleTime: 5000,
+      }),
   });
 
   // send GET request to query individual activity details.
