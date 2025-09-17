@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import agent from "../api/agent";
 import { useLocation } from "react-router";
 import type { FieldValues } from "react-hook-form";
@@ -13,58 +18,83 @@ export const useActivities = (id?: string) => {
   // get path URL location.
   const location = useLocation();
 
-  // useQuery is automatically executed when the App component mounts.
-  // destructures useQuery to get {data}, put it into variable named activities.
-  // useQuery manages loading state while queryFn is running. isLoading when first fetch of a query is running.
-  const { data: activities, isLoading } = useQuery({
-    // queryKey is the unique id for useQuery to check internal cache to see if there is already data for this queryKey.
-    // If there is data in the cache, useQuery returns data without fetching.
+  // destructures useInfiniteQuery to get data as activities and isLoading.
+  // useInfiniteQuery manages loading state while queryFn is running. isLoading when first fetch of a query is running.
+  // When JSON doesnt have a Date type, the DateTime cursor from the backend is converted to a string automatically.
+  const {
+    data: activitiesGroup,
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery<PagedList<Activity, string>>({
+    // queryKey is the unique id to check internal cache to see if there is already data for this queryKey.
+    // If there is data in the cache, useInfiniteQuery returns data without fetching.
     queryKey: ["activities"],
 
-    // If there is no data in queryKey or stale, useQuery executes this function to fetch data.
-    // when data is stale, React Query returns stale data while fetching fresh data. When new data is ready, it re renders to provide new data.
-    queryFn: async () => {
-      // makes HTTP Get request to the backend API endpoint, return type is array of Activity objects.
+    // If there is no data in queryKey or stale, useInfiniteQuery executes this function to fetch data.
+    // when data is stale, React Query returns stale data while fetching fresh data. When new data is ready, it re-renders to provide new data.
+    // pageParam is the cursor to point the next starting point.
+    // pageParam is null by default for defensive programming as initialPageParam: null already sets null for first API call to fetch activities.
+    queryFn: async ({ pageParam = null }) => {
+      // makes HTTP Get request to the backend API endpoint, return an array of Activity objects.
       // by using agent, URL can be shortened.
-      const response = await agent.get<Activity[]>("/activities");
+      const response = await agent.get<PagedList<Activity, string>>(
+        "/activities",
+        {
+          params: {
+            cursor: pageParam,
+            pageSize: 3,
+          },
+        }
+      );
 
       // axios automatically parses JSON, allowing us to directly get data from response.
-      // useQuery updates its loading state, caches the fetched data against the queryKey, isPending becomes false.
+      // useInfiniteQuery updates its loading state, caches the fetched data against the queryKey, isPending becomes false.
       // this return caches the data in queryKey: ["activities"], it doesnt return data: activities.
       return response.data;
     },
 
-    // dont execute this useQuery when there is id (should execute useQuery for specific activity).
-    // execute this useQuery when the pathname is /activities only and currentUser exists.
+    // This is the cursor for first API call (first time loading Activities page).
+    initialPageParam: null,
+
+    // This is the cursor for subsequent API calls (after first time loading Activities page).
+    // It gets nextCursor from latest PagedList because PagedList always returns Activity objects + next cursor except first time.
+    getNextPageParam: (latestPagedList) => latestPagedList.nextCursor,
+    // dont execute this useInfiniteQuery when there is id (should execute useQuery for specific activity).
+    // execute this useInfiniteQuery when the pathname is /activities only and currentUser exists.
     enabled: !id && location.pathname === "/activities" && !!currentUser,
 
     // select only runs after queryFn has successfully completed and returned data.
     // select is for transforming the cached data received from the return of queryFn, before it is returned as data: activities.
-    select: (data) => {
-      // This returns the final output of this query, data: activities. It maps the array of Activity from API call as individual activity.
-      return data.map((activity) => {
-        const host = activity.attendees.find(
-          (attendee) => attendee.id === activity.hostId
-        );
+    select: (data) => ({
+      ...data,
+      pages: data.pages.map((page) => ({
+        ...page,
+        items: page.items.map((activity) => {
+          const host = activity.attendees.find(
+            (attendee) => attendee.id === activity.hostId
+          );
 
-        // This transforms individual activity using map, forming the transformed activity array.
-        return {
-          ...activity,
-          // Add isHost to the activity object, it is true if the currentUser.id matches the hostId of the activity.
-          isHost: currentUser?.id === activity.hostId,
-          // Add isGoing, it is true if currentUser.id exists in the attendess.
-          isGoing: activity.attendees.some(
-            (attendee) => attendee.id === currentUser?.id
-          ),
+          // This transforms individual activity using map, forming the transformed activity array.
+          return {
+            ...activity,
+            // Add isHost to the activity object, it is true if the currentUser.id matches the hostId of the activity.
+            isHost: currentUser?.id === activity.hostId,
+            // Add isGoing, it is true if currentUser.id exists in the attendess.
+            isGoing: activity.attendees.some(
+              (attendee) => attendee.id === currentUser?.id
+            ),
 
-          hostImageUrl: host?.imageUrl,
-        };
-      });
-    },
+            hostImageUrl: host?.imageUrl,
+          };
+        }),
+      })),
 
-    // make a staletime of 5 seconds so React Query won't mark any data as stale for the time period unless it is invalidated.
-    // When it is refreshed, React Query will fetch data from cache instead of making new request.
-    staleTime: 5000,
+      // make a staletime of 5 seconds so React Query won't mark any data as stale for the time period unless it is invalidated.
+      // When it is refreshed, React Query will fetch data from cache instead of making new request.
+      staleTime: 5000,
+    }),
   });
 
   // send GET request to query individual activity details.
@@ -211,8 +241,11 @@ export const useActivities = (id?: string) => {
   });
 
   return {
-    activities,
+    activitiesGroup,
     isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
     updateActivity,
     createActivity,
     deleteActivity,

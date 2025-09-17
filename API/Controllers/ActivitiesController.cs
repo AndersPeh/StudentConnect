@@ -33,7 +33,6 @@ namespace API.Controllers;
 
 public class ActivitiesController : BaseApiController
 {
-    // By segregating Command and Query Responbility, every class is kept simple to handle either read or write operations only.
     // For Queries, they typically return DTOs.
     // API endpoint: GET /api/activities
     // Because cursor is an optional query string parameter, no need to specify in the route. When model binder sees query string named cursor,
@@ -42,6 +41,8 @@ public class ActivitiesController : BaseApiController
 
     // GetActivities method handles HTTP Get request /api/activities.
     // It returns a PagedList of ActivityDto and DateTime nextCursor in ActionResult.
+    // When user first loads the ActivityPage, the user hasnt looked at any activity before. So the cursor is null,
+    // that's why GetActivities(DateTime? cursor) needs to be ? nullable.
     public async Task<ActionResult<PagedList<ActivityDto, DateTime?>>> GetActivities(DateTime? cursor)
 
     {

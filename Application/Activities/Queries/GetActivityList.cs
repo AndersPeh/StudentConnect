@@ -16,8 +16,7 @@ public class GetActivityList
 
     // Query inherits from IRequest and returns Result<PagedList<ActivityDto, DateTime?>>.
     // Because PagedList<T, TCursor> takes 2 parameters, it returns ActivityDto as items and sets NextCursor as DateTime.
-    // When user first loads the ActivityPage, the user hasnt looked at any activity before. So the cursor is null,
-    // that's why DateTime needs to be ? nullable, which indicates fetch the latest activites based on value or MaxPageSize.
+    // PagedList<ActivityDto, DateTime?> sets DateTime as nullable because there wont be any cursor in the end when all activities have been loaded.
     public class Query : IRequest<Result<PagedList<ActivityDto, DateTime?>>>
     {
         // Use DateTime as the cursor to indicate the next starting point.
