@@ -43,13 +43,13 @@ public class ActivitiesController : BaseApiController
     // It returns a PagedList of ActivityDto and DateTime nextCursor in ActionResult.
     // When user first loads the ActivityPage, the user hasnt looked at any activity before. So the cursor is null,
     // that's why GetActivities(DateTime? cursor) needs to be ? nullable.
-    public async Task<ActionResult<PagedList<ActivityDto, DateTime?>>> GetActivities(DateTime? cursor, int pageSize = 3)
+    public async Task<ActionResult<PagedList<ActivityDto, DateTime?>>> GetActivities([FromQuery] ActivityParams activityParams)
 
     {
         // Mediator knows which handler to use because a handler in the Application layer is specified to handle GetActivityList.Query .
         // After receiving result from Application layer, returns ActionResult which wraps a PagedList of ActivityDto (match Domain.Activity)
         // into JSON body of ActionResult containing Status Code: 200 OK.
-        return HandleResult(await Mediator.Send(new GetActivityList.Query { Cursor = cursor, PageSize = pageSize }));
+        return HandleResult(await Mediator.Send(new GetActivityList.Query { Params = activityParams }));
     }
 
     // *******************************************************************************************************
