@@ -6,7 +6,6 @@ using Application.Core;
 using Application.Interfaces;
 using Domain;
 using FluentValidation;
-using Infrastructure;
 using Infrastructure.Photos;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Authorization;
@@ -83,7 +82,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 // to provide information for validating commands.
 builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
 
-// AddTransient means DI container instantiates this service per HTTP request and disposes after using.
+// AddTransient means DI container instantiates this service whenever it is needed, can be many times per request and disposes after using.
 builder.Services.AddTransient<ExceptionMiddleware>();
 
 // AddIdentityApiEndpoints<User> get a set of API endpoints for user authentication, for .Net to manage users based on Domain.User entity.
