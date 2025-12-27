@@ -1,5 +1,3 @@
-using System;
-
 namespace Application.Activities.DTOs;
 
 // Data Transfer Object defines the structure of the data client sends to check user inputs structure.

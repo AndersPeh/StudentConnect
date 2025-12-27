@@ -1,5 +1,3 @@
-using System;
-using System.Diagnostics;
 using Application.Activities.DTOs;
 using Application.Core;
 using AutoMapper;

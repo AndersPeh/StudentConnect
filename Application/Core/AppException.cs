@@ -1,5 +1,3 @@
-using System;
-
 namespace Application.Core;
 
 // primary constructor with parameters: int statusCode, string message, string? details.

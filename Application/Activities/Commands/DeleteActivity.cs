@@ -1,4 +1,3 @@
-using System;
 using Application.Core;
 using MediatR;
 using Persistence;

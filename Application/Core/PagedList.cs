@@ -1,5 +1,3 @@
-using System;
-
 namespace Application.Core;
 
 // Use PagedList for any type and use any type of Cursor.

@@ -1,5 +1,3 @@
-using System;
-
 namespace Domain;
 
 // Because a user can follow and be followed by many users, creating a many to many relationship.

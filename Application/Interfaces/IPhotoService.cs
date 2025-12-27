@@ -1,4 +1,3 @@
-using System;
 using Application.Profiles.DTOs;
 using Microsoft.AspNetCore.Http;
 

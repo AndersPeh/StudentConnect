@@ -1,4 +1,3 @@
-using System;
 using Application.Profiles.DTOs;
 
 namespace Application.Activities.DTOs;

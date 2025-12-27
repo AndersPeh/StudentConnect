@@ -1,5 +1,3 @@
-using System;
-
 namespace Domain;
 
 // Each ActivityAttendee belongs to 1 Activity and 1 User.

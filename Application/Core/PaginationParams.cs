@@ -1,5 +1,3 @@
-using System;
-
 namespace Application.Core;
 
 public class PaginationParams<TCursor>
