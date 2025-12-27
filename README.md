@@ -2,7 +2,7 @@
 
 ## Connecting Students Across Universities
 
-**StudentConnect** is my personal full-stack project, built with React (TypeScript) and .NET, aiming to solve the problem of how hard it is for Australian university students to find genuine events and connect with others across campuses. I started this because I found social media groups messy, full of spam, and not really designed for students to actually meet up, join events, or work on projects together.
+**StudentConnect** is my personal project, built with React and .NET, aiming to solve the problem of how hard it is for Australian university students to find genuine events and connect with others across campuses. I started this because I found social media groups messy, full of spam, and not really designed for students to actually meet up, join events, or work on projects together.
 
 ### The Challenge
 
@@ -11,11 +11,11 @@
 
 ### My Solution: StudentConnect
 
-It's being built to provide a focused environment where students can **Hang out & Network** – Organise or join professional and social events, competitions, or gatherings.
+It's being built to provide a focused environment where students can **Hang out/ Network/ Organise/ Join** professional and social events, competitions, or gatherings.
 
 ### Project Status
 
-Still under active development (I’m learning as I build it!).  
+Still under active development (I’m learning as I build it).  
 Here are some screenshots from the app:
 
 <table>
@@ -186,15 +186,8 @@ Here are some screenshots from the app:
 
 ## Upcoming Features
 
-- Follow/Unfollow logic fully working (UI is done)
-- Event paging, sorting, filtering
+- Sorting, filtering
 - Deploy to Azure
-- Allow only .edu.au emails to register
-
-## Running Locally
-
-- Backend: .NET 9, SQLite, see `API/Program.cs` for service wiring (SignalR, Cloudinary, etc).
-- Frontend: Vite + React + TypeScript, see `client/` for all source, and `.env.development` for API URLs.
 
 ## Why I Built This
 
