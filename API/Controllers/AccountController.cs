@@ -1,4 +1,3 @@
-using System;
 using API.DTOs;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
