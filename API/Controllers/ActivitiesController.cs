@@ -46,9 +46,6 @@ public class ActivitiesController : BaseApiController
     public async Task<ActionResult<PagedList<ActivityDto, DateTime?>>> GetActivities([FromQuery] ActivityParams activityParams)
 
     {
-        // Mediator knows which handler to use because a handler in the Application layer is specified to handle GetActivityList.Query .
-        // After receiving result from Application layer, returns ActionResult which wraps a PagedList of ActivityDto (match Domain.Activity)
-        // into JSON body of ActionResult containing Status Code: 200 OK.
         return HandleResult(await Mediator.Send(new GetActivityList.Query { Params = activityParams }));
     }
 
