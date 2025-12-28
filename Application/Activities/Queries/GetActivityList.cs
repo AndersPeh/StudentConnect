@@ -31,13 +31,11 @@ public class GetActivityList
         public async Task<Result<PagedList<ActivityDto, DateTime?>>> Handle(Query request, CancellationToken cancellationToken)
         {
             var query = context.Activities
-                        .OrderByDescending(activity => activity.Date)
+                        .OrderBy(activity => activity.Date)
                         // Index the Date property of Activity table for faster SQL query.
                         // Database query optimiser determines that Date index seek is faster than full table scan,
                         // so the database will use the index to run the query.
-                        .Where(activity => request.Params.Cursor.HasValue ?
-                                    activity.Date <= request.Params.Cursor :
-                                    activity.Date >= request.Params.StartDate)
+                        .Where(activity => activity.Date >= (request.Params.Cursor ?? request.Params.StartDate))
                         // Indicates the query has not been executed yet, building an expression tree.
                         .AsQueryable();
 
